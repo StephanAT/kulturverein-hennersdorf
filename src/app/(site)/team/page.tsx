@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import { ALL_TEAM_MEMBERS_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Team & Kontakt - Kulturverein Hennersdorf",
@@ -6,24 +9,43 @@ export const metadata: Metadata = {
     "Das Team des Gemeinnützigen Hennersdorfer Kulturvereins — Vorstand, Dorferneuerung und Kontakt.",
 };
 
-export default function TeamPage() {
-  return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
-        Wer wir sind
-      </p>
-      <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Team & Kontakt</h1>
-      <p className="mt-4 text-gray-600 leading-relaxed">
-        Der Gemeinnützige Hennersdorfer Kulturverein wurde 1994 gegründet und lebt
-        vom Engagement seiner Mitglieder — auf der Bühne, hinter den Kulissen
-        und in der Organisation.
-      </p>
+export const revalidate = 60;
 
-      {/* Vorstand */}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MemberCard({ member }: { member: any }) {
+  const photoUrl = member.photo
+    ? urlFor(member.photo).width(400).height(530).fit("crop").url()
+    : null;
+
+  return (
+    <div className="overflow-hidden rounded-lg bg-gray-50">
+      {photoUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={photoUrl}
+          alt={member.name}
+          className="aspect-[3/4] w-full object-cover object-top"
+          loading="lazy"
+        />
+      ) : (
+        <div className="flex aspect-[3/4] items-end bg-gray-100 p-6">
+          <p className="text-sm text-gray-400">Foto folgt</p>
+        </div>
+      )}
+      <div className="p-4">
+        <p className="font-medium text-gray-800">{member.name}</p>
+        {member.role && <p className="text-sm text-gray-500">{member.role}</p>}
+      </div>
+    </div>
+  );
+}
+
+function FallbackTeam() {
+  return (
+    <>
       <div className="mt-10">
         <h2 className="text-lg font-semibold text-gray-800">Vorstand</h2>
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {/* Manfred */}
           <div className="overflow-hidden rounded-lg bg-gray-50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -41,7 +63,6 @@ export default function TeamPage() {
               </p>
             </div>
           </div>
-          {/* Andrea */}
           <div className="overflow-hidden rounded-lg bg-gray-50">
             <div className="flex aspect-[3/4] items-end bg-gray-100 p-6">
               <p className="text-sm text-gray-400">Foto folgt</p>
@@ -58,7 +79,6 @@ export default function TeamPage() {
         </div>
       </div>
 
-      {/* Dorferneuerung */}
       <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-800">Dorferneuerung</h2>
         <figure className="mt-4">
@@ -82,7 +102,6 @@ export default function TeamPage() {
         </p>
       </div>
 
-      {/* Dorfhelden */}
       <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-800">Unsere Dorfhelden</h2>
         <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -118,6 +137,44 @@ export default function TeamPage() {
           </figure>
         </div>
       </div>
+    </>
+  );
+}
+
+export default async function TeamPage() {
+  let members: any[] = [];
+  try {
+    members = await client.fetch(ALL_TEAM_MEMBERS_QUERY);
+  } catch {
+    // Sanity unavailable
+  }
+
+  const useSanity = members.length > 0;
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-12">
+      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
+        Wer wir sind
+      </p>
+      <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Team & Kontakt</h1>
+      <p className="mt-4 text-gray-600 leading-relaxed">
+        Der Gemeinnützige Hennersdorfer Kulturverein wurde 1994 gegründet und lebt
+        vom Engagement seiner Mitglieder — auf der Bühne, hinter den Kulissen
+        und in der Organisation.
+      </p>
+
+      {useSanity ? (
+        <div className="mt-10">
+          <h2 className="text-lg font-semibold text-gray-800">Unser Team</h2>
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {members.map((member: any) => (
+              <MemberCard key={member._id} member={member} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <FallbackTeam />
+      )}
 
       {/* Kontakt */}
       <div className="mt-12 border-t border-gray-200 pt-8">

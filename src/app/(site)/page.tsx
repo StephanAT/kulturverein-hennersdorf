@@ -1,5 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { UPCOMING_EVENTS_QUERY } from "@/sanity/lib/queries";
+
+export const revalidate = 60;
 
 const SECTIONS = [
   {
@@ -34,7 +38,37 @@ const SECTIONS = [
   },
 ];
 
-export default function HomePage() {
+const FALLBACK_EVENT = {
+  title: "Hennersdorfer Frauenmesse",
+  date: "2026-04-26T10:00:00Z",
+  location: "Feuerwehrhaus Hennersdorf, Florianiplatz 1",
+};
+
+function formatEventDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  const date = d.toLocaleDateString("de-AT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const h = d.getHours();
+  const m = d.getMinutes();
+  if (h === 0 && m === 0) return date;
+  return `${date}, ${d.toLocaleTimeString("de-AT", { hour: "2-digit", minute: "2-digit" })} Uhr`;
+}
+
+export default async function HomePage() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let nextEvent: any = null;
+  try {
+    const upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
+    if (upcoming.length > 0) nextEvent = upcoming[0];
+  } catch {
+    // Sanity unavailable
+  }
+
+  const event = nextEvent || FALLBACK_EVENT;
+
   return (
     <>
       {/* Hero */}
@@ -56,28 +90,28 @@ export default function HomePage() {
       </section>
 
       {/* Next Event */}
-      <section className="border-t border-gray-100 bg-brand/5">
-        <div className="mx-auto max-w-4xl px-4 py-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-brand">Nächster Termin</p>
-              <h2 className="mt-1 text-lg font-bold text-gray-800">Hennersdorfer Frauenmesse</h2>
-              <p className="text-sm text-gray-600">
-                26. April 2026, 10:00 – 18:00 Uhr
-              </p>
-              <p className="text-sm text-gray-500">
-                Feuerwehrhaus Hennersdorf, Florianiplatz 1
-              </p>
+      {event && (
+        <section className="border-t border-gray-100 bg-brand/5">
+          <div className="mx-auto max-w-4xl px-4 py-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-brand">Nächster Termin</p>
+                <h2 className="mt-1 text-lg font-bold text-gray-800">{event.title}</h2>
+                <p className="text-sm text-gray-600">{formatEventDate(event.date)}</p>
+                {event.location && (
+                  <p className="text-sm text-gray-500">{event.location}</p>
+                )}
+              </div>
+              <Link
+                href="/events"
+                className="self-start border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+              >
+                Alle Termine
+              </Link>
             </div>
-            <Link
-              href="/events"
-              className="self-start border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
-            >
-              Alle Termine
-            </Link>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Sections */}
       <section className="border-t border-gray-100 bg-white pb-16">

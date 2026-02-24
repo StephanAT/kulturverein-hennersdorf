@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import { ALL_SPONSORS_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Sponsoren & Partner - Kulturverein Hennersdorf",
@@ -6,7 +9,63 @@ export const metadata: Metadata = {
     "Unsere Sponsoren und Partner machen die Projekte des Kulturvereins Hennersdorf möglich.",
 };
 
-export default function SponsorenPage() {
+export const revalidate = 60;
+
+const TIER_LABELS: Record<string, string> = {
+  hauptsponsor: "Hauptsponsoren",
+  sponsor: "Sponsoren",
+  partner: "Partner",
+  foerderer: "Förderer",
+};
+
+const TIER_ORDER = ["hauptsponsor", "sponsor", "partner", "foerderer"];
+
+function FallbackSponsors() {
+  return (
+    <div className="mt-10">
+      <h2 className="text-lg font-semibold text-gray-800">Partner</h2>
+      <div className="mt-4 space-y-3 text-sm text-gray-600">
+        <div className="border-l-2 border-brand pl-4">
+          <a href="https://www.gemeinde-hennersdorf.at/" target="_blank" rel="noopener noreferrer" className="font-medium text-gray-800 hover:text-brand transition-colors">
+            Gemeinde Hennersdorf
+          </a>
+          <p>Unterstützung bei Veranstaltungen und Dorferneuerungsprojekten.</p>
+        </div>
+        <div className="border-l-2 border-gray-200 pl-4">
+          <a href="https://www.martha-theater.at/" target="_blank" rel="noopener noreferrer" className="font-medium text-gray-800 hover:text-brand transition-colors">
+            Martha Theater
+          </a>
+          <p>Theatergruppe des Kulturvereins mit jährlichen Produktionen.</p>
+        </div>
+        <div className="border-l-2 border-gray-200 pl-4">
+          <p className="font-medium text-gray-800">NÖ Dorf- und Stadterneuerung</p>
+          <p>Förderung von Dorferneuerungsprojekten wie Mariensäulen-Renovierung und Container-Art.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default async function SponsorenPage() {
+  let sponsors: any[] = [];
+  try {
+    sponsors = await client.fetch(ALL_SPONSORS_QUERY);
+  } catch {
+    // Sanity unavailable
+  }
+
+  const useSanity = sponsors.length > 0;
+
+  // Group sponsors by tier
+  const grouped = TIER_ORDER.reduce(
+    (acc, tier) => {
+      const items = sponsors.filter((s: any) => s.tier === tier);
+      if (items.length > 0) acc[tier] = items;
+      return acc;
+    },
+    {} as Record<string, any[]>
+  );
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
@@ -19,27 +78,50 @@ export default function SponsorenPage() {
         Hennersdorf fördern.
       </p>
 
-      <div className="mt-10">
-        <h2 className="text-lg font-semibold text-gray-800">Partner</h2>
-        <div className="mt-4 space-y-3 text-sm text-gray-600">
-          <div className="border-l-2 border-brand pl-4">
-            <a href="https://www.gemeinde-hennersdorf.at/" target="_blank" rel="noopener noreferrer" className="font-medium text-gray-800 hover:text-brand transition-colors">
-              Gemeinde Hennersdorf
-            </a>
-            <p>Unterstützung bei Veranstaltungen und Dorferneuerungsprojekten.</p>
-          </div>
-          <div className="border-l-2 border-gray-200 pl-4">
-            <a href="https://www.martha-theater.at/" target="_blank" rel="noopener noreferrer" className="font-medium text-gray-800 hover:text-brand transition-colors">
-              Martha Theater
-            </a>
-            <p>Theatergruppe des Kulturvereins mit jährlichen Produktionen.</p>
-          </div>
-          <div className="border-l-2 border-gray-200 pl-4">
-            <p className="font-medium text-gray-800">NÖ Dorf- und Stadterneuerung</p>
-            <p>Förderung von Dorferneuerungsprojekten wie Mariensäulen-Renovierung und Container-Art.</p>
-          </div>
-        </div>
-      </div>
+      {useSanity ? (
+        <>
+          {TIER_ORDER.filter((t) => grouped[t]).map((tier) => (
+            <div key={tier} className="mt-10">
+              <h2 className="text-lg font-semibold text-gray-800">
+                {TIER_LABELS[tier]}
+              </h2>
+              <div className="mt-4 space-y-3">
+                {grouped[tier].map((sponsor: any) => (
+                  <div
+                    key={sponsor._id}
+                    className={`border-l-2 ${tier === "hauptsponsor" ? "border-brand" : "border-gray-200"} pl-4 flex items-center gap-4`}
+                  >
+                    {sponsor.logo && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={urlFor(sponsor.logo).width(80).height(80).fit("max").url()}
+                        alt={sponsor.name}
+                        className="h-10 w-10 object-contain flex-shrink-0"
+                      />
+                    )}
+                    <div>
+                      {sponsor.website ? (
+                        <a
+                          href={sponsor.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-gray-800 hover:text-brand transition-colors text-sm"
+                        >
+                          {sponsor.name}
+                        </a>
+                      ) : (
+                        <p className="font-medium text-gray-800 text-sm">{sponsor.name}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        <FallbackSponsors />
+      )}
 
       <div className="mt-10">
         <h2 className="text-lg font-semibold text-gray-800">Sponsor werden</h2>

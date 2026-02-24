@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { client } from "@/sanity/lib/client";
+import { ALL_EVENTS_QUERY, UPCOMING_EVENTS_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Veranstaltungen - Kulturverein Hennersdorf",
@@ -7,87 +9,98 @@ export const metadata: Metadata = {
     "Aktuelle und vergangene Veranstaltungen des Kulturvereins Hennersdorf.",
 };
 
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  dateSort: string;
-  time?: string;
-  location?: string;
-  description: string;
-  link?: string;
-}
+export const revalidate = 60;
 
-const UPCOMING_EVENTS: Event[] = [
+// Fallback data when Sanity is empty
+const FALLBACK_UPCOMING = [
   {
-    id: "frauenmesse-2026",
+    _id: "frauenmesse-2026",
     title: "Hennersdorfer Frauenmesse",
-    date: "26. April 2026",
-    dateSort: "2026-04-26",
-    time: "10:00 – 18:00 Uhr",
+    date: "2026-04-26T10:00:00Z",
     location: "Feuerwehrhaus Hennersdorf, Florianiplatz 1",
     description:
       "Kleidung, Accessoires und Praktisches zu erwerben. Modeschau und Kulinarik. Ein beliebter Fixpunkt im Hennersdorfer Veranstaltungskalender.",
   },
 ];
 
-const PAST_EVENTS: Event[] = [
+const FALLBACK_PAST = [
   {
-    id: "baeuerin-sucht-2025",
+    _id: "baeuerin-sucht-2025",
     title: "Martha Theater: Bäuerin sucht…",
-    date: "Herbst 2025",
-    dateSort: "2025-10-01",
-    description:
-      "Die Herbstproduktion 2025 des Martha Theaters im Kulturzentrum 9er Haus.",
+    date: "2025-10-01",
+    description: "Die Herbstproduktion 2025 des Martha Theaters im Kulturzentrum 9er Haus.",
     link: "https://www.martha-theater.at/",
   },
   {
-    id: "kasperl-2025",
+    _id: "kasperl-2025",
     title: "Kasperltheater im 9er Haus",
-    date: "November 2025",
-    dateSort: "2025-11-01",
-    description:
-      "Puppentheater für Kinder und Familien — ein fester Bestandteil des Kulturprogramms.",
+    date: "2025-11-01",
+    description: "Puppentheater für Kinder und Familien — ein fester Bestandteil des Kulturprogramms.",
   },
   {
-    id: "frauenmesse-2025",
+    _id: "frauenmesse-2025",
     title: "Hennersdorfer Frauenmesse",
-    date: "27. April 2025",
-    dateSort: "2025-04-27",
-    description:
-      "Rund 200 Besucher:innen, 25 Aussteller:innen, professionelle Modeschau und reichhaltiges Buffet.",
+    date: "2025-04-27",
+    description: "Rund 200 Besucher:innen, 25 Aussteller:innen, professionelle Modeschau und reichhaltiges Buffet.",
     link: "/dorferneuerung#frauenmesse",
   },
   {
-    id: "anradeln-2025",
+    _id: "anradeln-2025",
     title: "Anradeln am Weg der Ziegelbarone",
-    date: "26. April 2025",
-    dateSort: "2025-04-26",
-    description:
-      "Radtour ab dem neuen Trinkbrunnen über Maria Lanzendorf, Himberg und Achau — rund 25 km.",
+    date: "2025-04-26",
+    description: "Radtour ab dem neuen Trinkbrunnen über Maria Lanzendorf, Himberg und Achau — rund 25 km.",
     link: "/dorferneuerung#anradeln-2025",
   },
   {
-    id: "desaster-dinner-2024",
+    _id: "desaster-dinner-2024",
     title: "Martha Theater: Das (perfekte) Desaster Dinner",
-    date: "Herbst 2024",
-    dateSort: "2024-10-01",
-    description:
-      "Die Herbstproduktion 2024 — eine turbulente Komödie auf der Bühne des 9er Hauses.",
+    date: "2024-10-01",
+    description: "Die Herbstproduktion 2024 — eine turbulente Komödie auf der Bühne des 9er Hauses.",
     link: "https://www.martha-theater.at/",
   },
   {
-    id: "kultur-radtour-2024",
+    _id: "kultur-radtour-2024",
     title: "Kultur-Radtour: Romanische Kirchen",
-    date: "4. Mai 2024",
-    dateSort: "2024-05-04",
-    description:
-      "36 Radler:innen erkundeten romanische Kirchen in Unterlaa, Himberg und Hennersdorf.",
+    date: "2024-05-04",
+    description: "36 Radler:innen erkundeten romanische Kirchen in Unterlaa, Himberg und Hennersdorf.",
     link: "/dorferneuerung#kultur-radtour-2024",
   },
 ];
 
-export default function EventsPage() {
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("de-AT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function formatTime(dateStr: string): string | null {
+  const d = new Date(dateStr);
+  if (d.getHours() === 0 && d.getMinutes() === 0) return null;
+  return d.toLocaleTimeString("de-AT", { hour: "2-digit", minute: "2-digit" }) + " Uhr";
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function EventsPage() {
+  let upcoming: any[] = [];
+  let past: any[] = [];
+
+  try {
+    upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
+    const all = await client.fetch(ALL_EVENTS_QUERY);
+    past = all.filter(
+      (e: any) => !upcoming.some((u: any) => u._id === e._id)
+    );
+  } catch {
+    // Sanity unavailable — use fallbacks
+  }
+
+  const hasUpcoming = upcoming.length > 0;
+  const hasPast = past.length > 0;
+  const useFallback = !hasUpcoming && !hasPast;
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
@@ -104,12 +117,12 @@ export default function EventsPage() {
       <div className="mt-10">
         <h2 className="text-lg font-semibold text-gray-800">Kommende Termine</h2>
         <div className="mt-4 space-y-4">
-          {UPCOMING_EVENTS.map((event) => (
-            <div key={event.id} className="border border-brand/20 bg-brand/5 p-5">
-              <p className="text-xs font-medium text-brand">{event.date}</p>
+          {(hasUpcoming ? upcoming : useFallback ? FALLBACK_UPCOMING : []).map((event: any) => (
+            <div key={event._id} className="border border-brand/20 bg-brand/5 p-5">
+              <p className="text-xs font-medium text-brand">{formatDate(event.date)}</p>
               <h3 className="mt-1 text-[15px] font-semibold text-gray-800">{event.title}</h3>
-              {event.time && (
-                <p className="mt-1 text-sm text-gray-500">{event.time}</p>
+              {formatTime(event.date) && (
+                <p className="mt-1 text-sm text-gray-500">{formatTime(event.date)}</p>
               )}
               {event.location && (
                 <p className="text-sm text-gray-500">{event.location}</p>
@@ -117,6 +130,9 @@ export default function EventsPage() {
               <p className="mt-2 text-sm text-gray-600 leading-relaxed">{event.description}</p>
             </div>
           ))}
+          {!hasUpcoming && !useFallback && (
+            <p className="text-sm text-gray-500">Derzeit keine kommenden Termine.</p>
+          )}
         </div>
       </div>
 
@@ -124,9 +140,9 @@ export default function EventsPage() {
       <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-800">Vergangene Veranstaltungen</h2>
         <div className="mt-4 space-y-6">
-          {PAST_EVENTS.map((event) => (
-            <article key={event.id} className="border-t border-gray-200 pt-4">
-              <p className="text-xs text-gray-400">{event.date}</p>
+          {(hasPast ? past : useFallback ? FALLBACK_PAST : []).map((event: any) => (
+            <article key={event._id} className="border-t border-gray-200 pt-4">
+              <p className="text-xs text-gray-400">{formatDate(event.date)}</p>
               <h3 className="text-[15px] font-semibold text-gray-800">{event.title}</h3>
               <p className="mt-1 text-sm text-gray-600 leading-relaxed">{event.description}</p>
               {event.link && (
