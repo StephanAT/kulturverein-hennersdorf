@@ -16,22 +16,80 @@ export default function MarthaTheaterPage() {
       <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Martha Theater</h1>
       <p className="mt-4 text-gray-600 leading-relaxed">
         Seit 1994 bringen engagierte Laienschauspieler:innen aus Hennersdorf und Umgebung
-        jedes Jahr ein neues Stück auf die Bühne. Das Martha Theater ist benannt nach
-        Martha Eichberger und ist ein fester Bestandteil des kulturellen Lebens in unserer Gemeinde.
+        jedes Jahr ein neues Stück auf die Bühne des Kulturzentrums 9er Haus. Benannt nach
+        Martha Eichberger, ist das Theater ein fester Bestandteil des kulturellen Lebens
+        in unserer Gemeinde.
       </p>
 
+      {/* Szenenfotos */}
+      <div className="mt-8 grid grid-cols-2 gap-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/martha-theater/szene-1.jpg"
+          alt="Szene aus einer Martha Theater Aufführung"
+          className="h-48 w-full object-cover sm:h-56"
+          loading="lazy"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/martha-theater/szene-2.jpg"
+          alt="Ensemble des Martha Theaters auf der Bühne"
+          className="h-48 w-full object-cover sm:h-56"
+          loading="lazy"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/martha-theater/szene-3.jpg"
+          alt="Theaterszene im Kulturzentrum 9er Haus"
+          className="h-48 w-full object-cover sm:h-56"
+          loading="lazy"
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/martha-theater/szene-4.jpg"
+          alt="Aufführung des Martha Theaters"
+          className="h-48 w-full object-cover sm:h-56"
+          loading="lazy"
+        />
+      </div>
+      <p className="mt-1 text-xs text-gray-400">Fotos: martha-theater.at</p>
+
+      {/* Info */}
       <div className="mt-8 space-y-3 text-sm text-gray-600">
         <div className="border-l-2 border-brand pl-4">
           <p className="font-medium text-gray-800">Gegründet 1994</p>
           <p>Amateurtheater mit jährlicher Produktion und Premiere im Herbst.</p>
         </div>
         <div className="border-l-2 border-gray-200 pl-4">
-          <p className="font-medium text-gray-800">Engagiertes Ensemble</p>
-          <p>Schauspieler:innen, Regie und Technik aus der Region.</p>
+          <p className="font-medium text-gray-800">Spielort</p>
+          <p>Kulturzentrum 9er Haus, Bachgasse 9, 2332 Hennersdorf.</p>
         </div>
         <div className="border-l-2 border-gray-200 pl-4">
           <p className="font-medium text-gray-800">Namengeberin</p>
           <p>Benannt nach Martha Eichberger (2014).</p>
+        </div>
+      </div>
+
+      {/* Letzte Produktionen */}
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold text-gray-800">Letzte Produktionen</h2>
+        <div className="mt-3 space-y-2 text-sm text-gray-600">
+          <div className="flex justify-between border-t border-gray-100 pt-2">
+            <span>Bäuerin sucht…</span>
+            <span className="text-gray-400">2025</span>
+          </div>
+          <div className="flex justify-between border-t border-gray-100 pt-2">
+            <span>Das (perfekte) Desaster Dinner</span>
+            <span className="text-gray-400">2024</span>
+          </div>
+          <div className="flex justify-between border-t border-gray-100 pt-2">
+            <span>Heinz Erhardt — Mein Leben</span>
+            <span className="text-gray-400">2024</span>
+          </div>
+          <div className="flex justify-between border-t border-gray-100 pt-2">
+            <span>Verliebt, verlobt, und wie verhext!</span>
+            <span className="text-gray-400">2023</span>
+          </div>
         </div>
       </div>
 
@@ -42,7 +100,7 @@ export default function MarthaTheaterPage() {
           rel="noopener noreferrer"
           className="border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
         >
-          Website besuchen
+          martha-theater.at
         </a>
         <Link
           href="/events"
@@ -51,10 +109,6 @@ export default function MarthaTheaterPage() {
           Veranstaltungen
         </Link>
       </div>
-
-      <p className="mt-12 text-xs text-gray-400">
-        Archiv vergangener Aufführungen und aktuelle Produktionen folgen in Kürze.
-      </p>
     </div>
   );
 }

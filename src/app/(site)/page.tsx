@@ -55,6 +55,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Next Event */}
+      <section className="border-t border-gray-100 bg-brand/5">
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-brand">Nächster Termin</p>
+              <h2 className="mt-1 text-lg font-bold text-gray-800">Hennersdorfer Frauenmesse</h2>
+              <p className="text-sm text-gray-600">
+                26. April 2026, 10:00 – 18:00 Uhr
+              </p>
+              <p className="text-sm text-gray-500">
+                Feuerwehrhaus Hennersdorf, Florianiplatz 1
+              </p>
+            </div>
+            <Link
+              href="/events"
+              className="self-start border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+            >
+              Alle Termine
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Sections */}
       <section className="border-t border-gray-100 bg-white pb-16">
         <div className="mx-auto max-w-4xl px-4 pt-12">
@@ -71,7 +95,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Martha Theater */}
+      {/* Martha Theater with photo */}
       <section className="border-t border-gray-100 py-14">
         <div className="mx-auto max-w-4xl px-4">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
@@ -101,6 +125,13 @@ export default function HomePage() {
                 </a>
               </div>
             </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/martha-theater/szene-2.jpg"
+              alt="Szene aus einer Martha Theater Aufführung"
+              className="w-full sm:w-64 h-44 object-cover flex-shrink-0"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>
@@ -136,7 +167,7 @@ export default function HomePage() {
             href="/team"
             className="mt-4 inline-block border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
           >
-            Team kennenlernen
+            Team & Kontakt
           </Link>
         </div>
       </section>
