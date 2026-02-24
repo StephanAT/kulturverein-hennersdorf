@@ -31,7 +31,7 @@ export default async function TicketsPage({
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Kulturverein Hennersdorf" width={48} height={48} className="h-12 w-auto" />
+            <Image src="/logo.png" alt="Kulturverein Hennersdorf" width={640} height={126} unoptimized className="h-10 w-auto" />
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Kulturverein Hennersdorf</h1>
               <p className="text-sm text-gray-500">Projekt-Dashboard</p>
