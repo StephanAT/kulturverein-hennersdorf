@@ -7,13 +7,11 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { href: "/tickets", label: "Tickets" },
   { href: "/tickets/board", label: "Board" },
-  { href: "/studio", label: "CMS" },
+  { href: "/studio", label: "CMS", external: true },
 ];
 
 function isNavActive(href: string, pathname: string): boolean {
   if (href === "/tickets/board") return pathname === "/tickets/board";
-  if (href === "/studio") return pathname.startsWith("/studio");
-  // "Tickets" tab: active for /tickets and /tickets/[id] but not /tickets/board
   return pathname === "/tickets" || (pathname.startsWith("/tickets/") && !pathname.startsWith("/tickets/board"));
 }
 
@@ -23,7 +21,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isStudio = pathname.startsWith("/studio");
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
@@ -44,19 +41,31 @@ export default function DashboardLayout({
           </Link>
 
           <nav className="flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
-                  isNavActive(item.href, pathname)
-                    ? "bg-gray-100 font-medium text-gray-800"
-                    : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) =>
+              item.external ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md px-3 py-1.5 text-sm transition-colors text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                >
+                  {item.label} &uarr;
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
+                    isNavActive(item.href, pathname)
+                      ? "bg-gray-100 font-medium text-gray-800"
+                      : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </nav>
 
           <Link
@@ -68,13 +77,7 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      {isStudio ? (
-        <div className="relative flex-1" style={{ height: "calc(100vh - 57px)" }}>
-          {children}
-        </div>
-      ) : (
-        <main>{children}</main>
-      )}
+      <main>{children}</main>
     </div>
   );
 }
