@@ -22,30 +22,34 @@ export default function TeamPage() {
       {/* Vorstand */}
       <div className="mt-10">
         <h2 className="text-lg font-semibold text-gray-800">Vorstand</h2>
-        <div className="mt-4 space-y-6">
-          <div className="flex gap-4 items-start">
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {/* Manfred */}
+          <div className="overflow-hidden rounded-lg bg-gray-50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/team/holzbach-dorfheld.jpg"
               alt="Manfred und Andrea Holzbach bei der Dorfhelden-Auszeichnung"
-              className="h-28 w-24 flex-shrink-0 object-cover object-top"
+              className="aspect-[3/4] w-full object-cover object-top"
               loading="lazy"
             />
-            <div>
+            <div className="p-4">
               <p className="font-medium text-gray-800">Manfred Holzbach</p>
               <p className="text-sm text-gray-500">Obmann</p>
-              <p className="mt-1 text-sm text-gray-600 leading-relaxed">
+              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
                 Seit Jahrzehnten engagiert für die Verschönerung und kulturelle
-                Bereicherung Hennersdorfs. 2024 als Dorfheld der NÖ Dorf- und
-                Stadterneuerung ausgezeichnet.
+                Bereicherung Hennersdorfs. 2024 als Dorfheld ausgezeichnet.
               </p>
             </div>
           </div>
-          <div className="flex gap-4 items-start">
-            <div>
+          {/* Andrea */}
+          <div className="overflow-hidden rounded-lg bg-gray-50">
+            <div className="flex aspect-[3/4] items-end bg-gray-100 p-6">
+              <p className="text-sm text-gray-400">Foto folgt</p>
+            </div>
+            <div className="p-4">
               <p className="font-medium text-gray-800">Andrea Holzbach</p>
               <p className="text-sm text-gray-500">Obmann-Stellvertreterin</p>
-              <p className="mt-1 text-sm text-gray-600 leading-relaxed">
+              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
                 Mitorganisatorin der Frauenmesse, Schulprojekte und
                 zahlreicher Vereinsveranstaltungen.
               </p>
@@ -55,21 +59,23 @@ export default function TeamPage() {
       </div>
 
       {/* Dorferneuerung */}
-      <div className="mt-10">
+      <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-800">Dorferneuerung</h2>
-        <div className="mt-4">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/team/dorferneuerung-team.jpg"
-            alt="Dorferneuerungsteam bei der Pressekonferenz"
-            className="w-full object-cover"
-            loading="lazy"
-          />
-          <p className="mt-2 text-xs text-gray-400">
+        <figure className="mt-4">
+          <div className="overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/team/dorferneuerung-team.jpg"
+              alt="Dorferneuerungsteam bei der Pressekonferenz"
+              className="aspect-[16/9] w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <figcaption className="mt-2 text-xs text-gray-400">
             Pressekonferenz mit LH-Stv. Stephan Pernkopf und dem Dorferneuerungsteam
-          </p>
-        </div>
-        <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+          </figcaption>
+        </figure>
+        <p className="mt-4 text-sm text-gray-600 leading-relaxed">
           Die Dorferneuerungsgruppe arbeitet seit über zehn Jahren an der
           Verschönerung und Weiterentwicklung Hennersdorfs — unterstützt von
           der NÖ Dorf- und Stadterneuerung.
@@ -77,36 +83,44 @@ export default function TeamPage() {
       </div>
 
       {/* Dorfhelden */}
-      <div className="mt-10">
+      <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-800">Unsere Dorfhelden</h2>
-        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/dorferneuerung/dorfheld-holzbach.jpg"
-              alt="Manfred Holzbach - Dorfheld 2024"
-              className="w-full object-cover"
-              loading="lazy"
-            />
-            <p className="mt-1 text-sm font-medium text-gray-800">Manfred Holzbach</p>
-            <p className="text-xs text-gray-500">Dorfheld 2024</p>
-          </div>
-          <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/team/vejchar-dorfheld.jpg"
-              alt="Alfred Vejchar - Dorfheld 2025"
-              className="w-full object-cover"
-              loading="lazy"
-            />
-            <p className="mt-1 text-sm font-medium text-gray-800">Alfred Vejchar</p>
-            <p className="text-xs text-gray-500">Dorfheld 2025 — Pionier der digitalen Heimatpflege</p>
-          </div>
+        <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <figure>
+            <div className="overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/dorferneuerung/dorfheld-holzbach.jpg"
+                alt="Manfred Holzbach - Dorfheld 2024"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <figcaption className="mt-2">
+              <p className="text-sm font-medium text-gray-800">Manfred Holzbach</p>
+              <p className="text-xs text-gray-500">Dorfheld 2024</p>
+            </figcaption>
+          </figure>
+          <figure>
+            <div className="overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/team/vejchar-dorfheld.jpg"
+                alt="Alfred Vejchar - Dorfheld 2025"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <figcaption className="mt-2">
+              <p className="text-sm font-medium text-gray-800">Alfred Vejchar</p>
+              <p className="text-xs text-gray-500">Dorfheld 2025 — Pionier der digitalen Heimatpflege</p>
+            </figcaption>
+          </figure>
         </div>
       </div>
 
       {/* Kontakt */}
-      <div className="mt-10 border-t border-gray-200 pt-8">
+      <div className="mt-12 border-t border-gray-200 pt-8">
         <h2 className="text-lg font-semibold text-gray-800">Kontakt</h2>
         <div className="mt-4 space-y-2 text-sm text-gray-600">
           <p>

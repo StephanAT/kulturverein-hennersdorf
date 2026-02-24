@@ -20,39 +20,40 @@ export default function SchulprojektPage() {
         Exkursionen für die dritten Klassen.
       </p>
 
-      {/* Fotos */}
-      <div className="mt-8 grid grid-cols-2 gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/dorferneuerung/workshop-2025-1.jpg"
-          alt="Workshop in der Volksschule 2025"
-          className="h-40 w-full object-cover sm:h-48"
-          loading="lazy"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/dorferneuerung/exkursion-2025-1.jpg"
-          alt="Exkursion durch Hennersdorf 2025"
-          className="h-40 w-full object-cover sm:h-48"
-          loading="lazy"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/team/holzbach-schulprojekt.jpg"
-          alt="Andrea und Manfred Holzbach mit Volksschulkindern"
-          className="h-40 w-full object-cover sm:h-48"
-          loading="lazy"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/dorferneuerung/kinder-dorfgespraech-1.jpg"
-          alt="Kinder-Dorfgespräch Abschlussveranstaltung"
-          className="h-40 w-full object-cover sm:h-48"
-          loading="lazy"
-        />
+      {/* Featured image + side grid */}
+      <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-5">
+        <div className="sm:col-span-3 group overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/team/holzbach-schulprojekt.jpg"
+            alt="Andrea und Manfred Holzbach mit Volksschulkindern"
+            className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        </div>
+        <div className="sm:col-span-2 grid grid-cols-2 gap-3 sm:grid-cols-1">
+          <div className="group overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/dorferneuerung/workshop-2025-1.jpg"
+              alt="Workshop in der Volksschule 2025"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          </div>
+          <div className="group overflow-hidden rounded-lg">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/dorferneuerung/exkursion-2025-1.jpg"
+              alt="Exkursion durch Hennersdorf 2025"
+              className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="mt-8 space-y-3 text-sm text-gray-600">
+      <div className="mt-10 space-y-4 text-sm text-gray-600">
         <div className="border-l-2 border-brand pl-4">
           <p className="font-medium text-gray-800">Workshops in der Volksschule</p>
           <p>
@@ -77,6 +78,22 @@ export default function SchulprojektPage() {
           </p>
         </div>
       </div>
+
+      {/* Kinder-Dorfgespräch image */}
+      <figure className="mt-8">
+        <div className="overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/dorferneuerung/kinder-dorfgespraech-1.jpg"
+            alt="Kinder-Dorfgespräch Abschlussveranstaltung"
+            className="aspect-[16/9] w-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <figcaption className="mt-2 text-xs text-gray-400">
+          Abschlussveranstaltung des Kinder-Dorfgesprächs in der Volksschule
+        </figcaption>
+      </figure>
 
       <div className="mt-8">
         <Link

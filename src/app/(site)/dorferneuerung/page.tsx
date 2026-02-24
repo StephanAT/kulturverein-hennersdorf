@@ -175,12 +175,12 @@ const NEWS_ENTRIES: NewsEntry[] = [
 
 function NewsImage({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="overflow-hidden bg-gray-100">
+    <div className="group overflow-hidden rounded-lg bg-gray-100">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={alt}
-        className="h-40 w-full object-cover"
+        className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         loading="lazy"
       />
     </div>
@@ -219,10 +219,12 @@ export default function DorferneuerungPage() {
             <p className="mt-2 text-sm text-gray-600 leading-relaxed">{entry.body}</p>
 
             {entry.images.length > 0 && (
-              <div className={`mt-3 gap-2 ${
+              <div className={`mt-4 ${
                 entry.images.length === 1
-                  ? ""
-                  : "grid grid-cols-2 sm:grid-cols-3"
+                  ? "max-w-lg"
+                  : entry.images.length === 2
+                    ? "grid grid-cols-2 gap-3"
+                    : "grid grid-cols-2 gap-3 sm:grid-cols-3"
               }`}>
                 {entry.images.map((img, i) => (
                   <NewsImage key={i} src={img} alt={`${entry.title} - Bild ${i + 1}`} />

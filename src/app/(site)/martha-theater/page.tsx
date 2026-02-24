@@ -21,41 +21,39 @@ export default function MarthaTheaterPage() {
         in unserer Gemeinde.
       </p>
 
-      {/* Szenenfotos */}
-      <div className="mt-8 grid grid-cols-2 gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/martha-theater/szene-1.jpg"
-          alt="Szene aus einer Martha Theater Aufführung"
-          className="h-48 w-full object-cover sm:h-56"
-          loading="lazy"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/martha-theater/szene-2.jpg"
-          alt="Ensemble des Martha Theaters auf der Bühne"
-          className="h-48 w-full object-cover sm:h-56"
-          loading="lazy"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/martha-theater/szene-3.jpg"
-          alt="Theaterszene im Kulturzentrum 9er Haus"
-          className="h-48 w-full object-cover sm:h-56"
-          loading="lazy"
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/martha-theater/szene-4.jpg"
-          alt="Aufführung des Martha Theaters"
-          className="h-48 w-full object-cover sm:h-56"
-          loading="lazy"
-        />
+      {/* Szenenfotos — featured + grid */}
+      <div className="mt-10 space-y-3">
+        <div className="group overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/martha-theater/szene-2.jpg"
+            alt="Ensemble des Martha Theaters auf der Bühne"
+            className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { src: "/images/martha-theater/szene-1.jpg", alt: "Szene aus einer Martha Theater Aufführung" },
+            { src: "/images/martha-theater/szene-3.jpg", alt: "Theaterszene im Kulturzentrum 9er Haus" },
+            { src: "/images/martha-theater/szene-4.jpg", alt: "Aufführung des Martha Theaters" },
+          ].map((img) => (
+            <div key={img.src} className="group overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-gray-400">Fotos: martha-theater.at</p>
       </div>
-      <p className="mt-1 text-xs text-gray-400">Fotos: martha-theater.at</p>
 
       {/* Info */}
-      <div className="mt-8 space-y-3 text-sm text-gray-600">
+      <div className="mt-10 space-y-3 text-sm text-gray-600">
         <div className="border-l-2 border-brand pl-4">
           <p className="font-medium text-gray-800">Gegründet 1994</p>
           <p>Amateurtheater mit jährlicher Produktion und Premiere im Herbst.</p>

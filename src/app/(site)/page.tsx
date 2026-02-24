@@ -125,13 +125,15 @@ export default function HomePage() {
                 </a>
               </div>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/martha-theater/szene-2.jpg"
-              alt="Szene aus einer Martha Theater Aufführung"
-              className="w-full sm:w-64 h-44 object-cover flex-shrink-0"
-              loading="lazy"
-            />
+            <div className="w-full sm:w-72 flex-shrink-0 overflow-hidden rounded-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/martha-theater/szene-2.jpg"
+                alt="Szene aus einer Martha Theater Aufführung"
+                className="aspect-[3/2] w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </section>
