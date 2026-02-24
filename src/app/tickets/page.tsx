@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { getTickets, getStats } from "@/lib/tickets";
 import { TicketList } from "@/components/tickets/ticket-list";
 import { TicketFilters } from "@/components/tickets/ticket-filters";
@@ -25,18 +26,21 @@ export default async function TicketsPage({
   const [tickets, stats] = [getTickets(filters), getStats()];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+    <div className="min-h-screen bg-gray-50 text-gray-800">
       <div className="mx-auto max-w-6xl px-4 py-8">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Kulturverein Hennersdorf</h1>
-            <p className="text-sm text-zinc-500">Project Dashboard</p>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.png" alt="Kulturverein Hennersdorf" width={48} height={48} className="h-12 w-auto" />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800">Kulturverein Hennersdorf</h1>
+              <p className="text-sm text-gray-500">Projekt-Dashboard</p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Link
               href="/tickets/board"
-              className="rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+              className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-500 shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:text-brand hover:border-brand/30"
             >
               Board
             </Link>

@@ -30,14 +30,14 @@ export function TicketChecklist({
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <h3 className="text-sm font-medium text-zinc-300">Checklist</h3>
-        <span className="text-xs text-zinc-500">
+        <h3 className="text-sm font-medium text-gray-700">Checkliste</h3>
+        <span className="text-xs text-gray-400">
           {done}/{total} ({pct}%)
         </span>
       </div>
 
       {/* Progress bar */}
-      <div className="h-1.5 w-full rounded-full bg-zinc-800">
+      <div className="h-1.5 w-full rounded-full bg-gray-200">
         <div
           className="h-1.5 rounded-full bg-emerald-500 transition-all"
           style={{ width: `${pct}%` }}
@@ -51,15 +51,15 @@ export function TicketChecklist({
               onClick={() => toggle(i, item.done)}
               className={`h-4 w-4 rounded border text-xs flex items-center justify-center transition-colors ${
                 item.done
-                  ? "border-emerald-500 bg-emerald-500/20 text-emerald-400"
-                  : "border-zinc-700 text-transparent hover:border-zinc-500"
+                  ? "border-emerald-500 bg-emerald-50 text-emerald-600"
+                  : "border-gray-300 text-transparent hover:border-gray-400"
               }`}
             >
               {item.done ? "v" : ""}
             </button>
             <span
               className={`text-sm ${
-                item.done ? "text-zinc-500 line-through" : "text-zinc-300"
+                item.done ? "text-gray-400 line-through" : "text-gray-700"
               }`}
             >
               {item.label}

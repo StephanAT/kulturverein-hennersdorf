@@ -50,7 +50,7 @@ export function TicketFilters() {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Select value={currentStatus} onValueChange={(v) => updateFilter("status", v)}>
-        <SelectTrigger className="w-[140px] bg-zinc-900 border-zinc-800">
+        <SelectTrigger className="w-[140px] bg-white border-gray-200">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
@@ -63,8 +63,8 @@ export function TicketFilters() {
       </Select>
 
       <Select value={currentPriority} onValueChange={(v) => updateFilter("priority", v)}>
-        <SelectTrigger className="w-[140px] bg-zinc-900 border-zinc-800">
-          <SelectValue placeholder="Priority" />
+        <SelectTrigger className="w-[140px] bg-white border-gray-200">
+          <SelectValue placeholder="Priorit&auml;t" />
         </SelectTrigger>
         <SelectContent>
           {TICKET_PRIORITIES.map((p) => (
@@ -76,8 +76,8 @@ export function TicketFilters() {
       </Select>
 
       <Select value={currentType} onValueChange={(v) => updateFilter("type", v)}>
-        <SelectTrigger className="w-[130px] bg-zinc-900 border-zinc-800">
-          <SelectValue placeholder="Type" />
+        <SelectTrigger className="w-[130px] bg-white border-gray-200">
+          <SelectValue placeholder="Typ" />
         </SelectTrigger>
         <SelectContent>
           {TICKET_TYPES.map((t) => (
@@ -89,8 +89,8 @@ export function TicketFilters() {
       </Select>
 
       <Select value={currentCategory} onValueChange={(v) => updateFilter("category", v)}>
-        <SelectTrigger className="w-[180px] bg-zinc-900 border-zinc-800">
-          <SelectValue placeholder="Category" />
+        <SelectTrigger className="w-[180px] bg-white border-gray-200">
+          <SelectValue placeholder="Kategorie" />
         </SelectTrigger>
         <SelectContent>
           {SYSTEM_CATEGORIES.map((c) => (
@@ -102,15 +102,15 @@ export function TicketFilters() {
       </Select>
 
       <Input
-        placeholder="Search..."
+        placeholder="Suchen..."
         value={currentSearch}
         onChange={(e) => updateFilter("search", e.target.value)}
-        className="w-[200px] bg-zinc-900 border-zinc-800"
+        className="w-[200px] bg-white border-gray-200"
       />
 
       {hasFilters && (
-        <Button variant="ghost" size="sm" onClick={clearFilters} className="text-zinc-400">
-          Clear
+        <Button variant="ghost" size="sm" onClick={clearFilters} className="text-gray-500 hover:text-brand">
+          Zurucksetzen
         </Button>
       )}
     </div>

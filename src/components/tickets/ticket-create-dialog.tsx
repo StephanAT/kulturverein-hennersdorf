@@ -122,12 +122,12 @@ export function TicketCreateDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>+ New Ticket</Button>
+        <Button>+ Neues Ticket</Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-zinc-950 border-zinc-800">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto bg-white border-gray-200">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
-            Create Ticket
+            Ticket erstellen
             <span className={`text-sm font-normal ${readinessColor(readiness)}`}>
               Readiness: {readiness}%
             </span>
@@ -137,10 +137,10 @@ export function TicketCreateDialog() {
         <div className="space-y-4">
           {/* Template */}
           <div>
-            <Label>Template</Label>
+            <Label>Vorlage</Label>
             <Select onValueChange={applyTemplate}>
-              <SelectTrigger className="bg-zinc-900 border-zinc-800">
-                <SelectValue placeholder="Choose template..." />
+              <SelectTrigger className="bg-white border-gray-200">
+                <SelectValue placeholder="Vorlage wählen..." />
               </SelectTrigger>
               <SelectContent>
                 {TICKET_TEMPLATES.map((t) => (
@@ -154,23 +154,23 @@ export function TicketCreateDialog() {
 
           {/* Title */}
           <div>
-            <Label>Title *</Label>
+            <Label>Titel *</Label>
             <Input
               value={form.title || ""}
               onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
-              placeholder="Short summary of the work"
-              className="bg-zinc-900 border-zinc-800"
+              placeholder="Kurze Zusammenfassung"
+              className="bg-white border-gray-200"
             />
           </div>
 
           {/* Description */}
           <div>
-            <Label>Description</Label>
+            <Label>Beschreibung</Label>
             <Textarea
               value={form.description || ""}
               onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-              placeholder="Longer description..."
-              className="bg-zinc-900 border-zinc-800"
+              placeholder="Ausführliche Beschreibung..."
+              className="bg-white border-gray-200"
               rows={3}
             />
           </div>
@@ -183,7 +183,7 @@ export function TicketCreateDialog() {
                 value={form.status}
                 onValueChange={(v) => setForm((prev) => ({ ...prev, status: v as Ticket["status"] }))}
               >
-                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                <SelectTrigger className="bg-white border-gray-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -195,12 +195,12 @@ export function TicketCreateDialog() {
             </div>
 
             <div>
-              <Label>Priority</Label>
+              <Label>Priorität</Label>
               <Select
                 value={form.priority}
                 onValueChange={(v) => setForm((prev) => ({ ...prev, priority: v as Ticket["priority"] }))}
               >
-                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                <SelectTrigger className="bg-white border-gray-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -212,12 +212,12 @@ export function TicketCreateDialog() {
             </div>
 
             <div>
-              <Label>Type</Label>
+              <Label>Typ</Label>
               <Select
                 value={form.ticket_type}
                 onValueChange={(v) => setForm((prev) => ({ ...prev, ticket_type: v as Ticket["ticket_type"] }))}
               >
-                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                <SelectTrigger className="bg-white border-gray-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -229,16 +229,16 @@ export function TicketCreateDialog() {
             </div>
 
             <div>
-              <Label>Assignee</Label>
+              <Label>Zugewiesen</Label>
               <Select
                 value={form.assignee || "unassigned"}
                 onValueChange={(v) => setForm((prev) => ({ ...prev, assignee: v === "unassigned" ? null : v }))}
               >
-                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                <SelectTrigger className="bg-white border-gray-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="unassigned">Unassigned</SelectItem>
+                  <SelectItem value="unassigned">Nicht zugewiesen</SelectItem>
                   {ACTORS.map((a) => (
                     <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
                   ))}
@@ -249,12 +249,12 @@ export function TicketCreateDialog() {
 
           {/* Category */}
           <div>
-            <Label>Category *</Label>
+            <Label>Kategorie *</Label>
             <Select
               value={form.system_category}
               onValueChange={(v) => setForm((prev) => ({ ...prev, system_category: v }))}
             >
-              <SelectTrigger className="bg-zinc-900 border-zinc-800">
+              <SelectTrigger className="bg-white border-gray-200">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -267,27 +267,27 @@ export function TicketCreateDialog() {
 
           {/* Acceptance Criteria */}
           <div>
-            <Label>Acceptance Criteria</Label>
+            <Label>Akzeptanzkriterien</Label>
             <div className="flex gap-2">
               <Input
                 value={acInput}
                 onChange={(e) => setAcInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addAc())}
-                placeholder="Add criterion..."
-                className="bg-zinc-900 border-zinc-800"
+                placeholder="Kriterium hinzufügen..."
+                className="bg-white border-gray-200"
               />
               <Button type="button" variant="outline" size="sm" onClick={addAc}>
-                Add
+                +
               </Button>
             </div>
             {(form.acceptance_criteria || []).length > 0 && (
               <ul className="mt-2 space-y-1">
                 {(form.acceptance_criteria || []).map((ac, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-zinc-300">
+                  <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
                     <span className="flex-1">- {ac}</span>
                     <button
                       onClick={() => removeAc(i)}
-                      className="text-xs text-zinc-500 hover:text-red-400"
+                      className="text-xs text-gray-400 hover:text-red-500"
                     >
                       x
                     </button>
@@ -299,12 +299,12 @@ export function TicketCreateDialog() {
 
           {/* Agent Instructions */}
           <div>
-            <Label>Agent Instructions</Label>
+            <Label>Agent-Anweisungen</Label>
             <Textarea
               value={form.agent_instructions || ""}
               onChange={(e) => setForm((prev) => ({ ...prev, agent_instructions: e.target.value }))}
-              placeholder="Step-by-step instructions for the agent..."
-              className="bg-zinc-900 border-zinc-800"
+              placeholder="Schritt-für-Schritt Anweisungen..."
+              className="bg-white border-gray-200"
               rows={3}
             />
           </div>
@@ -312,10 +312,10 @@ export function TicketCreateDialog() {
           {/* Submit */}
           <div className="flex justify-end gap-2 pt-2">
             <Button variant="ghost" onClick={() => setOpen(false)}>
-              Cancel
+              Abbrechen
             </Button>
             <Button onClick={handleSubmit} disabled={loading || !form.title?.trim()}>
-              {loading ? "Creating..." : "Create Ticket"}
+              {loading ? "Erstelle..." : "Ticket erstellen"}
             </Button>
           </div>
         </div>

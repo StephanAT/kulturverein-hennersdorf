@@ -67,8 +67,8 @@ export function TicketDetail({
   return (
     <div className="mx-auto max-w-5xl">
       {/* Back link */}
-      <Button variant="ghost" size="sm" onClick={() => router.push("/tickets")} className="mb-4 text-zinc-400">
-        &larr; Back to tickets
+      <Button variant="ghost" size="sm" onClick={() => router.push("/tickets")} className="mb-4 text-gray-500 hover:text-brand">
+        &larr; Zurück zur Übersicht
       </Button>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -78,17 +78,17 @@ export function TicketDetail({
           <div>
             <div className="mb-2 flex items-center gap-2">
               <PriorityBadge priority={ticket.priority} />
-              <span className="text-sm text-zinc-500 font-mono">{ticket.ticket_number}</span>
+              <span className="text-sm text-gray-400 font-mono">{ticket.ticket_number}</span>
               <TypeBadge type={ticket.ticket_type} />
               <span className={`text-sm ${readinessColor(readiness)}`}>
                 {readiness}% ready
               </span>
             </div>
-            <h1 className="text-xl font-semibold text-zinc-100">{ticket.title}</h1>
+            <h1 className="text-xl font-semibold text-gray-800">{ticket.title}</h1>
             {parent && (
-              <p className="mt-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-gray-400">
                 Parent:{" "}
-                <a href={`/tickets/${parent.id}`} className="text-zinc-400 hover:text-zinc-200">
+                <a href={`/tickets/${parent.id}`} className="text-brand hover:text-brand-dark">
                   {parent.ticket_number} - {parent.title}
                 </a>
               </p>
@@ -98,16 +98,16 @@ export function TicketDetail({
           {/* Description */}
           {ticket.description && (
             <div>
-              <h3 className="mb-1 text-sm font-medium text-zinc-400">Description</h3>
-              <p className="text-sm text-zinc-300 whitespace-pre-wrap">{ticket.description}</p>
+              <h3 className="mb-1 text-sm font-medium text-gray-500">Beschreibung</h3>
+              <p className="text-sm text-gray-700 whitespace-pre-wrap">{ticket.description}</p>
             </div>
           )}
 
           {/* Plan */}
           {ticket.plan_text && (
             <div>
-              <h3 className="mb-1 text-sm font-medium text-zinc-400">Plan</h3>
-              <pre className="rounded-lg bg-zinc-900 p-3 text-sm text-zinc-300 whitespace-pre-wrap">
+              <h3 className="mb-1 text-sm font-medium text-gray-500">Plan</h3>
+              <pre className="rounded-lg bg-gray-50 border border-gray-200 p-3 text-sm text-gray-700 whitespace-pre-wrap">
                 {ticket.plan_text}
               </pre>
             </div>
@@ -116,11 +116,11 @@ export function TicketDetail({
           {/* Acceptance Criteria */}
           {ticket.acceptance_criteria?.length > 0 && (
             <div>
-              <h3 className="mb-1 text-sm font-medium text-zinc-400">Acceptance Criteria</h3>
+              <h3 className="mb-1 text-sm font-medium text-gray-500">Akzeptanzkriterien</h3>
               <ul className="space-y-1">
                 {ticket.acceptance_criteria.map((ac, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-zinc-300">
-                    <span className="text-zinc-500">-</span> {ac}
+                  <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                    <span className="text-gray-400">-</span> {ac}
                   </li>
                 ))}
               </ul>
@@ -130,8 +130,8 @@ export function TicketDetail({
           {/* Agent Instructions */}
           {ticket.agent_instructions && (
             <div>
-              <h3 className="mb-1 text-sm font-medium text-zinc-400">Agent Instructions</h3>
-              <pre className="rounded-lg bg-zinc-900 p-3 text-sm text-zinc-300 whitespace-pre-wrap">
+              <h3 className="mb-1 text-sm font-medium text-gray-500">Agent-Anweisungen</h3>
+              <pre className="rounded-lg bg-gray-50 border border-gray-200 p-3 text-sm text-gray-700 whitespace-pre-wrap">
                 {ticket.agent_instructions}
               </pre>
             </div>
@@ -140,13 +140,13 @@ export function TicketDetail({
           {/* Context Refs */}
           {ticket.context_refs?.length > 0 && (
             <div>
-              <h3 className="mb-1 text-sm font-medium text-zinc-400">Context References</h3>
+              <h3 className="mb-1 text-sm font-medium text-gray-500">Kontext-Referenzen</h3>
               <ul className="space-y-1">
                 {ticket.context_refs.map((ref, i) => (
-                  <li key={i} className="text-sm text-zinc-300">
-                    <span className="text-zinc-500 font-mono text-xs">[{ref.type}]</span>{" "}
-                    <code className="text-zinc-400">{ref.path}</code>
-                    {ref.hint && <span className="text-zinc-500"> - {ref.hint}</span>}
+                  <li key={i} className="text-sm text-gray-700">
+                    <span className="text-gray-400 font-mono text-xs">[{ref.type}]</span>{" "}
+                    <code className="text-gray-600">{ref.path}</code>
+                    {ref.hint && <span className="text-gray-400"> - {ref.hint}</span>}
                   </li>
                 ))}
               </ul>
@@ -158,20 +158,20 @@ export function TicketDetail({
             <div className="grid grid-cols-2 gap-4">
               {ticket.file_scope?.length > 0 && (
                 <div>
-                  <h3 className="mb-1 text-sm font-medium text-emerald-400">File Scope</h3>
+                  <h3 className="mb-1 text-sm font-medium text-emerald-600">Datei-Scope</h3>
                   <ul className="space-y-0.5">
                     {ticket.file_scope.map((f, i) => (
-                      <li key={i} className="text-xs font-mono text-zinc-400">{f}</li>
+                      <li key={i} className="text-xs font-mono text-gray-500">{f}</li>
                     ))}
                   </ul>
                 </div>
               )}
               {ticket.do_not_touch?.length > 0 && (
                 <div>
-                  <h3 className="mb-1 text-sm font-medium text-red-400">Do Not Touch</h3>
+                  <h3 className="mb-1 text-sm font-medium text-red-500">Nicht ändern</h3>
                   <ul className="space-y-0.5">
                     {ticket.do_not_touch.map((f, i) => (
-                      <li key={i} className="text-xs font-mono text-zinc-400">{f}</li>
+                      <li key={i} className="text-xs font-mono text-gray-500">{f}</li>
                     ))}
                   </ul>
                 </div>
@@ -179,7 +179,7 @@ export function TicketDetail({
             </div>
           )}
 
-          <Separator className="bg-zinc-800" />
+          <Separator className="bg-gray-200" />
 
           {/* Checklist */}
           <TicketChecklist ticketId={ticket.id} checklist={ticket.implementation_checklist ?? []} />
@@ -187,19 +187,19 @@ export function TicketDetail({
           {/* Children */}
           {childTickets.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-medium text-zinc-300">
-                Sub-tickets ({ticket.children_done}/{ticket.child_count})
+              <h3 className="mb-2 text-sm font-medium text-gray-700">
+                Sub-Tickets ({ticket.children_done}/{ticket.child_count})
               </h3>
               <div className="space-y-1">
                 {childTickets.map((child) => (
                   <a
                     key={child.id}
                     href={`/tickets/${child.id}`}
-                    className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/30 px-3 py-2 text-sm hover:border-zinc-700"
+                    className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:border-brand/30"
                   >
                     <PriorityBadge priority={child.priority} />
-                    <span className="text-zinc-500 font-mono text-xs">{child.ticket_number}</span>
-                    <span className="flex-1 text-zinc-300">{child.title}</span>
+                    <span className="text-gray-400 font-mono text-xs">{child.ticket_number}</span>
+                    <span className="flex-1 text-gray-700">{child.title}</span>
                     <StatusBadge status={child.status} />
                   </a>
                 ))}
@@ -210,16 +210,16 @@ export function TicketDetail({
           {/* Dependencies */}
           {blockedBy.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-medium text-red-400">Blocked By</h3>
+              <h3 className="mb-2 text-sm font-medium text-red-500">Blockiert durch</h3>
               <div className="space-y-1">
                 {blockedBy.map((dep) => (
                   <a
                     key={dep.id}
                     href={`/tickets/${dep.ticket.id}`}
-                    className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/30 px-3 py-2 text-sm hover:border-zinc-700"
+                    className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:border-brand/30"
                   >
-                    <span className="text-zinc-500 font-mono text-xs">{dep.ticket.ticket_number}</span>
-                    <span className="flex-1 text-zinc-300">{dep.ticket.title}</span>
+                    <span className="text-gray-400 font-mono text-xs">{dep.ticket.ticket_number}</span>
+                    <span className="flex-1 text-gray-700">{dep.ticket.title}</span>
                     <StatusBadge status={dep.ticket.status} />
                   </a>
                 ))}
@@ -229,16 +229,16 @@ export function TicketDetail({
 
           {blocks.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-medium text-amber-400">Blocks</h3>
+              <h3 className="mb-2 text-sm font-medium text-amber-600">Blockiert</h3>
               <div className="space-y-1">
                 {blocks.map((dep) => (
                   <a
                     key={dep.id}
                     href={`/tickets/${dep.ticket.id}`}
-                    className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/30 px-3 py-2 text-sm hover:border-zinc-700"
+                    className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:border-brand/30"
                   >
-                    <span className="text-zinc-500 font-mono text-xs">{dep.ticket.ticket_number}</span>
-                    <span className="flex-1 text-zinc-300">{dep.ticket.title}</span>
+                    <span className="text-gray-400 font-mono text-xs">{dep.ticket.ticket_number}</span>
+                    <span className="flex-1 text-gray-700">{dep.ticket.title}</span>
                     <StatusBadge status={dep.ticket.status} />
                   </a>
                 ))}
@@ -249,19 +249,19 @@ export function TicketDetail({
           {/* Handoff */}
           {ticket.handoff_summary && (
             <div>
-              <h3 className="mb-1 text-sm font-medium text-zinc-400">Handoff Summary</h3>
-              <pre className="rounded-lg bg-zinc-900 p-3 text-sm text-zinc-300 whitespace-pre-wrap">
+              <h3 className="mb-1 text-sm font-medium text-gray-500">Übergabe-Zusammenfassung</h3>
+              <pre className="rounded-lg bg-gray-50 border border-gray-200 p-3 text-sm text-gray-700 whitespace-pre-wrap">
                 {ticket.handoff_summary}
               </pre>
             </div>
           )}
 
-          <Separator className="bg-zinc-800" />
+          <Separator className="bg-gray-200" />
 
           {/* Comments */}
           <TicketComments ticketId={ticket.id} comments={comments} />
 
-          <Separator className="bg-zinc-800" />
+          <Separator className="bg-gray-200" />
 
           {/* History */}
           <TicketHistoryLog history={history} />
@@ -269,12 +269,12 @@ export function TicketDetail({
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 space-y-4">
+          <div className="rounded-lg border border-gray-200 bg-white p-4 space-y-4 shadow-[2px_4px_3px_rgba(0,0,0,0.06)]">
             {/* Status */}
             <div>
-              <label className="mb-1 block text-xs text-zinc-500">Status</label>
+              <label className="mb-1 block text-xs text-gray-500">Status</label>
               <Select value={ticket.status} onValueChange={(v) => updateField("status", v)}>
-                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                <SelectTrigger className="bg-white border-gray-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -287,16 +287,16 @@ export function TicketDetail({
 
             {/* Assignee */}
             <div>
-              <label className="mb-1 block text-xs text-zinc-500">Assignee</label>
+              <label className="mb-1 block text-xs text-gray-500">Zugewiesen</label>
               <Select
                 value={ticket.assignee || "unassigned"}
                 onValueChange={(v) => updateField("assignee", v === "unassigned" ? null : v)}
               >
-                <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                <SelectTrigger className="bg-white border-gray-200">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="unassigned">Unassigned</SelectItem>
+                  <SelectItem value="unassigned">Nicht zugewiesen</SelectItem>
                   {ACTORS.map((a) => (
                     <SelectItem key={a.id} value={a.id}>{a.name}</SelectItem>
                   ))}
@@ -306,15 +306,15 @@ export function TicketDetail({
 
             {/* Category */}
             <div>
-              <label className="mb-1 block text-xs text-zinc-500">Category</label>
+              <label className="mb-1 block text-xs text-gray-500">Kategorie</label>
               <CategoryBadge category={ticket.system_category} />
             </div>
 
             {/* Output Type */}
             {ticket.output_type && (
               <div>
-                <label className="mb-1 block text-xs text-zinc-500">Output Type</label>
-                <span className={`text-sm ${OUTPUT_TYPE_CONFIG[ticket.output_type]?.color ?? "text-zinc-400"}`}>
+                <label className="mb-1 block text-xs text-gray-500">Output-Typ</label>
+                <span className={`text-sm ${OUTPUT_TYPE_CONFIG[ticket.output_type]?.color ?? "text-gray-500"}`}>
                   {OUTPUT_TYPE_CONFIG[ticket.output_type]?.label ?? ticket.output_type}
                 </span>
               </div>
@@ -323,12 +323,12 @@ export function TicketDetail({
             {/* Token Budget */}
             {(ticket.token_budget || ticket.tokens_used > 0) && (
               <div>
-                <label className="mb-1 block text-xs text-zinc-500">Token Budget</label>
-                <div className="text-sm text-zinc-300">
+                <label className="mb-1 block text-xs text-gray-500">Token-Budget</label>
+                <div className="text-sm text-gray-700">
                   {ticket.tokens_used.toLocaleString()} / {(ticket.token_budget ?? 0).toLocaleString()}
                 </div>
                 {ticket.token_budget && (
-                  <div className="mt-1 h-1.5 w-full rounded-full bg-zinc-800">
+                  <div className="mt-1 h-1.5 w-full rounded-full bg-gray-200">
                     <div
                       className={`h-1.5 rounded-full transition-all ${
                         ticket.token_budget_exceeded
@@ -349,10 +349,10 @@ export function TicketDetail({
             {/* Tech Stack */}
             {ticket.tech_stack?.length > 0 && (
               <div>
-                <label className="mb-1 block text-xs text-zinc-500">Tech Stack</label>
+                <label className="mb-1 block text-xs text-gray-500">Tech Stack</label>
                 <div className="flex flex-wrap gap-1">
                   {ticket.tech_stack.map((t, i) => (
-                    <span key={i} className="rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-400">
+                    <span key={i} className="rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600">
                       {t}
                     </span>
                   ))}
@@ -361,12 +361,12 @@ export function TicketDetail({
             )}
 
             {/* Timestamps */}
-            <div className="space-y-1 pt-2 border-t border-zinc-800">
-              <p className="text-xs text-zinc-600">
-                Created: {new Date(ticket.created_at).toLocaleDateString("de-AT")}
+            <div className="space-y-1 pt-2 border-t border-gray-200">
+              <p className="text-xs text-gray-400">
+                Erstellt: {new Date(ticket.created_at).toLocaleDateString("de-AT")}
               </p>
-              <p className="text-xs text-zinc-600">
-                Updated: {new Date(ticket.updated_at).toLocaleDateString("de-AT")}
+              <p className="text-xs text-gray-400">
+                Aktualisiert: {new Date(ticket.updated_at).toLocaleDateString("de-AT")}
               </p>
             </div>
           </div>

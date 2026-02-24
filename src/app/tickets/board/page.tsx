@@ -1,6 +1,7 @@
+import Image from "next/image";
 import { getTickets } from "@/lib/tickets";
 import { TicketBoardCard } from "@/components/tickets/ticket-card";
-import { TICKET_STATUSES, STATUS_CONFIG, type TicketStatus } from "@/types/tickets";
+import { STATUS_CONFIG, type TicketStatus } from "@/types/tickets";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -26,19 +27,22 @@ export default async function BoardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+    <div className="min-h-screen bg-gray-50 text-gray-800">
       <div className="px-4 py-8">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Board</h1>
-            <p className="text-sm text-zinc-500">Kulturverein Hennersdorf</p>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.png" alt="Kulturverein Hennersdorf" width={48} height={48} className="h-12 w-auto" />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-800">Board</h1>
+              <p className="text-sm text-gray-500">Kulturverein Hennersdorf</p>
+            </div>
           </div>
           <Link
             href="/tickets"
-            className="rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-500 shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:text-brand hover:border-brand/30"
           >
-            List View
+            Listenansicht
           </Link>
         </div>
 
@@ -53,7 +57,7 @@ export default async function BoardPage() {
                   <span className={`text-sm font-medium ${config.color}`}>
                     {config.label}
                   </span>
-                  <span className="text-xs text-zinc-600">
+                  <span className="text-xs text-gray-400">
                     {columnTickets.length}
                   </span>
                 </div>
@@ -62,8 +66,8 @@ export default async function BoardPage() {
                     <TicketBoardCard key={ticket.id} ticket={ticket} />
                   ))}
                   {columnTickets.length === 0 && (
-                    <div className="rounded-lg border border-dashed border-zinc-800 py-8 text-center text-xs text-zinc-600">
-                      No tickets
+                    <div className="rounded-lg border border-dashed border-gray-300 py-8 text-center text-xs text-gray-400">
+                      Keine Tickets
                     </div>
                   )}
                 </div>

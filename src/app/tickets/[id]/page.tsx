@@ -28,7 +28,7 @@ export default async function TicketDetailPage({
   const history = getHistory(id);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+    <div className="min-h-screen bg-gray-50 text-gray-800">
       <div className="mx-auto max-w-6xl px-4 py-8">
         <TicketDetail
           ticket={ticket}
