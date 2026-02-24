@@ -6,7 +6,7 @@ Website for the Gemeinnütziger Hennersdorfer Kulturverein (non-profit cultural 
 ## Tech Stack
 - **Framework:** Next.js (App Router, Server Components)
 - **Language:** TypeScript (strict)
-- **Database:** SQLite via better-sqlite3 (file: `data/tickets.db`)
+- **Data:** JSON file storage (`data/tickets.json`, auto-created)
 - **UI:** Tailwind CSS v4 + shadcn/ui
 - **CMS:** TBD (Sanity.io recommended)
 
@@ -14,19 +14,19 @@ Website for the Gemeinnütziger Hennersdorfer Kulturverein (non-profit cultural 
 ```
 src/
   types/tickets.ts          # All ticket types, enums, constants, scoring
-  lib/db.ts                 # SQLite database setup and connection
+  lib/db.ts                 # JSON file store (load/save)
   lib/tickets.ts            # All ticket CRUD, queries, smart queue, stats
   app/api/tickets/           # REST API routes
   app/tickets/               # Dashboard pages (list, board, detail)
   components/tickets/        # Ticket UI components
   components/ui/             # shadcn/ui base components
 data/
-  tickets.db                # SQLite database (auto-created, gitignored)
+  tickets.json              # JSON data store (auto-created, gitignored)
 ```
 
 ## Key Conventions
 - All ticket data goes through `src/lib/tickets.ts`
-- JSON array fields are stored as JSON strings in SQLite, parsed on read
+- Data stored as plain JSON (no database)
 - Ticket numbers auto-generated from category prefix (e.g., WEB-001, MTH-002)
 - Agent workflow: backlog -> todo -> planning -> in_progress -> review -> done
 - Agents never set tickets to "done" - only humans do

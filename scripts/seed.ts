@@ -9,11 +9,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 process.chdir(path.join(__dirname, ".."));
 
-import { getDb } from "../src/lib/db";
 import { createTicket } from "../src/lib/tickets";
-
-// Ensure DB is initialized
-getDb();
 
 const tickets = [
   // ============================================================

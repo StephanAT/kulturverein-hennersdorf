@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { getDb } from "./db";
+import { loadData, saveData } from "./db";
 import {
   Ticket,
   TicketOverview,
@@ -13,7 +13,6 @@ import {
   computeReadinessScore,
 } from "@/types/tickets";
 
-// --- Tracked fields for auto-diff history ---
 const TRACKED_FIELDS = [
   "status",
   "priority",
@@ -26,94 +25,38 @@ const TRACKED_FIELDS = [
   "token_budget",
 ] as const;
 
-// JSON array fields that need parse/stringify
-const JSON_FIELDS = [
-  "tech_stack",
-  "db_tables",
-  "depends_on_systems",
-  "api_endpoints",
-  "ui_components",
-  "implementation_checklist",
-  "acceptance_criteria",
-  "context_refs",
-  "file_scope",
-  "do_not_touch",
-  "metadata",
-] as const;
-
-function parseRow(row: Record<string, unknown>): Record<string, unknown> {
-  if (!row) return row;
-  const parsed = { ...row };
-  for (const field of JSON_FIELDS) {
-    if (typeof parsed[field] === "string") {
-      try {
-        parsed[field] = JSON.parse(parsed[field] as string);
-      } catch {
-        // keep as-is
-      }
-    }
-  }
-  // Convert SQLite integers to booleans
-  parsed.is_archived = Boolean(parsed.is_archived);
-  parsed.token_budget_exceeded = Boolean(parsed.token_budget_exceeded);
-  return parsed;
-}
-
-function stringifyJsonFields(
-  data: Record<string, unknown>
-): Record<string, unknown> {
-  const result = { ...data };
-  for (const field of JSON_FIELDS) {
-    if (field in result && Array.isArray(result[field])) {
-      result[field] = JSON.stringify(result[field]);
-    } else if (
-      field in result &&
-      typeof result[field] === "object" &&
-      result[field] !== null
-    ) {
-      result[field] = JSON.stringify(result[field]);
-    }
-  }
-  // Convert booleans to SQLite integers
-  if ("is_archived" in result)
-    result.is_archived = result.is_archived ? 1 : 0;
-  if ("token_budget_exceeded" in result)
-    result.token_budget_exceeded = result.token_budget_exceeded ? 1 : 0;
-  return result;
+function now() {
+  return new Date().toISOString();
 }
 
 function generateTicketNumber(category: string): string {
-  const db = getDb();
+  const data = loadData();
   const prefix = CATEGORY_SHORT[category] || "TKT";
-
-  const row = db
-    .prepare(
-      `SELECT MAX(CAST(SUBSTR(ticket_number, INSTR(ticket_number, '-') + 1) AS INTEGER)) as max_seq
-     FROM tickets WHERE ticket_number LIKE ? || '-%'`
-    )
-    .get(prefix) as { max_seq: number | null } | undefined;
-
-  const seq = (row?.max_seq ?? 0) + 1;
+  const existing = data.tickets
+    .filter((t) => ((t.ticket_number as string) || "").startsWith(prefix + "-"))
+    .map((t) => {
+      const num = (t.ticket_number as string).split("-")[1];
+      return parseInt(num, 10) || 0;
+    });
+  const seq = existing.length > 0 ? Math.max(...existing) + 1 : 1;
   return `${prefix}-${String(seq).padStart(3, "0")}`;
 }
 
-// ============================================================
-// TICKET OVERVIEW QUERY (with computed fields)
-// ============================================================
+function withOverview(ticket: Record<string, unknown>): TicketOverview {
+  const data = loadData();
+  const id = ticket.id as string;
+  const children = data.tickets.filter((t) => t.parent_id === id);
+  const childrenDone = children.filter((t) => t.status === "done");
+  const blockedBy = data.dependencies.filter((d) => d.blocked_id === id);
+  const blocks = data.dependencies.filter((d) => d.blocker_id === id);
 
-function ticketOverviewQuery(where: string = "", params: unknown[] = []) {
-  const db = getDb();
-  const sql = `
-    SELECT t.*,
-      COALESCE((SELECT COUNT(*) FROM tickets c WHERE c.parent_id = t.id), 0) AS child_count,
-      COALESCE((SELECT COUNT(*) FROM tickets c WHERE c.parent_id = t.id AND c.status = 'done'), 0) AS children_done,
-      COALESCE((SELECT COUNT(*) FROM ticket_dependencies d WHERE d.blocked_id = t.id), 0) AS blocked_by_count,
-      COALESCE((SELECT COUNT(*) FROM ticket_dependencies d WHERE d.blocker_id = t.id), 0) AS blocks_count
-    FROM tickets t
-    ${where ? `WHERE ${where}` : ""}
-    ORDER BY t.created_at DESC
-  `;
-  return db.prepare(sql).all(...params).map((row) => parseRow(row as Record<string, unknown>)) as unknown as TicketOverview[];
+  return {
+    ...(ticket as unknown as Ticket),
+    child_count: children.length,
+    children_done: childrenDone.length,
+    blocked_by_count: blockedBy.length,
+    blocks_count: blocks.length,
+  };
 }
 
 // ============================================================
@@ -130,50 +73,33 @@ export function getTickets(filters?: {
   top_level?: boolean;
   search?: string;
 }): TicketOverview[] {
-  const conditions: string[] = ["t.is_archived = 0"];
-  const params: unknown[] = [];
+  const data = loadData();
+  let results = data.tickets.filter((t) => !t.is_archived);
 
   if (filters?.status) {
     const statuses = filters.status.split(",");
-    conditions.push(
-      `t.status IN (${statuses.map(() => "?").join(",")})`
-    );
-    params.push(...statuses);
+    results = results.filter((t) => statuses.includes(t.status as string));
   }
-  if (filters?.priority) {
-    conditions.push("t.priority = ?");
-    params.push(filters.priority);
-  }
-  if (filters?.type) {
-    conditions.push("t.ticket_type = ?");
-    params.push(filters.type);
-  }
-  if (filters?.category) {
-    conditions.push("t.system_category = ?");
-    params.push(filters.category);
-  }
-  if (filters?.assignee) {
-    conditions.push("t.assignee = ?");
-    params.push(filters.assignee);
-  }
-  if (filters?.parent_id) {
-    conditions.push("t.parent_id = ?");
-    params.push(filters.parent_id);
-  }
-  if (filters?.top_level) {
-    conditions.push("t.parent_id IS NULL");
-  }
+  if (filters?.priority) results = results.filter((t) => t.priority === filters.priority);
+  if (filters?.type) results = results.filter((t) => t.ticket_type === filters.type);
+  if (filters?.category) results = results.filter((t) => t.system_category === filters.category);
+  if (filters?.assignee) results = results.filter((t) => t.assignee === filters.assignee);
+  if (filters?.parent_id) results = results.filter((t) => t.parent_id === filters.parent_id);
+  if (filters?.top_level) results = results.filter((t) => !t.parent_id);
   if (filters?.search) {
-    conditions.push("t.title LIKE ?");
-    params.push(`%${filters.search}%`);
+    const q = filters.search.toLowerCase();
+    results = results.filter((t) => ((t.title as string) || "").toLowerCase().includes(q));
   }
 
-  return ticketOverviewQuery(conditions.join(" AND "), params);
+  results.sort((a, b) => ((b.created_at as string) || "").localeCompare((a.created_at as string) || ""));
+  return results.map(withOverview);
 }
 
 export function getTicketById(id: string): TicketOverview | null {
-  const results = ticketOverviewQuery("t.id = ?", [id]);
-  return results[0] ?? null;
+  const data = loadData();
+  const ticket = data.tickets.find((t) => t.id === id);
+  if (!ticket) return null;
+  return withOverview(ticket);
 }
 
 export function getTicketBrief(filters?: {
@@ -181,38 +107,23 @@ export function getTicketBrief(filters?: {
   assignee?: string;
   category?: string;
 }): Partial<TicketOverview>[] {
-  const db = getDb();
-  const conditions: string[] = ["t.is_archived = 0"];
-  const params: unknown[] = [];
-
-  if (filters?.status) {
-    const statuses = filters.status.split(",");
-    conditions.push(
-      `t.status IN (${statuses.map(() => "?").join(",")})`
-    );
-    params.push(...statuses);
-  }
-  if (filters?.assignee) {
-    conditions.push("t.assignee = ?");
-    params.push(filters.assignee);
-  }
-  if (filters?.category) {
-    conditions.push("t.system_category = ?");
-    params.push(filters.category);
-  }
-
-  const sql = `
-    SELECT t.id, t.ticket_number, t.title, t.status, t.priority, t.ticket_type,
-           t.system_category, t.assignee, t.output_type, t.token_budget, t.tokens_used,
-           COALESCE((SELECT COUNT(*) FROM ticket_dependencies d WHERE d.blocked_id = t.id), 0) AS blocked_by_count,
-           COALESCE((SELECT COUNT(*) FROM tickets c WHERE c.parent_id = t.id), 0) AS child_count,
-           COALESCE((SELECT COUNT(*) FROM tickets c WHERE c.parent_id = t.id AND c.status = 'done'), 0) AS children_done
-    FROM tickets t
-    WHERE ${conditions.join(" AND ")}
-    ORDER BY t.created_at DESC
-  `;
-
-  return db.prepare(sql).all(...params) as Partial<TicketOverview>[];
+  const all = getTickets(filters);
+  return all.map((t) => ({
+    id: t.id,
+    ticket_number: t.ticket_number,
+    title: t.title,
+    status: t.status,
+    priority: t.priority,
+    ticket_type: t.ticket_type,
+    system_category: t.system_category,
+    assignee: t.assignee,
+    output_type: t.output_type,
+    blocked_by_count: t.blocked_by_count,
+    child_count: t.child_count,
+    children_done: t.children_done,
+    token_budget: t.token_budget,
+    tokens_used: t.tokens_used,
+  }));
 }
 
 // ============================================================
@@ -220,13 +131,13 @@ export function getTicketBrief(filters?: {
 // ============================================================
 
 export function createTicket(ticket: Partial<Ticket>): Ticket {
-  const db = getDb();
+  const data = loadData();
   const id = uuidv4();
-  const ticketNumber = generateTicketNumber(
-    ticket.system_category || "Infrastructure"
-  );
+  const category = ticket.system_category || "Infrastructure";
+  const ticketNumber = generateTicketNumber(category);
+  const timestamp = now();
 
-  const data = stringifyJsonFields({
+  const newTicket: Record<string, unknown> = {
     id,
     ticket_number: ticketNumber,
     title: ticket.title || "",
@@ -235,7 +146,7 @@ export function createTicket(ticket: Partial<Ticket>): Ticket {
     priority: ticket.priority || "medium",
     ticket_type: ticket.ticket_type || "ticket",
     parent_id: ticket.parent_id ?? null,
-    system_category: ticket.system_category || "Infrastructure",
+    system_category: category,
     assignee: ticket.assignee ?? null,
     estimate: ticket.estimate ?? null,
     due_date: ticket.due_date ?? null,
@@ -257,60 +168,37 @@ export function createTicket(ticket: Partial<Ticket>): Ticket {
     tokens_used: ticket.tokens_used ?? 0,
     token_budget_exceeded: ticket.token_budget_exceeded ?? false,
     metadata: ticket.metadata ?? {},
-    is_archived: ticket.is_archived ?? false,
-  });
+    is_archived: false,
+    created_at: timestamp,
+    updated_at: timestamp,
+  };
 
-  const columns = Object.keys(data);
-  const placeholders = columns.map(() => "?").join(", ");
-  const values = columns.map((c) => data[c]);
-
-  db.prepare(
-    `INSERT INTO tickets (${columns.join(", ")}) VALUES (${placeholders})`
-  ).run(...values);
-
-  return parseRow(
-    db.prepare("SELECT * FROM tickets WHERE id = ?").get(id) as Record<
-      string,
-      unknown
-    >
-  ) as unknown as Ticket;
+  data.tickets.push(newTicket);
+  saveData(data);
+  return newTicket as unknown as Ticket;
 }
 
 export function updateTicket(
   id: string,
   updates: Partial<Ticket> & { _actor?: string }
 ): Ticket {
-  const db = getDb();
+  const data = loadData();
+  const idx = data.tickets.findIndex((t) => t.id === id);
+  if (idx === -1) throw new Error("Ticket not found");
+
   const actor = updates._actor || "system";
   const cleanUpdates = { ...updates };
   delete (cleanUpdates as Record<string, unknown>)._actor;
 
-  // Fetch current for diff
-  const current = parseRow(
-    db.prepare("SELECT * FROM tickets WHERE id = ?").get(id) as Record<
-      string,
-      unknown
-    >
-  );
-  if (!current) throw new Error("Ticket not found");
+  const current = data.tickets[idx];
 
   // Auto-diff tracked fields
-  const historyEntries: {
-    id: string;
-    ticket_id: string;
-    action: string;
-    field: string;
-    old_value: string | null;
-    new_value: string | null;
-    actor: string;
-  }[] = [];
-
   for (const field of TRACKED_FIELDS) {
     if (field in cleanUpdates) {
       const oldVal = current[field];
       const newVal = (cleanUpdates as Record<string, unknown>)[field];
       if (String(oldVal) !== String(newVal)) {
-        historyEntries.push({
+        data.history.push({
           id: uuidv4(),
           ticket_id: id,
           action: "update",
@@ -318,61 +206,30 @@ export function updateTicket(
           old_value: oldVal != null ? String(oldVal) : null,
           new_value: newVal != null ? String(newVal) : null,
           actor,
+          created_at: now(),
         });
       }
     }
   }
 
-  // Build update
-  const stringified = stringifyJsonFields(
-    cleanUpdates as Record<string, unknown>
-  );
-  const setClauses: string[] = [];
-  const values: unknown[] = [];
-
-  for (const [key, value] of Object.entries(stringified)) {
-    setClauses.push(`${key} = ?`);
-    values.push(value);
+  // Apply updates
+  for (const [key, value] of Object.entries(cleanUpdates)) {
+    current[key] = value;
   }
-  setClauses.push("updated_at = datetime('now')");
-  values.push(id);
+  current.updated_at = now();
 
-  db.prepare(
-    `UPDATE tickets SET ${setClauses.join(", ")} WHERE id = ?`
-  ).run(...values);
-
-  // Insert history entries
-  if (historyEntries.length > 0) {
-    const insertHistory = db.prepare(
-      `INSERT INTO ticket_history (id, ticket_id, action, field, old_value, new_value, actor)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    );
-    for (const entry of historyEntries) {
-      insertHistory.run(
-        entry.id,
-        entry.ticket_id,
-        entry.action,
-        entry.field,
-        entry.old_value,
-        entry.new_value,
-        entry.actor
-      );
-    }
-  }
-
-  return parseRow(
-    db.prepare("SELECT * FROM tickets WHERE id = ?").get(id) as Record<
-      string,
-      unknown
-    >
-  ) as unknown as Ticket;
+  saveData(data);
+  return current as unknown as Ticket;
 }
 
 export function archiveTicket(id: string): void {
-  const db = getDb();
-  db.prepare(
-    "UPDATE tickets SET is_archived = 1, updated_at = datetime('now') WHERE id = ?"
-  ).run(id);
+  const data = loadData();
+  const ticket = data.tickets.find((t) => t.id === id);
+  if (ticket) {
+    ticket.is_archived = true;
+    ticket.updated_at = now();
+    saveData(data);
+  }
 }
 
 // ============================================================
@@ -380,44 +237,29 @@ export function archiveTicket(id: string): void {
 // ============================================================
 
 export function getComments(ticketId: string): TicketComment[] {
-  const db = getDb();
-  return db
-    .prepare(
-      "SELECT * FROM ticket_comments WHERE ticket_id = ? ORDER BY created_at ASC"
-    )
-    .all(ticketId)
-    .map((row) => ({
-      ...(row as Record<string, unknown>),
-      is_deleted: Boolean((row as Record<string, unknown>).is_deleted),
-    })) as unknown as TicketComment[];
+  const data = loadData();
+  return data.comments
+    .filter((c) => c.ticket_id === ticketId)
+    .sort((a, b) => ((a.created_at as string) || "").localeCompare((b.created_at as string) || "")) as unknown as TicketComment[];
 }
 
-export function addComment(
-  comment: Partial<TicketComment>
-): TicketComment {
-  const db = getDb();
-  const id = uuidv4();
-
-  db.prepare(
-    `INSERT INTO ticket_comments (id, ticket_id, content, author, comment_type, parent_comment_id)
-     VALUES (?, ?, ?, ?, ?, ?)`
-  ).run(
-    id,
-    comment.ticket_id,
-    comment.content,
-    comment.author || "system",
-    comment.comment_type || "comment",
-    comment.parent_comment_id ?? null
-  );
-
-  const row = db
-    .prepare("SELECT * FROM ticket_comments WHERE id = ?")
-    .get(id) as Record<string, unknown>;
-
-  return {
-    ...row,
-    is_deleted: Boolean(row.is_deleted),
-  } as unknown as TicketComment;
+export function addComment(comment: Partial<TicketComment>): TicketComment {
+  const data = loadData();
+  const timestamp = now();
+  const newComment: Record<string, unknown> = {
+    id: uuidv4(),
+    ticket_id: comment.ticket_id,
+    content: comment.content,
+    author: comment.author || "system",
+    comment_type: comment.comment_type || "comment",
+    is_deleted: false,
+    parent_comment_id: comment.parent_comment_id ?? null,
+    created_at: timestamp,
+    updated_at: timestamp,
+  };
+  data.comments.push(newComment);
+  saveData(data);
+  return newComment as unknown as TicketComment;
 }
 
 // ============================================================
@@ -427,95 +269,60 @@ export function addComment(
 export function reportTokenUsage(
   id: string,
   tokensUsed: number
-): {
-  tokens_used: number;
-  token_budget: number | null;
-  token_budget_exceeded: boolean;
-} {
-  const db = getDb();
-  const current = db
-    .prepare(
-      "SELECT tokens_used, token_budget, token_budget_exceeded FROM tickets WHERE id = ?"
-    )
-    .get(id) as {
-    tokens_used: number;
-    token_budget: number | null;
-    token_budget_exceeded: number;
-  };
+): { tokens_used: number; token_budget: number | null; token_budget_exceeded: boolean } {
+  const data = loadData();
+  const ticket = data.tickets.find((t) => t.id === id);
+  if (!ticket) throw new Error("Ticket not found");
 
-  const newTotal = (current.tokens_used || 0) + tokensUsed;
-  const exceeded = current.token_budget
-    ? newTotal > current.token_budget
-      ? 1
-      : 0
-    : 0;
+  const newTotal = ((ticket.tokens_used as number) || 0) + tokensUsed;
+  const budget = ticket.token_budget as number | null;
+  const exceeded = budget ? newTotal > budget : false;
 
-  db.prepare(
-    "UPDATE tickets SET tokens_used = ?, token_budget_exceeded = ?, updated_at = datetime('now') WHERE id = ?"
-  ).run(newTotal, exceeded, id);
+  ticket.tokens_used = newTotal;
+  ticket.token_budget_exceeded = exceeded;
+  ticket.updated_at = now();
+  saveData(data);
 
-  return {
-    tokens_used: newTotal,
-    token_budget: current.token_budget,
-    token_budget_exceeded: Boolean(exceeded),
-  };
+  return { tokens_used: newTotal, token_budget: budget, token_budget_exceeded: exceeded };
 }
 
 export function setTokenBudget(
   id: string,
   budget: number
-): {
-  token_budget: number;
-  tokens_used: number;
-  token_budget_exceeded: boolean;
-} {
-  const db = getDb();
-  const current = db
-    .prepare("SELECT tokens_used FROM tickets WHERE id = ?")
-    .get(id) as { tokens_used: number };
+): { token_budget: number; tokens_used: number; token_budget_exceeded: boolean } {
+  const data = loadData();
+  const ticket = data.tickets.find((t) => t.id === id);
+  if (!ticket) throw new Error("Ticket not found");
 
-  const exceeded = current.tokens_used > budget ? 1 : 0;
+  const tokensUsed = (ticket.tokens_used as number) || 0;
+  const exceeded = tokensUsed > budget;
 
-  db.prepare(
-    "UPDATE tickets SET token_budget = ?, token_budget_exceeded = ?, updated_at = datetime('now') WHERE id = ?"
-  ).run(budget, exceeded, id);
+  ticket.token_budget = budget;
+  ticket.token_budget_exceeded = exceeded;
+  ticket.updated_at = now();
+  saveData(data);
 
-  return {
-    token_budget: budget,
-    tokens_used: current.tokens_used,
-    token_budget_exceeded: Boolean(exceeded),
-  };
+  return { token_budget: budget, tokens_used: tokensUsed, token_budget_exceeded: exceeded };
 }
 
 // ============================================================
 // CHECKLIST
 // ============================================================
 
-export function toggleChecklistItem(
-  id: string,
-  index: number,
-  done: boolean
-): Ticket {
-  const db = getDb();
-  const current = db
-    .prepare("SELECT implementation_checklist FROM tickets WHERE id = ?")
-    .get(id) as { implementation_checklist: string };
+export function toggleChecklistItem(id: string, index: number, done: boolean): Ticket {
+  const data = loadData();
+  const ticket = data.tickets.find((t) => t.id === id);
+  if (!ticket) throw new Error("Ticket not found");
 
-  const checklist = JSON.parse(current.implementation_checklist || "[]");
+  const checklist = [...((ticket.implementation_checklist as { label: string; done: boolean }[]) || [])];
   if (index >= 0 && index < checklist.length) {
     checklist[index] = { ...checklist[index], done };
   }
+  ticket.implementation_checklist = checklist;
+  ticket.updated_at = now();
+  saveData(data);
 
-  db.prepare(
-    "UPDATE tickets SET implementation_checklist = ?, updated_at = datetime('now') WHERE id = ?"
-  ).run(JSON.stringify(checklist), id);
-
-  return parseRow(
-    db.prepare("SELECT * FROM tickets WHERE id = ?").get(id) as Record<
-      string,
-      unknown
-    >
-  ) as unknown as Ticket;
+  return ticket as unknown as Ticket;
 }
 
 // ============================================================
@@ -526,44 +333,44 @@ export function getRelatedTickets(id: string): Partial<TicketOverview>[] {
   const source = getTicketById(id);
   if (!source) return [];
 
-  const db = getDb();
-  const candidates = db
-    .prepare(
-      `SELECT id, ticket_number, title, status, system_category, assignee,
-              depends_on_systems, db_tables
-       FROM tickets
-       WHERE is_archived = 0
-         AND status IN ('todo', 'planning', 'in_progress', 'review')
-         AND id != ?`
-    )
-    .all(id)
-    .map((row) => parseRow(row as Record<string, unknown>));
+  const data = loadData();
+  const candidates = data.tickets.filter(
+    (t) =>
+      !t.is_archived &&
+      ["todo", "planning", "in_progress", "review"].includes(t.status as string) &&
+      t.id !== id
+  );
 
   const scored = candidates
     .map((c) => {
       let score = 0;
       if (c.system_category === source.system_category) score += 3;
-
-      const cDbTables = (c.db_tables as string[]) ?? [];
-      const sDbTables = source.db_tables ?? [];
-      for (const t of cDbTables) {
-        if (sDbTables.includes(t)) score += 2;
+      for (const t of (c.db_tables as string[]) ?? []) {
+        if ((source.db_tables ?? []).includes(t)) score += 2;
       }
-
-      const cSystems = (c.depends_on_systems as string[]) ?? [];
-      const sSystems = source.depends_on_systems ?? [];
-      for (const s of cSystems) {
-        if (sSystems.includes(s)) score += 1;
+      for (const s of (c.depends_on_systems as string[]) ?? []) {
+        if ((source.depends_on_systems ?? []).includes(s)) score += 1;
       }
-      if (cSystems.includes(source.system_category)) score += 1;
-
+      if (((c.depends_on_systems as string[]) ?? []).includes(source.system_category)) score += 1;
       return { ...c, _score: score };
     })
     .filter((c) => (c._score as number) > 0)
     .sort((a, b) => (b._score as number) - (a._score as number))
     .slice(0, 10);
 
-  return scored.map(({ _score, ...rest }) => rest) as Partial<TicketOverview>[];
+  return scored.map((c) => {
+    const r = c as Record<string, unknown>;
+    return {
+      id: r.id as string,
+      ticket_number: r.ticket_number as string,
+      title: r.title as string,
+      status: r.status,
+      system_category: r.system_category as string,
+      assignee: r.assignee as string | null,
+      depends_on_systems: r.depends_on_systems,
+      db_tables: r.db_tables,
+    };
+  }) as Partial<TicketOverview>[];
 }
 
 // ============================================================
@@ -571,12 +378,10 @@ export function getRelatedTickets(id: string): Partial<TicketOverview>[] {
 // ============================================================
 
 export function getHistory(ticketId: string): TicketHistory[] {
-  const db = getDb();
-  return db
-    .prepare(
-      "SELECT * FROM ticket_history WHERE ticket_id = ? ORDER BY created_at DESC"
-    )
-    .all(ticketId) as TicketHistory[];
+  const data = loadData();
+  return data.history
+    .filter((h) => h.ticket_id === ticketId)
+    .sort((a, b) => ((b.created_at as string) || "").localeCompare((a.created_at as string) || "")) as unknown as TicketHistory[];
 }
 
 // ============================================================
@@ -587,25 +392,16 @@ export function getDependencies(
   ticketId: string,
   direction: "blocked_by" | "blocks"
 ): (TicketDependency & { ticket: TicketOverview })[] {
-  const db = getDb();
+  const data = loadData();
   const column = direction === "blocked_by" ? "blocked_id" : "blocker_id";
-
-  const deps = db
-    .prepare(
-      `SELECT * FROM ticket_dependencies WHERE ${column} = ?`
-    )
-    .all(ticketId) as TicketDependency[];
+  const deps = data.dependencies.filter((d) => d[column] === ticketId) as unknown as TicketDependency[];
 
   const results: (TicketDependency & { ticket: TicketOverview })[] = [];
   for (const dep of deps) {
-    const relatedId =
-      direction === "blocked_by" ? dep.blocker_id : dep.blocked_id;
+    const relatedId = direction === "blocked_by" ? dep.blocker_id : dep.blocked_id;
     const ticket = getTicketById(relatedId);
-    if (ticket) {
-      results.push({ ...dep, ticket });
-    }
+    if (ticket) results.push({ ...dep, ticket });
   }
-
   return results;
 }
 
@@ -614,11 +410,9 @@ export function getDependencies(
 // ============================================================
 
 export function getNextTicket(assignee: string): TicketOverview | null {
-  const candidates = ticketOverviewQuery(
-    "t.assignee = ? AND t.status = 'todo' AND t.is_archived = 0",
-    [assignee]
-  ).filter((t) => t.blocked_by_count === 0);
-
+  const candidates = getTickets({ status: "todo", assignee }).filter(
+    (t) => t.blocked_by_count === 0
+  );
   if (candidates.length === 0) return null;
 
   let best: TicketOverview | null = null;
@@ -626,17 +420,14 @@ export function getNextTicket(assignee: string): TicketOverview | null {
 
   for (const ticket of candidates) {
     const readiness = computeReadinessScore(ticket);
-    const priorityWeight =
-      PRIORITY_WEIGHT[ticket.priority] ?? PRIORITY_WEIGHT.medium;
+    const priorityWeight = PRIORITY_WEIGHT[ticket.priority] ?? PRIORITY_WEIGHT.medium;
     const readinessBonus = readiness >= 70 ? readiness : readiness * 0.3;
     const score = priorityWeight + readinessBonus;
-
     if (score > bestScore) {
       bestScore = score;
       best = ticket;
     }
   }
-
   return best;
 }
 
@@ -648,44 +439,43 @@ export function getStats(): {
   overall: TicketStatsOverall;
   byCategory: TicketStatsByCategory[];
 } {
-  const db = getDb();
+  const data = loadData();
+  const active = data.tickets.filter((t) => !t.is_archived);
 
-  const overall = db
-    .prepare(
-      `SELECT
-        COUNT(*) as total,
-        COUNT(*) FILTER (WHERE status = 'backlog') as backlog,
-        COUNT(*) FILTER (WHERE status = 'todo') as todo,
-        COUNT(*) FILTER (WHERE status = 'planning') as planning,
-        COUNT(*) FILTER (WHERE status = 'in_progress') as in_progress,
-        COUNT(*) FILTER (WHERE status = 'review') as review,
-        COUNT(*) FILTER (WHERE status = 'done') as done,
-        COUNT(*) FILTER (WHERE status = 'cancelled') as cancelled,
-        COUNT(*) FILTER (WHERE ticket_type = 'epic') as epics,
-        COUNT(*) FILTER (WHERE ticket_type = 'ticket') as tickets,
-        COUNT(*) FILTER (WHERE ticket_type = 'subtask') as subtasks
-      FROM tickets WHERE is_archived = 0`
-    )
-    .get() as TicketStatsOverall;
+  const count = (predicate: (t: Record<string, unknown>) => boolean) =>
+    active.filter(predicate).length;
 
-  const byCategory = db
-    .prepare(
-      `SELECT
-        system_category,
-        COUNT(*) as total,
-        COUNT(*) FILTER (WHERE status = 'backlog') as backlog,
-        COUNT(*) FILTER (WHERE status = 'todo') as todo,
-        COUNT(*) FILTER (WHERE status = 'planning') as planning,
-        COUNT(*) FILTER (WHERE status = 'in_progress') as in_progress,
-        COUNT(*) FILTER (WHERE status = 'review') as review,
-        COUNT(*) FILTER (WHERE status = 'done') as done,
-        COUNT(*) FILTER (WHERE status = 'cancelled') as cancelled
-      FROM tickets
-      WHERE is_archived = 0
-      GROUP BY system_category
-      ORDER BY system_category`
-    )
-    .all() as TicketStatsByCategory[];
+  const overall: TicketStatsOverall = {
+    total: active.length,
+    backlog: count((t) => t.status === "backlog"),
+    todo: count((t) => t.status === "todo"),
+    planning: count((t) => t.status === "planning"),
+    in_progress: count((t) => t.status === "in_progress"),
+    review: count((t) => t.status === "review"),
+    done: count((t) => t.status === "done"),
+    cancelled: count((t) => t.status === "cancelled"),
+    epics: count((t) => t.ticket_type === "epic"),
+    tickets: count((t) => t.ticket_type === "ticket"),
+    subtasks: count((t) => t.ticket_type === "subtask"),
+  };
+
+  const categories = [...new Set(active.map((t) => t.system_category as string))].sort();
+  const byCategory: TicketStatsByCategory[] = categories.map((cat) => {
+    const catTickets = active.filter((t) => t.system_category === cat);
+    const catCount = (predicate: (t: Record<string, unknown>) => boolean) =>
+      catTickets.filter(predicate).length;
+    return {
+      system_category: cat,
+      total: catTickets.length,
+      backlog: catCount((t) => t.status === "backlog"),
+      todo: catCount((t) => t.status === "todo"),
+      planning: catCount((t) => t.status === "planning"),
+      in_progress: catCount((t) => t.status === "in_progress"),
+      review: catCount((t) => t.status === "review"),
+      done: catCount((t) => t.status === "done"),
+      cancelled: catCount((t) => t.status === "cancelled"),
+    };
+  });
 
   return { overall, byCategory };
 }
