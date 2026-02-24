@@ -28,18 +28,16 @@ export default async function TicketDetailPage({
   const history = getHistory(id);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <TicketDetail
-          ticket={ticket}
-          children={children}
-          comments={comments}
-          blockedBy={blockedBy}
-          blocks={blocks}
-          parent={parent}
-          history={history}
-        />
-      </div>
+    <div className="mx-auto max-w-6xl px-4 py-6">
+      <TicketDetail
+        ticket={ticket}
+        children={children}
+        comments={comments}
+        blockedBy={blockedBy}
+        blocks={blocks}
+        parent={parent}
+        history={history}
+      />
     </div>
   );
 }
