@@ -177,12 +177,12 @@ const NEWS_ENTRIES: NewsEntry[] = [
 
 function NewsImage({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative overflow-hidden rounded-lg bg-gray-100">
+    <div className="overflow-hidden bg-gray-100">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={alt}
-        className="h-48 w-full object-cover sm:h-56"
+        className="h-40 w-full object-cover"
         loading="lazy"
       />
     </div>
@@ -191,42 +191,22 @@ function NewsImage({ src, alt }: { src: string; alt: string }) {
 
 export default function DorferneuerungPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <span className="mb-2 inline-block text-sm font-medium text-emerald-600">
+    <div className="mx-auto max-w-3xl px-4 py-12">
+      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
         Gemeinde gestalten
-      </span>
-      <h1 className="text-3xl font-bold text-gray-800 sm:text-4xl">
+      </p>
+      <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
         Dorferneuerung
       </h1>
-      <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-        Im Rahmen der Dorferneuerung arbeiten wir gemeinsam mit der Gemeinde und
-        engagierten Bürger:innen an der Verschönerung und Weiterentwicklung von
-        Hennersdorf. Hier finden Sie einen Überblick über unsere Projekte und
-        Aktivitäten.
+      <p className="mt-4 text-gray-600 leading-relaxed">
+        Im Rahmen der NÖ Dorf- und Stadterneuerung arbeiten wir seit über zehn
+        Jahren an der Verschönerung und Weiterentwicklung von Hennersdorf —
+        von Denkmalrenovierungen über Schulprojekte bis hin zu Kulturradtouren.
       </p>
 
-      {/* Highlights */}
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-[2px_4px_6px_rgba(0,0,0,0.06)]">
-          <span className="text-2xl">🏆</span>
-          <p className="mt-2 text-sm font-semibold text-gray-800">10+ Jahre aktiv</p>
-          <p className="text-xs text-gray-500">Seit über einem Jahrzehnt für Hennersdorf</p>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-[2px_4px_6px_rgba(0,0,0,0.06)]">
-          <span className="text-2xl">👨‍👩‍👧‍👦</span>
-          <p className="mt-2 text-sm font-semibold text-gray-800">Kinder eingebunden</p>
-          <p className="text-xs text-gray-500">Workshops & Exkursionen mit der Volksschule</p>
-        </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-[2px_4px_6px_rgba(0,0,0,0.06)]">
-          <span className="text-2xl">🌍</span>
-          <p className="mt-2 text-sm font-semibold text-gray-800">NÖ gefördert</p>
-          <p className="text-xs text-gray-500">Mit Unterstützung der NÖ Dorf- und Stadterneuerung</p>
-        </div>
-      </div>
-
       {/* News Entries */}
-      <div className="mt-12 space-y-10">
-        <h2 className="text-xl font-bold text-gray-800">
+      <div className="mt-10 space-y-8">
+        <h2 className="text-lg font-semibold text-gray-800">
           Aktuelles aus der Dorferneuerung
         </h2>
 
@@ -234,49 +214,40 @@ export default function DorferneuerungPage() {
           <article
             key={entry.id}
             id={entry.id}
-            className="rounded-xl border border-gray-200 bg-white shadow-[2px_4px_6px_rgba(0,0,0,0.06)] overflow-hidden"
+            className="border-t border-gray-200 pt-6"
           >
-            {/* Images */}
+            <p className="text-xs text-gray-400 mb-1">{entry.date}</p>
+            <h3 className="text-[15px] font-semibold text-gray-800">{entry.title}</h3>
+            <p className="mt-2 text-sm text-gray-600 leading-relaxed">{entry.body}</p>
+
             {entry.images.length > 0 && (
-              <div
-                className={
-                  entry.images.length === 1
-                    ? ""
-                    : entry.images.length === 2
-                      ? "grid grid-cols-2"
-                      : "grid grid-cols-2 sm:grid-cols-3"
-                }
-              >
+              <div className={`mt-3 gap-2 ${
+                entry.images.length === 1
+                  ? ""
+                  : "grid grid-cols-2 sm:grid-cols-3"
+              }`}>
                 {entry.images.map((img, i) => (
                   <NewsImage key={i} src={img} alt={`${entry.title} - Bild ${i + 1}`} />
                 ))}
               </div>
             )}
-
-            <div className="p-6">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
-                  Dorferneuerung
-                </span>
-                <span className="text-xs text-gray-400">{entry.date}</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800">{entry.title}</h3>
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">{entry.body}</p>
-            </div>
           </article>
         ))}
       </div>
 
       {/* Mitmachen */}
-      <div className="mt-12 rounded-xl bg-emerald-50 p-6">
-        <h2 className="text-lg font-semibold text-gray-800">Mitmachen!</h2>
-        <p className="mt-2 text-sm text-gray-600">
+      <div className="mt-12 border-t border-gray-200 pt-8">
+        <h2 className="text-lg font-semibold text-gray-800">Mitmachen</h2>
+        <p className="mt-3 text-sm text-gray-600">
           Die Dorferneuerung lebt vom Engagement der Hennersdorfer:innen. Ob
           Ortsverschönerung, Denkmalrenovierung, Kinderprojekte oder
-          Kulturradtouren — es gibt viele Möglichkeiten mitzuwirken. Kontakt:{" "}
+          Kulturradtouren — es gibt viele Möglichkeiten mitzuwirken.
+        </p>
+        <p className="mt-2 text-sm text-gray-600">
+          Kontakt:{" "}
           <a
             href="mailto:manfred.holzbach@aon.at"
-            className="text-brand hover:text-brand-dark font-medium"
+            className="text-brand hover:text-brand-dark"
           >
             manfred.holzbach@aon.at
           </a>

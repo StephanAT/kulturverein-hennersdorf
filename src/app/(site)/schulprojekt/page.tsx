@@ -2,43 +2,41 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Schulprojekt - Kulturverein Hennersdorf",
-  description: "Schulprojekte des Kulturvereins Hennersdorf. Kreative Workshops und Projekte mit Kindern und Jugendlichen.",
+  description:
+    "Schulprojekte des Kulturvereins Hennersdorf. Workshops und Exkursionen mit Kindern und Jugendlichen.",
 };
 
 export default function SchulprojektPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <span className="mb-2 inline-block text-sm font-medium text-blue-600">Nachwuchs fördern</span>
-      <h1 className="text-3xl font-bold text-gray-800 sm:text-4xl">Schulprojekt</h1>
-      <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-        Kreative Workshops und Projekte mit Schulkindern — wir fördern junge Talente
-        und wecken die Freude an Kunst und Kultur. Gemeinsam mit der Volksschule Hennersdorf
-        bringen wir Kultur in den Schulalltag.
+    <div className="mx-auto max-w-3xl px-4 py-12">
+      <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
+        Nachwuchs fördern
+      </p>
+      <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">Schulprojekt</h1>
+      <p className="mt-4 text-gray-600 leading-relaxed">
+        Gemeinsam mit der Volksschule Achau-Hennersdorf bringen wir Kultur in den
+        Schulalltag. Kreative Workshops, Exkursionen durch Hennersdorf und
+        interaktive Lernstationen wecken die Freude an Kunst, Geschichte und Natur.
       </p>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-3">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-[2px_4px_6px_rgba(0,0,0,0.06)]">
-          <span className="text-3xl">🎨</span>
-          <h3 className="mt-3 font-semibold text-gray-800">Kreativ-Workshops</h3>
-          <p className="mt-2 text-sm text-gray-500">Malen, Basteln und künstlerisches Gestalten.</p>
+      <div className="mt-8 space-y-3 text-sm text-gray-600">
+        <div className="border-l-2 border-gray-200 pl-4">
+          <p className="font-medium text-gray-800">Workshops</p>
+          <p>Themenstationen zu Geschichte, Landschaft und heimischer Tier- und Pflanzenwelt.</p>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-[2px_4px_6px_rgba(0,0,0,0.06)]">
-          <span className="text-3xl">🎭</span>
-          <h3 className="mt-3 font-semibold text-gray-800">Theater-AGs</h3>
-          <p className="mt-2 text-sm text-gray-500">Erste Bühnenerfahrungen für junge Talente.</p>
+        <div className="border-l-2 border-gray-200 pl-4">
+          <p className="font-medium text-gray-800">Exkursionen</p>
+          <p>Rundgänge durch Hennersdorf mit Besuch bei Betrieben und Kulturstätten.</p>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-[2px_4px_6px_rgba(0,0,0,0.06)]">
-          <span className="text-3xl">📚</span>
-          <h3 className="mt-3 font-semibold text-gray-800">Leseförderung</h3>
-          <p className="mt-2 text-sm text-gray-500">Geschichten entdecken und erzählen lernen.</p>
+        <div className="border-l-2 border-gray-200 pl-4">
+          <p className="font-medium text-gray-800">Kinder-Dorfgespräch</p>
+          <p>Kinder gestalten Hennersdorf mit — ihre Ideen werden ernst genommen und umgesetzt.</p>
         </div>
       </div>
 
-      <div className="mt-12 rounded-xl bg-blue-50 p-6 text-center">
-        <p className="text-sm text-gray-500">
-          Detaillierte Projektberichte und Fotogalerien folgen in Kürze.
-        </p>
-      </div>
+      <p className="mt-12 text-xs text-gray-400">
+        Detaillierte Projektberichte und Fotogalerien folgen in Kürze.
+      </p>
     </div>
   );
 }

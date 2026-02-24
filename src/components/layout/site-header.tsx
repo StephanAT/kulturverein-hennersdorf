@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Startseite" },
   { href: "/martha-theater", label: "Martha Theater" },
   { href: "/kasperltheater", label: "Kasperltheater" },
   { href: "/events", label: "Veranstaltungen" },
@@ -24,7 +23,6 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        {/* Logo */}
         <Link href="/" className="shrink-0" onClick={() => setMobileOpen(false)}>
           <Image
             src="/logo.png"
@@ -32,22 +30,21 @@ export function SiteHeader() {
             width={640}
             height={126}
             unoptimized
-            className="h-9 w-auto sm:h-10"
+            className="h-8 w-auto sm:h-9"
           />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0.5 lg:flex">
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={`px-2.5 py-1.5 text-[13px] transition-colors ${
                   active
-                    ? "bg-brand-light/60 text-brand-dark"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    ? "font-medium text-brand"
+                    : "text-gray-600 hover:text-gray-900"
                 }`}
               >
                 {item.label}
@@ -56,19 +53,26 @@ export function SiteHeader() {
           })}
         </nav>
 
-        {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="rounded-md p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
+          className="p-2 text-gray-500 lg:hidden"
           aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
-      {/* Mobile nav */}
       {mobileOpen && (
         <nav className="border-t border-gray-100 bg-white px-4 py-2 lg:hidden">
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            className={`block px-3 py-2 text-sm ${
+              pathname === "/" ? "font-medium text-brand" : "text-gray-600"
+            }`}
+          >
+            Startseite
+          </Link>
           {NAV_ITEMS.map((item) => {
             const active = pathname === item.href;
             return (
@@ -76,10 +80,8 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-brand-light/60 text-brand-dark"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                className={`block px-3 py-2 text-sm ${
+                  active ? "font-medium text-brand" : "text-gray-600"
                 }`}
               >
                 {item.label}
