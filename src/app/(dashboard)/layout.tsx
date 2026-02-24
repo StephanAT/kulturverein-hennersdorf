@@ -69,7 +69,9 @@ export default function DashboardLayout({
       </header>
 
       {isStudio ? (
-        <div className="h-[calc(100vh-57px)]">{children}</div>
+        <div className="relative flex-1" style={{ height: "calc(100vh - 57px)" }}>
+          {children}
+        </div>
       ) : (
         <main>{children}</main>
       )}
