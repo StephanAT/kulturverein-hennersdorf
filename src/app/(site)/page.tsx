@@ -11,11 +11,6 @@ const SECTIONS = [
     href: "/martha-theater",
   },
   {
-    title: "Kasperltheater",
-    text: "Puppentheater für Kinder und Familien mit handgefertigten Puppen.",
-    href: "/kasperltheater",
-  },
-  {
     title: "Veranstaltungen",
     text: "Feste, Kulturabende und Gemeinschaftsveranstaltungen das ganze Jahr über.",
     href: "/events",
@@ -24,6 +19,11 @@ const SECTIONS = [
     title: "Dorferneuerung",
     text: "Gemeinsame Verschönerung und Weiterentwicklung unseres Ortsbildes.",
     href: "/dorferneuerung",
+  },
+  {
+    title: "360° Panoramen",
+    text: "Virtueller Rundgang mit 25 interaktiven Panoramen durch Hennersdorf.",
+    href: "/panoramen",
   },
   {
     title: "Schulprojekt",

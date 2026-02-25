@@ -4,13 +4,26 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-const NAV_ITEMS = [
+interface NavItem {
+  href: string;
+  label: string;
+  children?: { href: string; label: string }[];
+}
+
+const NAV_ITEMS: NavItem[] = [
   { href: "/martha-theater", label: "Martha Theater" },
-  { href: "/kasperltheater", label: "Kasperltheater" },
-  { href: "/events", label: "Veranstaltungen" },
+  {
+    href: "/events",
+    label: "Veranstaltungen",
+    children: [
+      { href: "/events", label: "Termine" },
+      { href: "/kasperltheater", label: "Kasperltheater" },
+    ],
+  },
   { href: "/dorferneuerung", label: "Dorferneuerung" },
+  { href: "/panoramen", label: "360° Panoramen" },
   { href: "/schulprojekt", label: "Schulprojekt" },
   { href: "/team", label: "Team" },
   { href: "/sponsoren", label: "Sponsoren" },
@@ -19,6 +32,10 @@ const NAV_ITEMS = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isActive = (item: NavItem) =>
+    pathname === item.href ||
+    item.children?.some((c) => pathname === c.href);
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
@@ -34,9 +51,47 @@ export function SiteHeader() {
           />
         </Link>
 
+        {/* Desktop nav */}
         <nav className="hidden items-center gap-0.5 lg:flex">
           {NAV_ITEMS.map((item) => {
-            const active = pathname === item.href;
+            const active = isActive(item);
+
+            if (item.children) {
+              return (
+                <div key={item.href} className="group relative">
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-0.5 px-2.5 py-1.5 text-[13px] transition-colors ${
+                      active
+                        ? "font-medium text-brand"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    {item.label}
+                    <ChevronDown className="h-3 w-3 opacity-50" />
+                  </Link>
+                  {/* Dropdown */}
+                  <div className="invisible absolute left-0 top-full pt-1 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+                    <div className="min-w-[160px] rounded-md border border-gray-200 bg-white py-1 shadow-lg">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={`block px-4 py-2 text-[13px] transition-colors ${
+                            pathname === child.href
+                              ? "font-medium text-brand"
+                              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={item.href}
@@ -62,6 +117,7 @@ export function SiteHeader() {
         </button>
       </div>
 
+      {/* Mobile nav */}
       {mobileOpen && (
         <nav className="border-t border-gray-100 bg-white px-4 py-2 lg:hidden">
           <Link
@@ -73,21 +129,35 @@ export function SiteHeader() {
           >
             Startseite
           </Link>
-          {NAV_ITEMS.map((item) => {
-            const active = pathname === item.href;
-            return (
+          {NAV_ITEMS.map((item) => (
+            <div key={item.href}>
               <Link
-                key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
                 className={`block px-3 py-2 text-sm ${
-                  active ? "font-medium text-brand" : "text-gray-600"
+                  isActive(item) ? "font-medium text-brand" : "text-gray-600"
                 }`}
               >
                 {item.label}
               </Link>
-            );
-          })}
+              {item.children?.map((child) =>
+                child.href !== item.href ? (
+                  <Link
+                    key={child.href}
+                    href={child.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block pl-8 pr-3 py-1.5 text-sm ${
+                      pathname === child.href
+                        ? "font-medium text-brand"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    {child.label}
+                  </Link>
+                ) : null
+              )}
+            </div>
+          ))}
         </nav>
       )}
     </header>

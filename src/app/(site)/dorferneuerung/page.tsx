@@ -208,31 +208,20 @@ export default function DorferneuerungPage() {
         <h2 className="text-lg font-semibold text-gray-800">Projekte der Dorferneuerung</h2>
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* 360° Panoramen */}
-          <div id="panoramen" className="rounded-lg border border-gray-200 p-5">
+          <Link href="/panoramen" className="group rounded-lg border border-gray-200 p-5 transition-colors hover:border-brand/30">
             <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
               <span aria-hidden>&#x1f30d;</span>
             </div>
-            <h3 className="text-[15px] font-semibold text-gray-800">360° Panoramen</h3>
+            <h3 className="text-[15px] font-semibold text-gray-800 group-hover:text-brand transition-colors">360° Panoramen</h3>
             <p className="mt-2 text-sm text-gray-600 leading-relaxed">
               Ein virtueller Rundgang mit 25 interaktiven 360-Grad-Panoramen von
-              interessanten Aussichtspunkten in Hennersdorf — von der Kirche über
-              den Wasserturm bis zum Wienerberger-Gelände. Mit Audioguides,
-              Hintergrundmusik und farbigen Informations-Markern.
+              interessanten Aussichtspunkten in Hennersdorf — mit Audioguides
+              und Informations-Markern.
             </p>
-            <p className="mt-2 text-xs text-gray-500">
-              Standorte u.a.: Hauptplatz, Kirche (innen &amp; außen), Kirchturm, Friedhof,
-              Bahnhof, Gemeindeamt, Wasserturm, Spielplatz, Wienerberger,
-              Wiesmayerkapelle, Schendalersäule
+            <p className="mt-3 text-xs font-medium text-brand">
+              Zur Panoramen-Seite &rarr;
             </p>
-            <a
-              href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769177&menuonr=226763919"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block text-xs font-medium text-brand hover:underline"
-            >
-              Panoramen ansehen &rarr;
-            </a>
-          </div>
+          </Link>
 
           {/* Kulturpfad */}
           <div id="kulturpfad" className="rounded-lg border border-gray-200 p-5">
