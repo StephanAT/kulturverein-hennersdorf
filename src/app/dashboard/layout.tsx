@@ -6,14 +6,12 @@ import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { href: "/dashboard/tickets", label: "Tickets" },
-  { href: "/dashboard/tickets/board", label: "Board" },
   { href: "/dashboard/content", label: "Inhalte" },
 ];
 
 function isNavActive(href: string, pathname: string): boolean {
-  if (href === "/dashboard/tickets/board") return pathname === "/dashboard/tickets/board";
   if (href === "/dashboard/content") return pathname === "/dashboard/content";
-  return pathname === "/dashboard/tickets" || (pathname.startsWith("/dashboard/tickets/") && !pathname.startsWith("/dashboard/tickets/board"));
+  return pathname === "/dashboard/tickets" || pathname.startsWith("/dashboard/tickets/");
 }
 
 export default function DashboardLayout({

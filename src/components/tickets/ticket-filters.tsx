@@ -40,11 +40,11 @@ export function TicketFilters() {
     } else {
       params.delete(key);
     }
-    router.push(`/tickets?${params.toString()}`);
+    router.push(`/dashboard/tickets?${params.toString()}`);
   }
 
   function clearFilters() {
-    router.push("/tickets");
+    router.push("/dashboard/tickets");
   }
 
   return (
@@ -110,7 +110,7 @@ export function TicketFilters() {
 
       {hasFilters && (
         <Button variant="ghost" size="sm" onClick={clearFilters} className="text-gray-500 hover:text-brand">
-          Zurucksetzen
+          Zurücksetzen
         </Button>
       )}
     </div>

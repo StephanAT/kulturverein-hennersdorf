@@ -1,9 +1,5 @@
-import { Suspense } from "react";
 import { getTickets, getStats } from "@/lib/tickets";
-import { TicketList } from "@/components/tickets/ticket-list";
-import { TicketFilters } from "@/components/tickets/ticket-filters";
-import { TicketStatsCards } from "@/components/tickets/ticket-stats";
-import { TicketCreateDialog } from "@/components/tickets/ticket-create-dialog";
+import { TicketsView } from "@/components/tickets/tickets-view";
 
 export const dynamic = "force-dynamic";
 
@@ -21,30 +17,9 @@ export default async function TicketsPage({
     search: params.search || undefined,
   };
 
-  const [tickets, stats] = [getTickets(filters), getStats()];
+  const hasFilters = Object.values(filters).some(Boolean);
+  const tickets = getTickets(hasFilters ? filters : undefined);
+  const stats = getStats();
 
-  return (
-    <div className="mx-auto max-w-6xl px-4 py-6">
-      {/* Actions */}
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-gray-800">Tickets</h1>
-        <TicketCreateDialog />
-      </div>
-
-      {/* Stats */}
-      <div className="mb-6">
-        <TicketStatsCards stats={stats.overall} />
-      </div>
-
-      {/* Filters */}
-      <div className="mb-4">
-        <Suspense>
-          <TicketFilters />
-        </Suspense>
-      </div>
-
-      {/* Ticket List */}
-      <TicketList tickets={tickets} />
-    </div>
-  );
+  return <TicketsView tickets={tickets} stats={stats.overall} />;
 }

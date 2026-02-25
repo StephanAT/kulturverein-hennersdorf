@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -55,13 +56,28 @@ export function TicketDetail({
   const router = useRouter();
   const readiness = computeReadinessScore(ticket);
 
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   async function updateField(field: string, value: unknown) {
-    await fetch(`/api/tickets/${ticket.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [field]: value, _actor: "stephan" }),
-    });
-    router.refresh();
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/tickets/${ticket.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [field]: value, _actor: "stephan" }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Fehler ${res.status}`);
+      }
+      router.refresh();
+    } catch (err) {
+      setError((err as Error).message || "Speichern fehlgeschlagen");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -269,6 +285,16 @@ export function TicketDetail({
 
         {/* Sidebar */}
         <div className="space-y-4">
+          {error && (
+            <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+          {saving && (
+            <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-600">
+              Speichere...
+            </div>
+          )}
           <div className="rounded-lg border border-gray-200 bg-white p-4 space-y-4 shadow-[2px_4px_3px_rgba(0,0,0,0.06)]">
             {/* Status */}
             <div>
