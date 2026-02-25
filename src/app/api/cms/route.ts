@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeClient } from "@/sanity/lib/write-client";
-import { client } from "@/sanity/lib/client";
 
 export const dynamic = "force-dynamic";
+
+async function getClients() {
+  const { writeClient } = await import("@/sanity/lib/write-client");
+  const { client } = await import("@/sanity/lib/client");
+  return { writeClient, client };
+}
 
 // GET: fetch all documents of a given type
 export async function GET(req: NextRequest) {
   const type = req.nextUrl.searchParams.get("type");
   if (!type) return NextResponse.json({ error: "Missing type" }, { status: 400 });
 
+  const { client, writeClient } = await getClients();
   const readClient = client || writeClient;
   if (!readClient) return NextResponse.json({ error: "Sanity not configured" }, { status: 500 });
 
@@ -28,6 +33,7 @@ export async function GET(req: NextRequest) {
 
 // POST: create or update a document
 export async function POST(req: NextRequest) {
+  const { writeClient } = await getClients();
   if (!writeClient) {
     return NextResponse.json({ error: "Sanity write token not configured" }, { status: 500 });
   }
@@ -49,6 +55,7 @@ export async function POST(req: NextRequest) {
 
 // DELETE: remove a document
 export async function DELETE(req: NextRequest) {
+  const { writeClient } = await getClients();
   if (!writeClient) {
     return NextResponse.json({ error: "Sanity write token not configured" }, { status: 500 });
   }
