@@ -49,7 +49,9 @@ function FallbackSponsors() {
 export default async function SponsorenPage() {
   let sponsors: any[] = [];
   try {
-    sponsors = await client.fetch(ALL_SPONSORS_QUERY);
+    if (client) {
+      sponsors = await client.fetch(ALL_SPONSORS_QUERY);
+    }
   } catch {
     // Sanity unavailable
   }

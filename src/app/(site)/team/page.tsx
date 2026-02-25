@@ -144,7 +144,9 @@ function FallbackTeam() {
 export default async function TeamPage() {
   let members: any[] = [];
   try {
-    members = await client.fetch(ALL_TEAM_MEMBERS_QUERY);
+    if (client) {
+      members = await client.fetch(ALL_TEAM_MEMBERS_QUERY);
+    }
   } catch {
     // Sanity unavailable
   }

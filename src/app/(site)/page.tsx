@@ -61,8 +61,10 @@ export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let nextEvent: any = null;
   try {
-    const upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
-    if (upcoming.length > 0) nextEvent = upcoming[0];
+    if (client) {
+      const upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
+      if (upcoming.length > 0) nextEvent = upcoming[0];
+    }
   } catch {
     // Sanity unavailable
   }

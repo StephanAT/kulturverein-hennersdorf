@@ -88,11 +88,13 @@ export default async function EventsPage() {
   let past: any[] = [];
 
   try {
-    upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
-    const all = await client.fetch(ALL_EVENTS_QUERY);
-    past = all.filter(
-      (e: any) => !upcoming.some((u: any) => u._id === e._id)
-    );
+    if (client) {
+      upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
+      const all = await client.fetch(ALL_EVENTS_QUERY);
+      past = all.filter(
+        (e: any) => !upcoming.some((u: any) => u._id === e._id)
+      );
+    }
   } catch {
     // Sanity unavailable — use fallbacks
   }
