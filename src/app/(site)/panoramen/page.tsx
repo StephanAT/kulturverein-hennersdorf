@@ -67,10 +67,41 @@ export default function PanoramenPage() {
         Hintergrundmusik und farbigen Informations-Markern ausgestattet.
       </p>
 
+      {/* Hero CTA — Rundgang starten */}
+      <a
+        href={`${BASE_URL}Kirche_mit_Kirchenplatz.html`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group mt-8 block overflow-hidden rounded-xl border border-brand/20 bg-gradient-to-br from-brand/5 to-brand/15 transition-all hover:border-brand/40 hover:shadow-lg"
+      >
+        <div className="flex items-center gap-5 px-6 py-5 sm:px-8 sm:py-6">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand text-white shadow-md transition-transform group-hover:scale-110 sm:h-16 sm:w-16">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7 sm:h-8 sm:w-8">
+              <circle cx="12" cy="12" r="10" />
+              <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-lg font-bold text-gray-800 sm:text-xl">
+              Rundgang starten
+            </p>
+            <p className="mt-0.5 text-sm text-gray-500">
+              Einstiegspunkt Kirchenplatz &mdash; von dort aus durch ganz Hennersdorf navigieren
+            </p>
+          </div>
+          <span className="hidden text-brand transition-transform group-hover:translate-x-1 sm:block">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </div>
+      </a>
+
       {/* Panorama Locations */}
       <div className="mt-8">
         <h2 className="text-sm font-semibold text-gray-800">
-          Standort auswählen und Panorama starten
+          Oder direkt einen Standort wählen
         </h2>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {PANORAMA_LOCATIONS.map((loc) => (
