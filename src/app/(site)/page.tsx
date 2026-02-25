@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { client } from "@/sanity/lib/client";
-import { UPCOMING_EVENTS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch } from "@/lib/sanity";
 
 export const revalidate = 60;
 
@@ -61,10 +60,10 @@ export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let nextEvent: any = null;
   try {
-    if (client) {
-      const upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
-      if (upcoming.length > 0) nextEvent = upcoming[0];
-    }
+    const upcoming = await sanityFetch(
+      `*[_type == "event" && date >= now()] | order(date asc){ _id, title, date, location }[0...1]`
+    );
+    if (upcoming.length > 0) nextEvent = upcoming[0];
   } catch {
     // Sanity unavailable
   }

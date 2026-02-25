@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
-import { ALL_SPONSORS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, sanityImageUrl } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Sponsoren & Partner - Kulturverein Hennersdorf",
@@ -49,9 +47,9 @@ function FallbackSponsors() {
 export default async function SponsorenPage() {
   let sponsors: any[] = [];
   try {
-    if (client) {
-      sponsors = await client.fetch(ALL_SPONSORS_QUERY);
-    }
+    sponsors = await sanityFetch(
+      `*[_type == "sponsor"] | order(order asc){ _id, name, logo, website, tier }`
+    );
   } catch {
     // Sanity unavailable
   }
@@ -96,7 +94,7 @@ export default async function SponsorenPage() {
                     {sponsor.logo && (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={urlFor(sponsor.logo).width(80).height(80).fit("max").url()}
+                        src={sanityImageUrl(sponsor.logo, 80) || ""}
                         alt={sponsor.name}
                         className="h-10 w-10 object-contain flex-shrink-0"
                       />

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { client } from "@/sanity/lib/client";
-import { ALL_EVENTS_QUERY, UPCOMING_EVENTS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Veranstaltungen - Kulturverein Hennersdorf",
@@ -88,13 +87,15 @@ export default async function EventsPage() {
   let past: any[] = [];
 
   try {
-    if (client) {
-      upcoming = await client.fetch(UPCOMING_EVENTS_QUERY);
-      const all = await client.fetch(ALL_EVENTS_QUERY);
-      past = all.filter(
-        (e: any) => !upcoming.some((u: any) => u._id === e._id)
-      );
-    }
+    upcoming = await sanityFetch(
+      `*[_type == "event" && date >= now()] | order(date asc){ _id, title, slug, date, location, description }`
+    );
+    const all = await sanityFetch(
+      `*[_type == "event"] | order(date desc){ _id, title, slug, date, location, description }`
+    );
+    past = all.filter(
+      (e: any) => !upcoming.some((u: any) => u._id === e._id)
+    );
   } catch {
     // Sanity unavailable — use fallbacks
   }

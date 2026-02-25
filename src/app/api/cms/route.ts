@@ -1,68 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sanityFetch, sanityMutate } from "@/lib/sanity";
 
 export const dynamic = "force-dynamic";
 
-async function getClients() {
-  const { writeClient } = await import("@/sanity/lib/write-client");
-  const { client } = await import("@/sanity/lib/client");
-  return { writeClient, client };
-}
+const ORDER_MAP: Record<string, string> = {
+  event: "date desc",
+  teamMember: "order asc",
+  sponsor: "order asc",
+  project: "order asc",
+};
 
 // GET: fetch all documents of a given type
 export async function GET(req: NextRequest) {
   const type = req.nextUrl.searchParams.get("type");
   if (!type) return NextResponse.json({ error: "Missing type" }, { status: 400 });
 
-  const { client, writeClient } = await getClients();
-  const readClient = client || writeClient;
-  if (!readClient) return NextResponse.json({ error: "Sanity not configured" }, { status: 500 });
-
-  const orderMap: Record<string, string> = {
-    event: "date desc",
-    teamMember: "order asc",
-    sponsor: "order asc",
-    project: "order asc",
-  };
-
-  const docs = await readClient.fetch(
-    `*[_type == $type] | order(${orderMap[type] || "_createdAt desc"}){ ... }`,
-    { type }
+  const docs = await sanityFetch(
+    `*[_type == "${type}"] | order(${ORDER_MAP[type] || "_createdAt desc"}){ ... }`
   );
   return NextResponse.json(docs);
 }
 
 // POST: create or update a document
 export async function POST(req: NextRequest) {
-  const { writeClient } = await getClients();
-  if (!writeClient) {
-    return NextResponse.json({ error: "Sanity write token not configured" }, { status: 500 });
-  }
-
   const body = await req.json();
-  const { _id, _type, ...fields } = body;
+  const { _id, ...rest } = body;
 
-  if (!_type) return NextResponse.json({ error: "Missing _type" }, { status: 400 });
+  if (!rest._type) return NextResponse.json({ error: "Missing _type" }, { status: 400 });
 
-  let doc;
-  if (_id) {
-    doc = await writeClient.createOrReplace({ _id, _type, ...fields });
-  } else {
-    doc = await writeClient.create({ _type, ...fields });
-  }
+  const mutation = _id
+    ? { createOrReplace: { _id, ...rest } }
+    : { create: rest };
 
-  return NextResponse.json(doc);
+  const result = await sanityMutate([mutation]);
+  if (!result) return NextResponse.json({ error: "Sanity write failed" }, { status: 500 });
+
+  return NextResponse.json(result);
 }
 
 // DELETE: remove a document
 export async function DELETE(req: NextRequest) {
-  const { writeClient } = await getClients();
-  if (!writeClient) {
-    return NextResponse.json({ error: "Sanity write token not configured" }, { status: 500 });
-  }
-
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  await writeClient.delete(id);
+  const result = await sanityMutate([{ delete: { id } }]);
+  if (!result) return NextResponse.json({ error: "Sanity delete failed" }, { status: 500 });
+
   return NextResponse.json({ ok: true });
 }

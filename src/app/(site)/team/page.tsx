@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
-import { ALL_TEAM_MEMBERS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, sanityImageUrl } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Team & Kontakt - Kulturverein Hennersdorf",
@@ -14,7 +12,7 @@ export const revalidate = 60;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function MemberCard({ member }: { member: any }) {
   const photoUrl = member.photo
-    ? urlFor(member.photo).width(400).height(530).fit("crop").url()
+    ? sanityImageUrl(member.photo, 400)
     : null;
 
   return (
@@ -144,9 +142,9 @@ function FallbackTeam() {
 export default async function TeamPage() {
   let members: any[] = [];
   try {
-    if (client) {
-      members = await client.fetch(ALL_TEAM_MEMBERS_QUERY);
-    }
+    members = await sanityFetch(
+      `*[_type == "teamMember"] | order(order asc){ _id, name, role, bio, photo, email }`
+    );
   } catch {
     // Sanity unavailable
   }
