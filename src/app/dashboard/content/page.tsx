@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import ImageUpload from "@/components/dashboard/image-upload";
+
+const RichTextEditor = lazy(() => import("@/components/dashboard/rich-text-editor"));
 
 type Tab = "event" | "teamMember" | "sponsor" | "project";
 
@@ -17,13 +20,19 @@ function EventForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any)
   const [date, setDate] = useState(item?.date?.slice(0, 16) || "");
   const [location, setLocation] = useState(item?.location || "");
   const [description, setDescription] = useState(item?.description || "");
+  const [image, setImage] = useState(item?.image || null);
+  const [bodyHtml, setBodyHtml] = useState(item?.bodyHtml || "");
 
   return (
     <div className="space-y-3">
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Titel *" value={title} onChange={(e) => setTitle(e.target.value)} />
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Ort" value={location} onChange={(e) => setLocation(e.target.value)} />
-      <textarea className="w-full rounded border border-gray-300 px-3 py-2 text-sm" rows={3} placeholder="Beschreibung" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <textarea className="w-full rounded border border-gray-300 px-3 py-2 text-sm" rows={2} placeholder="Kurzbeschreibung" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <ImageUpload label="Event-Bild" value={image} onChange={setImage} />
+      <Suspense fallback={<div className="h-32 rounded border border-gray-200 bg-gray-50 animate-pulse" />}>
+        <RichTextEditor label="Details (Rich Text)" value={bodyHtml} onChange={setBodyHtml} />
+      </Suspense>
       <div className="flex gap-2">
         <button
           onClick={() => {
@@ -36,6 +45,8 @@ function EventForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any)
               date: new Date(date).toISOString(),
               location: location || undefined,
               description: description || undefined,
+              image: image || undefined,
+              bodyHtml: bodyHtml || undefined,
             });
           }}
           className="rounded bg-brand px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-dark"
@@ -56,6 +67,7 @@ function TeamForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any) 
   const [role, setRole] = useState(item?.role || "");
   const [email, setEmail] = useState(item?.email || "");
   const [order, setOrder] = useState(item?.order || 100);
+  const [photo, setPhoto] = useState(item?.photo || null);
 
   return (
     <div className="space-y-3">
@@ -63,6 +75,7 @@ function TeamForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any) 
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Rolle (z.B. Obmann)" value={role} onChange={(e) => setRole(e.target.value)} />
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="E-Mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input className="w-24 rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Reihenfolge" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
+      <ImageUpload label="Portraitfoto" value={photo} onChange={setPhoto} />
       <div className="flex gap-2">
         <button
           onClick={() => {
@@ -74,6 +87,7 @@ function TeamForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any) 
               role: role || undefined,
               email: email || undefined,
               order,
+              photo: photo || undefined,
             });
           }}
           className="rounded bg-brand px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-dark"
@@ -94,6 +108,8 @@ function SponsorForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
   const [website, setWebsite] = useState(item?.website || "");
   const [tier, setTier] = useState(item?.tier || "partner");
   const [order, setOrder] = useState(item?.order || 100);
+  const [logo, setLogo] = useState(item?.logo || null);
+  const [bodyHtml, setBodyHtml] = useState(item?.bodyHtml || "");
 
   return (
     <div className="space-y-3">
@@ -106,6 +122,10 @@ function SponsorForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
         <option value="foerderer">Förderer</option>
       </select>
       <input className="w-24 rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Reihenfolge" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
+      <ImageUpload label="Logo" value={logo} onChange={setLogo} />
+      <Suspense fallback={<div className="h-32 rounded border border-gray-200 bg-gray-50 animate-pulse" />}>
+        <RichTextEditor label="Beschreibung (Rich Text)" value={bodyHtml} onChange={setBodyHtml} />
+      </Suspense>
       <div className="flex gap-2">
         <button
           onClick={() => {
@@ -117,6 +137,8 @@ function SponsorForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
               website: website || undefined,
               tier,
               order,
+              logo: logo || undefined,
+              bodyHtml: bodyHtml || undefined,
             });
           }}
           className="rounded bg-brand px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-dark"
@@ -138,6 +160,8 @@ function ProjectForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
   const [description, setDescription] = useState(item?.description || "");
   const [externalUrl, setExternalUrl] = useState(item?.externalUrl || "");
   const [order, setOrder] = useState(item?.order || 100);
+  const [mainImage, setMainImage] = useState(item?.mainImage || null);
+  const [bodyHtml, setBodyHtml] = useState(item?.bodyHtml || "");
 
   return (
     <div className="space-y-3">
@@ -149,9 +173,13 @@ function ProjectForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
         <option value="Schulprojekt">Schulprojekt</option>
         <option value="Sonstiges">Sonstiges</option>
       </select>
-      <textarea className="w-full rounded border border-gray-300 px-3 py-2 text-sm" rows={3} placeholder="Beschreibung" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <textarea className="w-full rounded border border-gray-300 px-3 py-2 text-sm" rows={2} placeholder="Kurzbeschreibung" value={description} onChange={(e) => setDescription(e.target.value)} />
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Externe URL" value={externalUrl} onChange={(e) => setExternalUrl(e.target.value)} />
       <input className="w-24 rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Reihenfolge" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
+      <ImageUpload label="Projektbild" value={mainImage} onChange={setMainImage} />
+      <Suspense fallback={<div className="h-32 rounded border border-gray-200 bg-gray-50 animate-pulse" />}>
+        <RichTextEditor label="Artikel (Rich Text)" value={bodyHtml} onChange={setBodyHtml} />
+      </Suspense>
       <div className="flex gap-2">
         <button
           onClick={() => {
@@ -166,6 +194,8 @@ function ProjectForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
               externalUrl: externalUrl || undefined,
               isActive: true,
               order,
+              mainImage: mainImage || undefined,
+              bodyHtml: bodyHtml || undefined,
             });
           }}
           className="rounded bg-brand px-4 py-1.5 text-sm font-medium text-white hover:bg-brand-dark"

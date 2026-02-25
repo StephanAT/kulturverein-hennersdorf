@@ -48,7 +48,7 @@ export default async function SponsorenPage() {
   let sponsors: any[] = [];
   try {
     sponsors = await sanityFetch(
-      `*[_type == "sponsor"] | order(order asc){ _id, name, logo, website, tier }`
+      `*[_type == "sponsor"] | order(order asc){ _id, name, logo, website, tier, bodyHtml }`
     );
   } catch {
     // Sanity unavailable
@@ -85,34 +85,42 @@ export default async function SponsorenPage() {
               <h2 className="text-lg font-semibold text-gray-800">
                 {TIER_LABELS[tier]}
               </h2>
-              <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-4">
                 {grouped[tier].map((sponsor: any) => (
                   <div
                     key={sponsor._id}
-                    className={`border-l-2 ${tier === "hauptsponsor" ? "border-brand" : "border-gray-200"} pl-4 flex items-center gap-4`}
+                    className={`border-l-2 ${tier === "hauptsponsor" ? "border-brand" : "border-gray-200"} pl-4`}
                   >
-                    {sponsor.logo && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={sanityImageUrl(sponsor.logo, 80) || ""}
-                        alt={sponsor.name}
-                        className="h-10 w-10 object-contain flex-shrink-0"
+                    <div className="flex items-center gap-4">
+                      {sponsor.logo && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={sanityImageUrl(sponsor.logo, 80) || ""}
+                          alt={sponsor.name}
+                          className="h-10 w-10 object-contain flex-shrink-0"
+                        />
+                      )}
+                      <div>
+                        {sponsor.website ? (
+                          <a
+                            href={sponsor.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-gray-800 hover:text-brand transition-colors text-sm"
+                          >
+                            {sponsor.name}
+                          </a>
+                        ) : (
+                          <p className="font-medium text-gray-800 text-sm">{sponsor.name}</p>
+                        )}
+                      </div>
+                    </div>
+                    {sponsor.bodyHtml && (
+                      <div
+                        className="prose prose-sm mt-2 max-w-none text-gray-600"
+                        dangerouslySetInnerHTML={{ __html: sponsor.bodyHtml }}
                       />
                     )}
-                    <div>
-                      {sponsor.website ? (
-                        <a
-                          href={sponsor.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-gray-800 hover:text-brand transition-colors text-sm"
-                        >
-                          {sponsor.name}
-                        </a>
-                      ) : (
-                        <p className="font-medium text-gray-800 text-sm">{sponsor.name}</p>
-                      )}
-                    </div>
                   </div>
                 ))}
               </div>

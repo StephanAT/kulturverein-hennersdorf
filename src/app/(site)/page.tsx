@@ -114,6 +114,67 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Aktuelles */}
+      <section className="border-t border-gray-100 bg-white py-10">
+        <div className="mx-auto max-w-4xl px-4">
+          <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Neuigkeiten</p>
+          <h2 className="mt-1 text-xl font-bold text-gray-800">Aktuelles</h2>
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <Link href="/dorferneuerung#dorfheld-vejchar" className="group block overflow-hidden rounded-lg border border-gray-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/dorferneuerung/dorfheld-vejchar-1.jpg"
+                alt="Alfred Vejchar - Dorfheld 2025"
+                className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <div className="p-3">
+                <p className="text-[11px] text-gray-400">13. Juni 2025</p>
+                <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
+                  Alfred Vejchar ist Hennersdorfs Dorfheld 2025
+                </p>
+              </div>
+            </Link>
+            <Link href="/dorferneuerung#kinder-dorfgespraech-2025" className="group block overflow-hidden rounded-lg border border-gray-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/dorferneuerung/kinder-dorfgespraech-1.jpg"
+                alt="Kinder-Dorfgespräch 2025"
+                className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <div className="p-3">
+                <p className="text-[11px] text-gray-400">12. Juni 2025</p>
+                <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
+                  Kinder-Dorfgespräch: Beeindruckender Abschluss
+                </p>
+              </div>
+            </Link>
+            <Link href="/dorferneuerung#container-art" className="group block overflow-hidden rounded-lg border border-gray-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/dorferneuerung/container-art-1.jpg"
+                alt="Container-Art Projekt"
+                className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <div className="p-3">
+                <p className="text-[11px] text-gray-400">2025</p>
+                <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
+                  Blick auf Kunstwerke anstatt auf hässliche Container
+                </p>
+              </div>
+            </Link>
+          </div>
+          <Link
+            href="/dorferneuerung"
+            className="mt-5 inline-block text-sm font-medium text-brand hover:underline"
+          >
+            Mehr aus der Dorferneuerung &rarr;
+          </Link>
+        </div>
+      </section>
+
       {/* Sections */}
       <section className="border-t border-gray-100 bg-white pb-16">
         <div className="mx-auto max-w-4xl px-4 pt-12">

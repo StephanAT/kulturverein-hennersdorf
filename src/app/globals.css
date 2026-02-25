@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -102,5 +103,47 @@
     font-family: var(--font-quicksand), sans-serif;
     font-weight: 600;
     letter-spacing: 0.02em;
+  }
+}
+
+/* Rich-text image layouts (rendered on website) */
+.prose img[data-layout="full"] {
+  width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+  margin: 0.75rem 0;
+}
+.prose img[data-layout="left"] {
+  float: left;
+  width: 48%;
+  max-width: 48%;
+  height: auto;
+  border-radius: 0.375rem;
+  margin: 0.25rem 1.5rem 0.75rem 0;
+}
+.prose img[data-layout="right"] {
+  float: right;
+  width: 48%;
+  max-width: 48%;
+  height: auto;
+  border-radius: 0.375rem;
+  margin: 0.25rem 0 0.75rem 1.5rem;
+}
+.prose h2,
+.prose h3 {
+  clear: both;
+}
+.prose::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+@media (max-width: 640px) {
+  .prose img[data-layout="left"],
+  .prose img[data-layout="right"] {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: 0.75rem 0;
   }
 }

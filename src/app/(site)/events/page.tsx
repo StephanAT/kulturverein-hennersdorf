@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { sanityFetch } from "@/lib/sanity";
+import { sanityFetch, sanityImageUrl } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Veranstaltungen - Kulturverein Hennersdorf",
@@ -88,10 +88,10 @@ export default async function EventsPage() {
 
   try {
     upcoming = await sanityFetch(
-      `*[_type == "event" && date >= now()] | order(date asc){ _id, title, slug, date, location, description }`
+      `*[_type == "event" && date >= now()] | order(date asc){ _id, title, slug, date, location, description, image, bodyHtml }`
     );
     const all = await sanityFetch(
-      `*[_type == "event"] | order(date desc){ _id, title, slug, date, location, description }`
+      `*[_type == "event"] | order(date desc){ _id, title, slug, date, location, description, image, bodyHtml }`
     );
     past = all.filter(
       (e: any) => !upcoming.some((u: any) => u._id === e._id)
@@ -120,19 +120,36 @@ export default async function EventsPage() {
       <div className="mt-10">
         <h2 className="text-lg font-semibold text-gray-800">Kommende Termine</h2>
         <div className="mt-4 space-y-4">
-          {(hasUpcoming ? upcoming : useFallback ? FALLBACK_UPCOMING : []).map((event: any) => (
-            <div key={event._id} className="border border-brand/20 bg-brand/5 p-5">
-              <p className="text-xs font-medium text-brand">{formatDate(event.date)}</p>
-              <h3 className="mt-1 text-[15px] font-semibold text-gray-800">{event.title}</h3>
-              {formatTime(event.date) && (
-                <p className="mt-1 text-sm text-gray-500">{formatTime(event.date)}</p>
-              )}
-              {event.location && (
-                <p className="text-sm text-gray-500">{event.location}</p>
-              )}
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">{event.description}</p>
-            </div>
-          ))}
+          {(hasUpcoming ? upcoming : useFallback ? FALLBACK_UPCOMING : []).map((event: any) => {
+            const imgUrl = event.image ? sanityImageUrl(event.image, 800) : null;
+            return (
+              <div key={event._id} className="border border-brand/20 bg-brand/5 p-5">
+                {imgUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={imgUrl}
+                    alt={event.title}
+                    className="mb-4 w-full rounded object-cover aspect-[16/9]"
+                  />
+                )}
+                <p className="text-xs font-medium text-brand">{formatDate(event.date)}</p>
+                <h3 className="mt-1 text-[15px] font-semibold text-gray-800">{event.title}</h3>
+                {formatTime(event.date) && (
+                  <p className="mt-1 text-sm text-gray-500">{formatTime(event.date)}</p>
+                )}
+                {event.location && (
+                  <p className="text-sm text-gray-500">{event.location}</p>
+                )}
+                <p className="mt-2 text-sm text-gray-600 leading-relaxed">{event.description}</p>
+                {event.bodyHtml && (
+                  <div
+                    className="prose prose-sm mt-3 max-w-none text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: event.bodyHtml }}
+                  />
+                )}
+              </div>
+            );
+          })}
           {!hasUpcoming && !useFallback && (
             <p className="text-sm text-gray-500">Derzeit keine kommenden Termine.</p>
           )}
@@ -143,22 +160,40 @@ export default async function EventsPage() {
       <div className="mt-12">
         <h2 className="text-lg font-semibold text-gray-800">Vergangene Veranstaltungen</h2>
         <div className="mt-4 space-y-6">
-          {(hasPast ? past : useFallback ? FALLBACK_PAST : []).map((event: any) => (
-            <article key={event._id} className="border-t border-gray-200 pt-4">
-              <p className="text-xs text-gray-400">{formatDate(event.date)}</p>
-              <h3 className="text-[15px] font-semibold text-gray-800">{event.title}</h3>
-              <p className="mt-1 text-sm text-gray-600 leading-relaxed">{event.description}</p>
-              {event.link && (
-                <Link
-                  href={event.link}
-                  className="mt-1 inline-block text-xs text-brand hover:underline"
-                  {...(event.link.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                >
-                  Mehr dazu
-                </Link>
-              )}
-            </article>
-          ))}
+          {(hasPast ? past : useFallback ? FALLBACK_PAST : []).map((event: any) => {
+            const imgUrl = event.image ? sanityImageUrl(event.image, 800) : null;
+            return (
+              <article key={event._id} className="border-t border-gray-200 pt-4">
+                {imgUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={imgUrl}
+                    alt={event.title}
+                    className="mb-3 w-full rounded object-cover aspect-[16/9]"
+                    loading="lazy"
+                  />
+                )}
+                <p className="text-xs text-gray-400">{formatDate(event.date)}</p>
+                <h3 className="text-[15px] font-semibold text-gray-800">{event.title}</h3>
+                <p className="mt-1 text-sm text-gray-600 leading-relaxed">{event.description}</p>
+                {event.bodyHtml && (
+                  <div
+                    className="prose prose-sm mt-2 max-w-none text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: event.bodyHtml }}
+                  />
+                )}
+                {event.link && (
+                  <Link
+                    href={event.link}
+                    className="mt-1 inline-block text-xs text-brand hover:underline"
+                    {...(event.link.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    Mehr dazu
+                  </Link>
+                )}
+              </article>
+            );
+          })}
         </div>
       </div>
 
