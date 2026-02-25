@@ -7,7 +7,7 @@ import { StatusBadge, PriorityBadge, TypeBadge, CategoryBadge, ActorAvatar } fro
 export function TicketCard({ ticket }: { ticket: TicketOverview }) {
   return (
     <Link
-      href={`/tickets/${ticket.id}`}
+      href={`/dashboard/tickets/${ticket.id}`}
       className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-[2px_4px_3px_rgba(0,0,0,0.06)] transition-all hover:border-brand/30 hover:shadow-[2px_4px_6px_rgba(0,0,0,0.1)]"
     >
       <PriorityBadge priority={ticket.priority} />
@@ -32,7 +32,7 @@ export function TicketCard({ ticket }: { ticket: TicketOverview }) {
 export function TicketBoardCard({ ticket }: { ticket: TicketOverview }) {
   return (
     <Link
-      href={`/tickets/${ticket.id}`}
+      href={`/dashboard/tickets/${ticket.id}`}
       className="block rounded-lg border border-gray-200 bg-white p-3 shadow-[2px_4px_3px_rgba(0,0,0,0.06)] transition-all hover:border-brand/30 hover:shadow-[2px_4px_6px_rgba(0,0,0,0.1)]"
     >
       <div className="mb-2 flex items-center gap-2">

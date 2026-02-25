@@ -67,7 +67,7 @@ export function TicketDetail({
   return (
     <div className="mx-auto max-w-5xl">
       {/* Back link */}
-      <Button variant="ghost" size="sm" onClick={() => router.push("/tickets")} className="mb-4 text-gray-500 hover:text-brand">
+      <Button variant="ghost" size="sm" onClick={() => router.push("/dashboard/tickets")} className="mb-4 text-gray-500 hover:text-brand">
         &larr; Zurück zur Übersicht
       </Button>
 
@@ -88,7 +88,7 @@ export function TicketDetail({
             {parent && (
               <p className="mt-1 text-xs text-gray-400">
                 Parent:{" "}
-                <a href={`/tickets/${parent.id}`} className="text-brand hover:text-brand-dark">
+                <a href={`/dashboard/tickets/${parent.id}`} className="text-brand hover:text-brand-dark">
                   {parent.ticket_number} - {parent.title}
                 </a>
               </p>
@@ -194,7 +194,7 @@ export function TicketDetail({
                 {childTickets.map((child) => (
                   <a
                     key={child.id}
-                    href={`/tickets/${child.id}`}
+                    href={`/dashboard/tickets/${child.id}`}
                     className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:border-brand/30"
                   >
                     <PriorityBadge priority={child.priority} />
@@ -215,7 +215,7 @@ export function TicketDetail({
                 {blockedBy.map((dep) => (
                   <a
                     key={dep.id}
-                    href={`/tickets/${dep.ticket.id}`}
+                    href={`/dashboard/tickets/${dep.ticket.id}`}
                     className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:border-brand/30"
                   >
                     <span className="text-gray-400 font-mono text-xs">{dep.ticket.ticket_number}</span>
@@ -234,7 +234,7 @@ export function TicketDetail({
                 {blocks.map((dep) => (
                   <a
                     key={dep.id}
-                    href={`/tickets/${dep.ticket.id}`}
+                    href={`/dashboard/tickets/${dep.ticket.id}`}
                     className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-[2px_4px_3px_rgba(0,0,0,0.06)] hover:border-brand/30"
                   >
                     <span className="text-gray-400 font-mono text-xs">{dep.ticket.ticket_number}</span>

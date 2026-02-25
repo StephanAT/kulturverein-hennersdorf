@@ -5,15 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { href: "/tickets", label: "Tickets" },
-  { href: "/tickets/board", label: "Board" },
-  { href: "/content", label: "Inhalte" },
+  { href: "/dashboard/tickets", label: "Tickets" },
+  { href: "/dashboard/tickets/board", label: "Board" },
+  { href: "/dashboard/content", label: "Inhalte" },
 ];
 
 function isNavActive(href: string, pathname: string): boolean {
-  if (href === "/tickets/board") return pathname === "/tickets/board";
-  if (href === "/content") return pathname === "/content";
-  return pathname === "/tickets" || (pathname.startsWith("/tickets/") && !pathname.startsWith("/tickets/board"));
+  if (href === "/dashboard/tickets/board") return pathname === "/dashboard/tickets/board";
+  if (href === "/dashboard/content") return pathname === "/dashboard/content";
+  return pathname === "/dashboard/tickets" || (pathname.startsWith("/dashboard/tickets/") && !pathname.startsWith("/dashboard/tickets/board"));
 }
 
 export default function DashboardLayout({
@@ -27,7 +27,7 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex items-center justify-between px-4 py-3 max-w-[1400px]">
-          <Link href="/tickets" className="flex items-center gap-3">
+          <Link href="/dashboard/tickets" className="flex items-center gap-3">
             <Image
               src="/logo.png"
               alt="Kulturverein Hennersdorf"
