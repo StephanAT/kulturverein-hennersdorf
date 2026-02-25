@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -202,8 +203,137 @@ export default function DorferneuerungPage() {
         von Denkmalrenovierungen über Schulprojekte bis hin zu Kulturradtouren.
       </p>
 
+      {/* Projekte */}
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold text-gray-800">Projekte der Dorferneuerung</h2>
+        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {/* 360° Panoramen */}
+          <div id="panoramen" className="rounded-lg border border-gray-200 p-5">
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
+              <span aria-hidden>&#x1f30d;</span>
+            </div>
+            <h3 className="text-[15px] font-semibold text-gray-800">360° Panoramen</h3>
+            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              Ein virtueller Rundgang mit 25 interaktiven 360-Grad-Panoramen von
+              interessanten Aussichtspunkten in Hennersdorf — von der Kirche über
+              den Wasserturm bis zum Wienerberger-Gelände. Mit Audioguides,
+              Hintergrundmusik und farbigen Informations-Markern.
+            </p>
+            <p className="mt-2 text-xs text-gray-500">
+              Standorte u.a.: Hauptplatz, Kirche (innen &amp; außen), Kirchturm, Friedhof,
+              Bahnhof, Gemeindeamt, Wasserturm, Spielplatz, Wienerberger,
+              Wiesmayerkapelle, Schendalersäule
+            </p>
+            <a
+              href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769177&menuonr=226763919"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-block text-xs font-medium text-brand hover:underline"
+            >
+              Panoramen ansehen &rarr;
+            </a>
+          </div>
+
+          {/* Kulturpfad */}
+          <div id="kulturpfad" className="rounded-lg border border-gray-200 p-5">
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
+              <span aria-hidden>&#x1f6b6;</span>
+            </div>
+            <h3 className="text-[15px] font-semibold text-gray-800">Kulturpfad</h3>
+            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              Ein rund zwei Kilometer langer Fußweg, der elf historische Orte
+              Hennersdorfs miteinander verbindet. An jeder Station informiert eine
+              Tafel über die Geschichte und Bedeutung des Ortes. Ein künstlerisch
+              gestalteter Folder begleitet den Spaziergang.
+            </p>
+            <p className="mt-2 text-xs text-gray-500">
+              Stationen: Wienerberger, Bahnhof, Friedhof, Wohnpark,
+              Pfarrkirche, Armenhaus, Schule, Pferdeschwemme, Feuerwehrhaus,
+              Halterhaus, Gemeindeamt
+            </p>
+            <a
+              href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769178&menuonr=226763920"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-block text-xs font-medium text-brand hover:underline"
+            >
+              Mehr zum Kulturpfad &rarr;
+            </a>
+          </div>
+
+          {/* Weg der Ziegelbarone */}
+          <div id="ziegelbarone" className="rounded-lg border border-gray-200 p-5">
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
+              <span aria-hidden>&#x1f6b2;</span>
+            </div>
+            <h3 className="text-[15px] font-semibold text-gray-800">Weg der Ziegelbarone</h3>
+            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              Ein rund 25 km langer, beschilderter Radweg südlich von Wien, der die
+              Geschichte der Ziegelindustrie in der Region erlebbar macht. Die Route
+              verbindet 8 Gemeinden und wurde 2019 im Rahmen der NÖ Landesausstellung
+              eröffnet. Abwechslungsreich und einfach zu befahren — ideal für
+              Familien und Genussradler.
+            </p>
+            <p className="mt-2 text-xs text-gray-500">
+              Jährliches Anradeln mit Kulturprogramm organisiert von der Dorferneuerungsgruppe
+            </p>
+          </div>
+
+          {/* Straßennamen */}
+          <div id="strassennamen" className="rounded-lg border border-gray-200 p-5">
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
+              <span aria-hidden>&#x1f3d8;</span>
+            </div>
+            <h3 className="text-[15px] font-semibold text-gray-800">Straßennamen von Hennersdorf</h3>
+            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              Wer waren die Persönlichkeiten hinter den Straßennamen? Die
+              Dorferneuerungsgruppe hat die Geschichten aller 23 Hennersdorfer
+              Straßennamen recherchiert und dokumentiert — von der Boehlergasse
+              bis zur Zehentnergasse.
+            </p>
+            <p className="mt-2 text-xs text-gray-500">
+              Boehlerg., Fleminstr., Grillparzerstr., Hoebelg., Keplerstr., Kochg.,
+              Koralevskyg., Kreuterg., Nestroyg., Neuweilerg., Oesterleg.,
+              Pestalozzig., Postlg., Raimundg., Roseggerstr., Rothneusiedlerstr.,
+              Stifterg., Teichfeldg., Waggerlg., Wasserturmweg, Wildgansg.,
+              Wiesmayerg., Zehentnerg.
+            </p>
+            <div className="mt-3 flex gap-3">
+              <a
+                href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769179&menuonr=226763921"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-brand hover:underline"
+              >
+                Straßennamen A–P &rarr;
+              </a>
+              <a
+                href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769180&menuonr=226763922"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-brand hover:underline"
+              >
+                Straßennamen R–Z &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Nachlese link */}
+        <div className="mt-5">
+          <a
+            href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769176&menuonr=226763918"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-brand hover:underline"
+          >
+            Nachlese auf gemeinde-hennersdorf.at &rarr;
+          </a>
+        </div>
+      </div>
+
       {/* News Entries */}
-      <div className="mt-10 space-y-8">
+      <div className="mt-12 space-y-8">
         <h2 className="text-lg font-semibold text-gray-800">
           Aktuelles aus der Dorferneuerung
         </h2>
