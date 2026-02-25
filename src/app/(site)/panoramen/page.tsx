@@ -49,17 +49,26 @@ export default function PanoramenPage() {
         Hintergrundmusik und farbigen Informations-Markern ausgestattet.
       </p>
 
-      <div className="mt-8 rounded-lg border border-brand/20 bg-brand/5 p-6">
-        <h2 className="text-[15px] font-semibold text-gray-800">So funktioniert&apos;s</h2>
+      {/* Embedded Panorama */}
+      <div className="mt-8 overflow-hidden rounded-lg border border-gray-200">
+        <iframe
+          src="http://www.werbevilla.at/Panoramen_neu/Kirche_mit_Kirchenplatz.html"
+          title="360° Panorama: Kirche mit Kirchenplatz Hennersdorf"
+          className="h-[400px] w-full sm:h-[500px]"
+          allowFullScreen
+        />
+        <p className="bg-gray-50 px-4 py-2 text-xs text-gray-500">
+          Kirche mit Kirchenplatz — mit der Maus oder dem Finger navigieren. Marker anklicken für Informationen.
+        </p>
+      </div>
+
+      <div className="mt-6 rounded-lg border border-brand/20 bg-brand/5 p-6">
+        <h2 className="text-[15px] font-semibold text-gray-800">Alle Panoramen entdecken</h2>
         <div className="mt-3 space-y-2 text-sm text-gray-600">
           <p>
-            Navigieren Sie mit der Maus (am PC) oder dem Finger (am Smartphone)
-            durch die Panoramabilder. Farbige Marker kennzeichnen interessante
-            Punkte mit Informationstexten.
-          </p>
-          <p>
-            Der Rundgang ist über die <strong>Gem2Go-App</strong>, über
-            QR-Codes vor Ort und über die Gemeinde-Homepage erreichbar.
+            Insgesamt 25 Panoramen sind verfügbar — mit Audioguides,
+            Hintergrundmusik und farbigen Informations-Markern. Auch über die
+            <strong> Gem2Go-App</strong> und QR-Codes vor Ort erreichbar.
           </p>
         </div>
         <a
@@ -68,7 +77,7 @@ export default function PanoramenPage() {
           rel="noopener noreferrer"
           className="mt-4 inline-block border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
         >
-          Panoramen starten
+          Alle Panoramen auf gemeinde-hennersdorf.at
         </a>
       </div>
 
