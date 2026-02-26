@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { NEWS_ENTRIES } from "@/data/dorferneuerung-news";
 
 export const metadata: Metadata = {
   title: "Dorferneuerung - Kulturverein Hennersdorf",
@@ -7,351 +8,118 @@ export const metadata: Metadata = {
     "Dorferneuerungsprojekte des Kulturvereins Hennersdorf. Gemeinsam gestalten wir die Zukunft unserer Gemeinde.",
 };
 
-interface NewsEntry {
-  id: string;
-  title: string;
-  date: string;
-  dateSort: string;
-  body: string;
-  images: string[];
-}
-
-const NEWS_ENTRIES: NewsEntry[] = [
-  {
-    id: "container-art",
-    title: "Blick auf Kunstwerke anstatt auf hässliche Container",
-    date: "2025",
-    dateSort: "2025-06-01",
-    body: `Zwei rostige Container beim Kulturzentrum 9er Haus, die bislang als Lager für Theaterrequisiten dienten, wurden in echte Hingucker verwandelt. Künstlerinnen und Künstler aus der Malgruppe des Kulturvereins schufen Kunstwerke, die von der Fa. Artograph professionell gestaltet und auf wetterfeste Folien gedruckt wurden. An zwei Wochenenden montierten freiwillige Helfer Holzrahmen und spannten die Folien auf. Das Projekt wurde von der NÖ Dorf- und Stadterneuerung gefördert — ein gelungenes Beispiel, wie Gemeinschaft und Kreativität das Ortsbild verschönern.`,
-    images: [
-      "/images/dorferneuerung/container-art-1.jpg",
-      "/images/dorferneuerung/container-art-2.jpg",
-    ],
-  },
-  {
-    id: "dorfheld-vejchar",
-    title: "Alfred Vejchar ist Hennersdorfs Dorfheld 2025",
-    date: "13. Juni 2025",
-    dateSort: "2025-06-13",
-    body: `Große Ehre für Alfred Vejchar: Beim Forum der NÖ Dorf- und Stadterneuerung wurde er als Hennersdorfs Dorfheld 2025 ausgezeichnet. Über Jahrzehnte hinweg hat er die Ortsgeschichte dokumentiert und mit www.hennersdorf.at eine der ersten Gemeinde-Websites Österreichs geschaffen. Im selben Jahr feierte er seinen 80. Geburtstag — ein wahrer Pionier der digitalen Heimatpflege.`,
-    images: [
-      "/images/dorferneuerung/dorfheld-vejchar-1.jpg",
-      "/images/dorferneuerung/dorfheld-vejchar-2.jpg",
-    ],
-  },
-  {
-    id: "kinder-dorfgespraech-2025",
-    title: "Kinder-Dorfgespräch: Beeindruckender Abschluss",
-    date: "12. Juni 2025",
-    dateSort: "2025-06-12",
-    body: `Rund 70 Besucher:innen kamen zur Abschlussveranstaltung des Kinder-Dorfgesprächs in die Volksschule Achau-Hennersdorf. Die Kinder präsentierten ihre Erlebnisse aus dem Unterricht und den Exkursionen durch Hennersdorf — was ihnen gefällt und was verbessert werden sollte. Besonders stolz: Der Trinkbrunnen, ein früherer Kinderwunsch, wurde bereits umgesetzt. Ein Projekt, das zeigt, wie ernst die Meinungen der Jüngsten genommen werden.`,
-    images: [
-      "/images/dorferneuerung/kinder-dorfgespraech-1.jpg",
-      "/images/dorferneuerung/kinder-dorfgespraech-2.jpg",
-    ],
-  },
-  {
-    id: "frauenmesse",
-    title: "Frauenmesse war ein großer Erfolg",
-    date: "27. April 2025",
-    dateSort: "2025-04-27",
-    body: `Bei strahlendem Wetter lockte die jährliche Frauenmesse rund 200 Besucher:innen an. 25 Aussteller:innen boten Kleidung, Schmuck, Kerzen und Küchenartikel an. Höhepunkt war die professionelle Modeschau, bei der Amateur-Models elegante Outfits präsentierten. Das reichhaltige Buffet war, wie immer, ein beliebter Treffpunkt. Ein Nachmittag voller Genuss, Stil und Gemeinschaft.`,
-    images: [
-      "/images/dorferneuerung/frauenmesse-1.jpg",
-      "/images/dorferneuerung/frauenmesse-2.jpg",
-    ],
-  },
-  {
-    id: "trinkbrunnen",
-    title: "Trinkbrunnen neben der Kirche feierlich eingeweiht",
-    date: "26. April 2025",
-    dateSort: "2025-04-26",
-    body: `Ein handgepumpter, historisch gestalteter Trinkbrunnen neben der Kirche wurde von Bürgermeister Thaddäus Heindl feierlich eingeweiht und von Pfarrer Edward Keska gesegnet. In den frostfreien Monaten bietet er kostenloses Trinkwasser für alle. Mit den umliegenden Sitzbänken entsteht ein neuer Treffpunkt im Herzen von Hennersdorf — nachhaltig durch Handbetrieb, ganz ohne Strom.`,
-    images: [
-      "/images/dorferneuerung/trinkbrunnen.jpg",
-    ],
-  },
-  {
-    id: "anradeln-2025",
-    title: "Anradeln am Weg der Ziegelbarone",
-    date: "26. April 2025",
-    dateSort: "2025-04-26",
-    body: `Die Dorferneuerungsgruppe lud zum Anradeln ein: Treffpunkt war der neue Trinkbrunnen neben der Kirche, wo nach der Einweihung und Segnung eine Erfrischung wartete. Danach ging es auf dem Rad zur Wallfahrtskirche Maria Lanzendorf, wo Historisches über die Kirche erzählt wurde. Zurück ging es über Himberg und Achau — insgesamt rund 25 km, mit Abkürzungsmöglichkeit.`,
-    images: [
-      "/images/dorferneuerung/anradeln-2025.jpg",
-    ],
-  },
-  {
-    id: "exkursion-2025",
-    title: "Exkursion mit Volksschulkindern durch Hennersdorf",
-    date: "28. April 2025",
-    dateSort: "2025-04-28",
-    body: `Die dritten Klassen der Volksschule Achau-Hennersdorf erkundeten bei einer Exkursion die Wirtschafts- und Kulturbetriebe des Ortes. Stationen waren die Ziegelfabrik Wienerberger, die Kirche mit ihrer Baugeschichte, die Toyota-Autowerkstatt und das Gemeindeamt. Die Begeisterung der Schüler:innen macht Lust auf Wiederholung — ein Projekt, das Schule und Gemeinde verbindet.`,
-    images: [
-      "/images/dorferneuerung/exkursion-2025-1.jpg",
-      "/images/dorferneuerung/exkursion-2025-2.jpg",
-    ],
-  },
-  {
-    id: "workshop-2025",
-    title: "Workshop 2025 in der Volksschule",
-    date: "25. Februar 2025",
-    dateSort: "2025-02-25",
-    body: `Die Dorferneuerungsgruppe gestaltete einen Lehrworkshop für die dritten Klassen der Volksschule Achau-Hennersdorf. An drei Themenstationen lernten die Kinder über die Geschichte Hennersdorfs, die umgebende Landschaft und die heimische Tier- und Pflanzenwelt. Ein Quiz und ein virtueller Dorfrundgang mit 360°-Panoramen am Großbildschirm rundeten den Vormittag ab. Anschauliche Unterlagen über Hennersdorf wurden verteilt.`,
-    images: [
-      "/images/dorferneuerung/workshop-2025-1.jpg",
-      "/images/dorferneuerung/workshop-2025-2.jpg",
-      "/images/dorferneuerung/workshop-2025-3.jpg",
-    ],
-  },
-  {
-    id: "mariensaeule",
-    title: "Mariensäule renoviert und gesegnet",
-    date: "1. November 2024",
-    dateSort: "2024-11-01",
-    body: `Hennersdorfs ältestes Denkmal erstrahlt in neuem Glanz: Die Mariensäule, 1674 von Mühlenbesitzern errichtet und mit einem stilisierten Mühlrad versehen, wurde aufwändig restauriert. 80% der Kosten übernahm die NÖ Dorf- und Stadterneuerung im Rahmen von „Stolz auf unser Dorf". Bei der feierlichen Einweihung am Allerheiligentag segnete Pfarrer Edward Keska das renovierte Wahrzeichen.`,
-    images: [
-      "/images/dorferneuerung/mariensaeule-1.jpg",
-      "/images/dorferneuerung/mariensaeule-2.jpg",
-      "/images/dorferneuerung/mariensaeule-3.jpg",
-    ],
-  },
-  {
-    id: "dorfheld-holzbach",
-    title: "Manfred Holzbach ist Hennersdorfs Dorfheld 2024",
-    date: "2024",
-    dateSort: "2024-06-01",
-    body: `Manfred Holzbach wurde mit dem Dorfhelden-Award für seinen jahrzehntelangen Einsatz für die Verschönerung und kulturelle Bereicherung Hennersdorfs ausgezeichnet. Vizebürgermeisterin Simone Kubo nominierte ihn und würdigte sein besonderes Engagement gemeinsam mit Andrea Holzbach. Die Dorferneuerung feiert in diesem Jahr ihr 10-jähriges Bestehen — ein Meilenstein, der auch Manfreds unermüdlichem Einsatz zu verdanken ist.`,
-    images: [
-      "/images/dorferneuerung/dorfheld-holzbach.jpg",
-    ],
-  },
-  {
-    id: "kinder-dorfgespraech-2024",
-    title: "Würdiger Abschluss des Kinder-Dorfgesprächs 2024",
-    date: "6. Juni 2024",
-    dateSort: "2024-06-06",
-    body: `Rund 70 Gemeindemitglieder kamen zur Abschlussveranstaltung im 9er Haus. Die Kinder präsentierten ihre Projekterfahrungen aus drei thematischen Gruppen, die „Hennersdorf durch Kinderaugen" erarbeiteten. Dabei identifizierten sie Verbesserungsmöglichkeiten und neue Entwicklungsideen. Bemerkenswert: Die Kinder formulierten ernsthafte, durchdachte Anliegen — ein Zeichen dafür, wie wichtig Beteiligung schon im jungen Alter ist.`,
-    images: [],
-  },
-  {
-    id: "kultur-radtour-2024",
-    title: "Kultur-Radtour: Romanische Kirchen",
-    date: "4. Mai 2024",
-    dateSort: "2024-05-04",
-    body: `Radtourenkoordinator Gerhard Horvath führte 36 Radler:innen auf eine kulturelle Entdeckungstour zu romanischen Kirchen in Unterlaa, Himberg und Hennersdorf. Bei bestem Wetter erkundeten die Teilnehmer:innen die Architekturgeschichte der Region und ließen den Tag gemütlich beim Heurigen ausklingen. Eine perfekte Verbindung von Sport, Kultur und Geselligkeit.`,
-    images: [
-      "/images/dorferneuerung/kultur-radtour-2024.jpg",
-    ],
-  },
-  {
-    id: "exkursion-2024",
-    title: "Volksschul-Exkursion durch Hennersdorf 2024",
-    date: "30. April 2024",
-    dateSort: "2024-04-30",
-    body: `Die dritten Klassen besuchten die Wienerberger Ziegelfabrik, die Kirche mit ihrer historischen Baugeschichte, eine Alpaka-Farm — wo die Kinder die Tiere füttern und streicheln durften — und das Gemeindeamt. Ein abwechslungsreicher Tag, der den Kindern die Berufsvielfalt und das kulturelle Erbe Hennersdorfs näherbrachte.`,
-    images: [
-      "/images/dorferneuerung/exkursion-2024.jpg",
-    ],
-  },
-  {
-    id: "workshop-2024",
-    title: "Workshop in der Volksschule 2024",
-    date: "30. Jänner 2024",
-    dateSort: "2024-01-30",
-    body: `Die Dorferneuerungsgruppe präsentierte neu entwickeltes Lehrmaterial über Hennersdorf in der Volksschule. An drei Themenstationen erforschten die Kinder Geschichte, Umgebung und heimische Flora und Fauna. Als Folgeprojekt wurde eine Exkursion im April geplant — der Startschuss für ein spannendes Schuljahr der Dorferneuerung.`,
-    images: [
-      "/images/dorferneuerung/workshop-2024.jpg",
-    ],
-  },
-  {
-    id: "dorfcafe-360",
-    title: "DorfCafé: Workshop 360° Panoramen",
-    date: "21. September 2023",
-    dateSort: "2023-09-21",
-    body: `Rund 25 Besucher:innen kamen zum DorfCafé-Workshop über das 360°-Panorama-Projekt. Die Präsentatoren erklärten die verschiedenen Zugangswege — über die Gem2Go-App, QR-Codes und die Gemeinde-Homepage — und führten durch 24 Panoramen mit Audioguides. Ein innovatives Projekt, das Hennersdorf digital erlebbar macht und Ortsgeschichte modern vermittelt.`,
-    images: [],
-  },
-];
-
-function NewsImage({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="group overflow-hidden rounded-lg bg-gray-100">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        loading="lazy"
-      />
-    </div>
-  );
-}
-
 export default function DorferneuerungPage() {
+  const latestNews = [...NEWS_ENTRIES]
+    .sort((a, b) => b.dateSort.localeCompare(a.dateSort))
+    .slice(0, 3);
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
+    <div className="mx-auto max-w-4xl px-4 py-12">
       <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
         Gemeinde gestalten
       </p>
       <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
         Dorferneuerung
       </h1>
-      <p className="mt-4 text-gray-600 leading-relaxed">
+      <p className="mt-4 max-w-2xl text-gray-600 leading-relaxed">
         Im Rahmen der NÖ Dorf- und Stadterneuerung arbeiten wir seit über zehn
         Jahren an der Verschönerung und Weiterentwicklung von Hennersdorf —
         von Denkmalrenovierungen über Schulprojekte bis hin zu Kulturradtouren.
       </p>
 
-      {/* Projekte */}
-      <div className="mt-10">
-        <h2 className="text-lg font-semibold text-gray-800">Projekte der Dorferneuerung</h2>
-        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          {/* 360° Panoramen */}
-          <Link href="/panoramen" className="group rounded-lg border border-gray-200 p-5 transition-colors hover:border-brand/30">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
-              <span aria-hidden>&#x1f30d;</span>
-            </div>
-            <h3 className="text-[15px] font-semibold text-gray-800 group-hover:text-brand transition-colors">360° Panoramen</h3>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-              Ein virtueller Rundgang mit 25 interaktiven 360-Grad-Panoramen von
-              interessanten Aussichtspunkten in Hennersdorf — mit Audioguides
-              und Informations-Markern.
-            </p>
-            <p className="mt-3 text-xs font-medium text-brand">
-              Zur Panoramen-Seite &rarr;
-            </p>
-          </Link>
-
-          {/* Kulturpfad */}
-          <div id="kulturpfad" className="rounded-lg border border-gray-200 p-5">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
-              <span aria-hidden>&#x1f6b6;</span>
-            </div>
-            <h3 className="text-[15px] font-semibold text-gray-800">Kulturpfad</h3>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-              Ein rund zwei Kilometer langer Fußweg, der elf historische Orte
-              Hennersdorfs miteinander verbindet. An jeder Station informiert eine
-              Tafel über die Geschichte und Bedeutung des Ortes. Ein künstlerisch
-              gestalteter Folder begleitet den Spaziergang.
-            </p>
-            <p className="mt-2 text-xs text-gray-500">
-              Stationen: Wienerberger, Bahnhof, Friedhof, Wohnpark,
-              Pfarrkirche, Armenhaus, Schule, Pferdeschwemme, Feuerwehrhaus,
-              Halterhaus, Gemeindeamt
-            </p>
-            <a
-              href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769178&menuonr=226763920"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block text-xs font-medium text-brand hover:underline"
-            >
-              Mehr zum Kulturpfad &rarr;
-            </a>
+      {/* Quick links */}
+      <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <Link
+          href="/dorferneuerung/aktuelles"
+          className="group rounded-xl border border-gray-200 p-6 transition-all hover:border-brand/30 hover:shadow-md"
+        >
+          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-lg text-brand">
+            <span aria-hidden>&#x1f4f0;</span>
           </div>
+          <h2 className="text-base font-semibold text-gray-800 group-hover:text-brand transition-colors">
+            Aktuelles
+          </h2>
+          <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            Neuigkeiten, Veranstaltungen und Berichte aus der Dorferneuerung.
+          </p>
+          <p className="mt-3 text-xs font-medium text-brand">
+            {NEWS_ENTRIES.length} Beiträge &rarr;
+          </p>
+        </Link>
 
-          {/* Weg der Ziegelbarone */}
-          <div id="ziegelbarone" className="rounded-lg border border-gray-200 p-5">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
-              <span aria-hidden>&#x1f6b2;</span>
-            </div>
-            <h3 className="text-[15px] font-semibold text-gray-800">Weg der Ziegelbarone</h3>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-              Ein rund 25 km langer, beschilderter Radweg südlich von Wien, der die
-              Geschichte der Ziegelindustrie in der Region erlebbar macht. Die Route
-              verbindet 8 Gemeinden und wurde 2019 im Rahmen der NÖ Landesausstellung
-              eröffnet. Abwechslungsreich und einfach zu befahren — ideal für
-              Familien und Genussradler.
-            </p>
-            <p className="mt-2 text-xs text-gray-500">
-              Jährliches Anradeln mit Kulturprogramm organisiert von der Dorferneuerungsgruppe
-            </p>
+        <Link
+          href="/dorferneuerung/projekte"
+          className="group rounded-xl border border-gray-200 p-6 transition-all hover:border-brand/30 hover:shadow-md"
+        >
+          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-lg text-brand">
+            <span aria-hidden>&#x1f3d7;</span>
           </div>
+          <h2 className="text-base font-semibold text-gray-800 group-hover:text-brand transition-colors">
+            Projekte
+          </h2>
+          <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            360° Panoramen, Kulturpfad, Weg der Ziegelbarone und mehr.
+          </p>
+          <p className="mt-3 text-xs font-medium text-brand">
+            Alle Projekte &rarr;
+          </p>
+        </Link>
 
-          {/* Straßennamen */}
-          <div id="strassennamen" className="rounded-lg border border-gray-200 p-5">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-brand/10 text-brand text-lg">
-              <span aria-hidden>&#x1f3d8;</span>
-            </div>
-            <h3 className="text-[15px] font-semibold text-gray-800">Straßennamen von Hennersdorf</h3>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-              Wer waren die Persönlichkeiten hinter den Straßennamen? Die
-              Dorferneuerungsgruppe hat die Geschichten aller 23 Hennersdorfer
-              Straßennamen recherchiert und dokumentiert — von der Boehlergasse
-              bis zur Zehentnergasse.
-            </p>
-            <p className="mt-2 text-xs text-gray-500">
-              Boehlerg., Fleminstr., Grillparzerstr., Hoebelg., Keplerstr., Kochg.,
-              Koralevskyg., Kreuterg., Nestroyg., Neuweilerg., Oesterleg.,
-              Pestalozzig., Postlg., Raimundg., Roseggerstr., Rothneusiedlerstr.,
-              Stifterg., Teichfeldg., Waggerlg., Wasserturmweg, Wildgansg.,
-              Wiesmayerg., Zehentnerg.
-            </p>
-            <div className="mt-3 flex gap-3">
-              <a
-                href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769179&menuonr=226763921"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-medium text-brand hover:underline"
-              >
-                Straßennamen A–P &rarr;
-              </a>
-              <a
-                href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769180&menuonr=226763922"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-medium text-brand hover:underline"
-              >
-                Straßennamen R–Z &rarr;
-              </a>
-            </div>
+        <Link
+          href="/dorferneuerung/strassennamen"
+          className="group rounded-xl border border-gray-200 p-6 transition-all hover:border-brand/30 hover:shadow-md"
+        >
+          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-lg text-brand">
+            <span aria-hidden>&#x1f3d8;</span>
           </div>
-        </div>
-
-        {/* Nachlese link */}
-        <div className="mt-5">
-          <a
-            href="https://www.gemeinde-hennersdorf.at/system/web/zusatzseite.aspx?detailonr=226769176&menuonr=226763918"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-brand hover:underline"
-          >
-            Nachlese auf gemeinde-hennersdorf.at &rarr;
-          </a>
-        </div>
+          <h2 className="text-base font-semibold text-gray-800 group-hover:text-brand transition-colors">
+            Straßennamen
+          </h2>
+          <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            Die Geschichten hinter den 23 Hennersdorfer Straßennamen.
+          </p>
+          <p className="mt-3 text-xs font-medium text-brand">
+            Alle Straßen &rarr;
+          </p>
+        </Link>
       </div>
 
-      {/* News Entries */}
-      <div className="mt-12 space-y-8">
-        <h2 className="text-lg font-semibold text-gray-800">
-          Aktuelles aus der Dorferneuerung
-        </h2>
-
-        {NEWS_ENTRIES.map((entry) => (
-          <article
-            key={entry.id}
-            id={entry.id}
-            className="border-t border-gray-200 pt-6"
+      {/* Latest news preview */}
+      <div className="mt-12">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-800">Aktuelles</h2>
+          <Link
+            href="/dorferneuerung/aktuelles"
+            className="text-sm font-medium text-brand hover:underline"
           >
-            <p className="text-xs text-gray-400 mb-1">{entry.date}</p>
-            <h3 className="text-[15px] font-semibold text-gray-800">{entry.title}</h3>
-            <p className="mt-2 text-sm text-gray-600 leading-relaxed">{entry.body}</p>
-
-            {entry.images.length > 0 && (
-              <div className={`mt-4 ${
-                entry.images.length === 1
-                  ? "max-w-lg"
-                  : entry.images.length === 2
-                    ? "grid grid-cols-2 gap-3"
-                    : "grid grid-cols-2 gap-3 sm:grid-cols-3"
-              }`}>
-                {entry.images.map((img, i) => (
-                  <NewsImage key={i} src={img} alt={`${entry.title} - Bild ${i + 1}`} />
-                ))}
+            Alle Beiträge &rarr;
+          </Link>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {latestNews.map((entry) => (
+            <Link
+              key={entry.id}
+              href={`/dorferneuerung/aktuelles#${entry.id}`}
+              className="group block overflow-hidden rounded-lg border border-gray-100"
+            >
+              {entry.images[0] && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={entry.images[0]}
+                  alt={entry.title}
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
+              )}
+              <div className="p-3">
+                <p className="text-[11px] text-gray-400">{entry.date}</p>
+                <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
+                  {entry.title}
+                </p>
               </div>
-            )}
-          </article>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Mitmachen */}

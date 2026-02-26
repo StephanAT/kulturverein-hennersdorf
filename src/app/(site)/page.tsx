@@ -120,7 +120,7 @@ export default async function HomePage() {
           <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Neuigkeiten</p>
           <h2 className="mt-1 text-xl font-bold text-gray-800">Aktuelles</h2>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <Link href="/dorferneuerung#dorfheld-vejchar" className="group block overflow-hidden rounded-lg border border-gray-100">
+            <Link href="/dorferneuerung/aktuelles#dorfheld-vejchar" className="group block overflow-hidden rounded-lg border border-gray-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/dorferneuerung/dorfheld-vejchar-1.jpg"
@@ -135,7 +135,7 @@ export default async function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/dorferneuerung#kinder-dorfgespraech-2025" className="group block overflow-hidden rounded-lg border border-gray-100">
+            <Link href="/dorferneuerung/aktuelles#kinder-dorfgespraech-2025" className="group block overflow-hidden rounded-lg border border-gray-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/dorferneuerung/kinder-dorfgespraech-1.jpg"
@@ -150,7 +150,7 @@ export default async function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/dorferneuerung#container-art" className="group block overflow-hidden rounded-lg border border-gray-100">
+            <Link href="/dorferneuerung/aktuelles#container-art" className="group block overflow-hidden rounded-lg border border-gray-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/dorferneuerung/container-art-1.jpg"
@@ -167,7 +167,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <Link
-            href="/dorferneuerung"
+            href="/dorferneuerung/aktuelles"
             className="mt-5 inline-block text-sm font-medium text-brand hover:underline"
           >
             Mehr aus der Dorferneuerung &rarr;

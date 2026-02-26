@@ -22,7 +22,15 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/kasperltheater", label: "Kasperltheater" },
     ],
   },
-  { href: "/dorferneuerung", label: "Dorferneuerung" },
+  {
+    href: "/dorferneuerung",
+    label: "Dorferneuerung",
+    children: [
+      { href: "/dorferneuerung/aktuelles", label: "Aktuelles" },
+      { href: "/dorferneuerung/projekte", label: "Projekte" },
+      { href: "/dorferneuerung/strassennamen", label: "Straßennamen" },
+    ],
+  },
   { href: "/panoramen", label: "360° Panoramen" },
   { href: "/schulprojekt", label: "Schulprojekt" },
   { href: "/team", label: "Team" },
@@ -35,7 +43,8 @@ export function SiteHeader() {
 
   const isActive = (item: NavItem) =>
     pathname === item.href ||
-    item.children?.some((c) => pathname === c.href);
+    pathname.startsWith(item.href + "/") ||
+    item.children?.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"));
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
