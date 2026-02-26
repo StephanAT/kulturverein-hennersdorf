@@ -178,13 +178,20 @@ export default async function HomePage() {
       {/* Sections */}
       <section className="border-t border-gray-100 bg-white pb-16">
         <div className="mx-auto max-w-4xl px-4 pt-12">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {SECTIONS.map((s) => (
-              <Link key={s.href} href={s.href} className="group block">
+              <Link
+                key={s.href}
+                href={s.href}
+                className="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-brand/30 hover:shadow-md"
+              >
                 <h3 className="text-[15px] font-semibold text-gray-800 group-hover:text-brand transition-colors">
                   {s.title}
                 </h3>
-                <p className="mt-1 text-sm text-gray-500 leading-relaxed">{s.text}</p>
+                <p className="mt-1.5 flex-1 text-sm text-gray-500 leading-relaxed">{s.text}</p>
+                <span className="mt-3 text-xs font-medium text-brand opacity-0 transition-opacity group-hover:opacity-100">
+                  Mehr erfahren &rarr;
+                </span>
               </Link>
             ))}
           </div>
