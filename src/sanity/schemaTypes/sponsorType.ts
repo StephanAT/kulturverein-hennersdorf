@@ -12,6 +12,13 @@ export const sponsorType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "slug",
+      title: "Slug (URL)",
+      type: "slug",
+      options: { source: "name", maxLength: 96 },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: "logo",
       title: "Logo",
       type: "image",
@@ -28,13 +35,25 @@ export const sponsorType = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Hauptsponsor", value: "main" },
+          { title: "Hauptsponsor", value: "hauptsponsor" },
           { title: "Sponsor", value: "sponsor" },
           { title: "Partner", value: "partner" },
-          { title: "Förderer", value: "supporter" },
+          { title: "Förderer", value: "foerderer" },
         ],
       },
       initialValue: "partner",
+    }),
+    defineField({
+      name: "description",
+      title: "Kurzbeschreibung",
+      type: "text",
+      rows: 2,
+    }),
+    defineField({
+      name: "bodyHtml",
+      title: "Ausführliche Beschreibung (HTML)",
+      type: "text",
+      rows: 10,
     }),
     defineField({
       name: "order",

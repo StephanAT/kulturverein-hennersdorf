@@ -105,37 +105,50 @@ function TeamForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any) 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function SponsorForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any) => void; onCancel: () => void }) {
   const [name, setName] = useState(item?.name || "");
+  const [slugVal, setSlugVal] = useState(item?.slug?.current || "");
   const [website, setWebsite] = useState(item?.website || "");
   const [tier, setTier] = useState(item?.tier || "partner");
+  const [description, setDescription] = useState(item?.description || "");
   const [order, setOrder] = useState(item?.order || 100);
   const [logo, setLogo] = useState(item?.logo || null);
   const [bodyHtml, setBodyHtml] = useState(item?.bodyHtml || "");
 
+  const autoSlug = (n: string) =>
+    n.toLowerCase().replace(/[^a-z0-9\u00E4\u00F6\u00FC\u00DF]+/g, "-").replace(/-+$/, "").replace(/^-+/, "");
+
   return (
     <div className="space-y-3">
-      <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Name *" value={name} onChange={(e) => setName(e.target.value)} />
+      <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Name *" value={name} onChange={(e) => { setName(e.target.value); if (!item?._id) setSlugVal(autoSlug(e.target.value)); }} />
+      <div>
+        <label className="mb-1 block text-xs text-gray-500">Slug (URL-Pfad)</label>
+        <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm font-mono" placeholder="z-b-firmenname" value={slugVal} onChange={(e) => setSlugVal(e.target.value)} />
+      </div>
       <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Website URL" value={website} onChange={(e) => setWebsite(e.target.value)} />
       <select className="w-full rounded border border-gray-300 px-3 py-2 text-sm" value={tier} onChange={(e) => setTier(e.target.value)}>
         <option value="hauptsponsor">Hauptsponsor</option>
         <option value="sponsor">Sponsor</option>
+        <option value="foerderer">F\u00F6rderer</option>
         <option value="partner">Partner</option>
-        <option value="foerderer">Förderer</option>
       </select>
+      <textarea className="w-full rounded border border-gray-300 px-3 py-2 text-sm" rows={2} placeholder="Kurzbeschreibung (f\u00FCr \u00DCbersichtsseite)" value={description} onChange={(e) => setDescription(e.target.value)} />
       <input className="w-24 rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Reihenfolge" type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} />
       <ImageUpload label="Logo" value={logo} onChange={setLogo} />
       <Suspense fallback={<div className="h-32 rounded border border-gray-200 bg-gray-50 animate-pulse" />}>
-        <RichTextEditor label="Beschreibung (Rich Text)" value={bodyHtml} onChange={setBodyHtml} />
+        <RichTextEditor label="Ausf\u00FChrliche Beschreibung (Detailseite)" value={bodyHtml} onChange={setBodyHtml} />
       </Suspense>
       <div className="flex gap-2">
         <button
           onClick={() => {
             if (!name) return alert("Name ist ein Pflichtfeld.");
+            const slug = slugVal || autoSlug(name);
             onSave({
               ...(item?._id ? { _id: item._id } : {}),
               _type: "sponsor",
               name,
+              slug: { _type: "slug", current: slug },
               website: website || undefined,
               tier,
+              description: description || undefined,
               order,
               logo: logo || undefined,
               bodyHtml: bodyHtml || undefined,

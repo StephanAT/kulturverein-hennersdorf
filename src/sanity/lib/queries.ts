@@ -39,7 +39,13 @@ export const ALL_TEAM_MEMBERS_QUERY = defineQuery(
 // Sponsors
 export const ALL_SPONSORS_QUERY = defineQuery(
   `*[_type == "sponsor"] | order(order asc){
-    _id, name, logo, website, tier
+    _id, name, slug, logo, website, tier, description, bodyHtml
+  }`
+);
+
+export const SPONSOR_BY_SLUG_QUERY = defineQuery(
+  `*[_type == "sponsor" && slug.current == $slug][0]{
+    _id, name, slug, logo, website, tier, description, bodyHtml
   }`
 );
 
