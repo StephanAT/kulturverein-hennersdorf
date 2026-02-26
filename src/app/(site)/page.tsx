@@ -183,13 +183,13 @@ export default async function HomePage() {
               <Link
                 key={s.href}
                 href={s.href}
-                className="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-brand/30 hover:shadow-md"
+                className="flex flex-col rounded-xl border border-gray-200 bg-white p-5"
               >
-                <h3 className="text-[15px] font-semibold text-gray-800 group-hover:text-brand transition-colors">
+                <h3 className="text-[15px] font-semibold text-gray-800">
                   {s.title}
                 </h3>
                 <p className="mt-1.5 flex-1 text-sm text-gray-500 leading-relaxed">{s.text}</p>
-                <span className="mt-3 text-xs font-medium text-brand sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
+                <span className="mt-3 text-xs font-medium text-brand">
                   Mehr erfahren &rarr;
                 </span>
               </Link>
