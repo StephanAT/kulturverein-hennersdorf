@@ -32,7 +32,7 @@ export default function MarthaTheaterPage() {
             loading="lazy"
           />
         </div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {[
             { src: "/images/martha-theater/szene-1.jpg", alt: "Szene aus einer Martha Theater Aufführung" },
             { src: "/images/martha-theater/szene-3.jpg", alt: "Theaterszene im Kulturzentrum 9er Haus" },
@@ -96,13 +96,13 @@ export default function MarthaTheaterPage() {
           href="https://www.martha-theater.at/"
           target="_blank"
           rel="noopener noreferrer"
-          className="border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+          className="border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
         >
           martha-theater.at
         </a>
         <Link
           href="/events"
-          className="border border-gray-200 px-4 py-1.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700"
+          className="border border-gray-200 px-5 py-2.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700"
         >
           Veranstaltungen
         </Link>

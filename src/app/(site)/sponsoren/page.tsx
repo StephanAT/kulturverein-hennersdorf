@@ -170,7 +170,7 @@ export default async function SponsorenPage() {
                     {sponsor.description}
                   </p>
                 )}
-                <span className="mt-3 text-xs font-medium text-brand opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="mt-3 text-xs font-medium text-brand sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
                   Mehr erfahren &rarr;
                 </span>
               </Link>

@@ -47,7 +47,7 @@ export default function ZiegelbaronePage() {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <Link
         href="/dorferneuerung/projekte"
-        className="mb-4 inline-block text-sm text-gray-400 hover:text-brand"
+        className="mb-4 inline-block py-1 text-sm text-gray-400 hover:text-brand"
       >
         &larr; Projekte
       </Link>
@@ -191,7 +191,7 @@ export default function ZiegelbaronePage() {
           <a
             href="/documents/dorferneuerung/ziegelbarone-karte.pdf"
             download
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-brand/30 hover:text-brand"
+            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:border-brand/30 hover:text-brand"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +210,7 @@ export default function ZiegelbaronePage() {
           <a
             href="/documents/dorferneuerung/kulturradtour-2024.pdf"
             download
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:border-brand/30 hover:text-brand"
+            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:border-brand/30 hover:text-brand"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

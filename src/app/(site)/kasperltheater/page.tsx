@@ -38,13 +38,13 @@ export default function KasperltheaterPage() {
       <div className="mt-8 flex gap-3">
         <Link
           href="/events"
-          className="border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+          className="border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
         >
           Nächste Termine
         </Link>
         <Link
           href="/martha-theater"
-          className="border border-gray-200 px-4 py-1.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700"
+          className="border border-gray-200 px-5 py-2.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700"
         >
           Martha Theater
         </Link>

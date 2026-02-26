@@ -31,7 +31,7 @@ export default function AktuellesPage() {
     <div className="mx-auto max-w-3xl px-4 py-12">
       <Link
         href="/dorferneuerung"
-        className="mb-4 inline-block text-sm text-gray-400 hover:text-brand"
+        className="mb-4 inline-block py-1 text-sm text-gray-400 hover:text-brand"
       >
         &larr; Dorferneuerung
       </Link>

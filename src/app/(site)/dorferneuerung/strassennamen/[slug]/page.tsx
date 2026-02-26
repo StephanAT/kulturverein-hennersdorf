@@ -38,7 +38,7 @@ export default async function StreetPage({
     <div className="mx-auto max-w-3xl px-4 py-12">
       <Link
         href="/dorferneuerung/strassennamen"
-        className="mb-4 inline-block text-sm text-gray-400 hover:text-brand"
+        className="mb-4 inline-block py-1 text-sm text-gray-400 hover:text-brand"
       >
         &larr; Alle Straßennamen
       </Link>
@@ -126,7 +126,7 @@ export default async function StreetPage({
         {prev ? (
           <Link
             href={`/dorferneuerung/strassennamen/${prev.slug}`}
-            className="flex-1 rounded-lg border border-gray-200 p-3 transition-colors hover:border-brand/30"
+            className="flex-1 rounded-lg border border-gray-200 p-4 transition-colors hover:border-brand/30"
           >
             <p className="text-xs text-gray-400">&larr; Vorherige</p>
             <p className="mt-0.5 text-sm font-medium text-gray-700">
@@ -139,7 +139,7 @@ export default async function StreetPage({
         {next ? (
           <Link
             href={`/dorferneuerung/strassennamen/${next.slug}`}
-            className="flex-1 rounded-lg border border-gray-200 p-3 text-right transition-colors hover:border-brand/30"
+            className="flex-1 rounded-lg border border-gray-200 p-4 text-right transition-colors hover:border-brand/30"
           >
             <p className="text-xs text-gray-400">Nächste &rarr;</p>
             <p className="mt-0.5 text-sm font-medium text-gray-700">

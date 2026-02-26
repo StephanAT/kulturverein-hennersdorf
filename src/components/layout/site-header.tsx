@@ -119,10 +119,10 @@ export function SiteHeader() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-2 text-gray-500 lg:hidden"
+          className="p-3 -mr-2 text-gray-500 lg:hidden"
           aria-label={mobileOpen ? "Menü schließen" : "Menü öffnen"}
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
@@ -132,7 +132,7 @@ export function SiteHeader() {
           <Link
             href="/"
             onClick={() => setMobileOpen(false)}
-            className={`block px-3 py-2 text-sm ${
+            className={`block px-3 py-3 text-base ${
               pathname === "/" ? "font-medium text-brand" : "text-gray-600"
             }`}
           >
@@ -143,7 +143,7 @@ export function SiteHeader() {
               <Link
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block px-3 py-2 text-sm ${
+                className={`block px-3 py-3 text-base ${
                   isActive(item) ? "font-medium text-brand" : "text-gray-600"
                 }`}
               >
@@ -155,7 +155,7 @@ export function SiteHeader() {
                     key={child.href}
                     href={child.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`block pl-8 pr-3 py-1.5 text-sm ${
+                    className={`block pl-8 pr-3 py-2.5 text-sm ${
                       pathname === child.href
                         ? "font-medium text-brand"
                         : "text-gray-400"

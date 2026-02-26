@@ -105,7 +105,7 @@ export default async function HomePage() {
               </div>
               <Link
                 href="/events"
-                className="self-start border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+                className="self-start border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
               >
                 Alle Termine
               </Link>
@@ -129,7 +129,7 @@ export default async function HomePage() {
                 loading="lazy"
               />
               <div className="p-3">
-                <p className="text-[11px] text-gray-400">13. Juni 2025</p>
+                <p className="text-xs text-gray-400">13. Juni 2025</p>
                 <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
                   Alfred Vejchar ist Hennersdorfs Dorfheld 2025
                 </p>
@@ -144,7 +144,7 @@ export default async function HomePage() {
                 loading="lazy"
               />
               <div className="p-3">
-                <p className="text-[11px] text-gray-400">25. Februar 2025</p>
+                <p className="text-xs text-gray-400">25. Februar 2025</p>
                 <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
                   Workshop 2025 in der Volksschule
                 </p>
@@ -159,7 +159,7 @@ export default async function HomePage() {
                 loading="lazy"
               />
               <div className="p-3">
-                <p className="text-[11px] text-gray-400">2025</p>
+                <p className="text-xs text-gray-400">2025</p>
                 <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
                   Blick auf Kunstwerke anstatt auf hässliche Container
                 </p>
@@ -189,7 +189,7 @@ export default async function HomePage() {
                   {s.title}
                 </h3>
                 <p className="mt-1.5 flex-1 text-sm text-gray-500 leading-relaxed">{s.text}</p>
-                <span className="mt-3 text-xs font-medium text-brand opacity-0 transition-opacity group-hover:opacity-100">
+                <span className="mt-3 text-xs font-medium text-brand sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
                   Mehr erfahren &rarr;
                 </span>
               </Link>
@@ -214,7 +214,7 @@ export default async function HomePage() {
               <div className="mt-5 flex gap-3">
                 <Link
                   href="/martha-theater"
-                  className="border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+                  className="border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
                 >
                   Mehr erfahren
                 </Link>
@@ -222,7 +222,7 @@ export default async function HomePage() {
                   href="https://www.martha-theater.at/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-gray-200 px-4 py-1.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700"
+                  className="border border-gray-200 px-5 py-2.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700"
                 >
                   martha-theater.at
                 </a>
@@ -253,7 +253,7 @@ export default async function HomePage() {
           </p>
           <Link
             href="/dorferneuerung"
-            className="mt-4 inline-block border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+            className="mt-4 inline-block border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
           >
             Projekte ansehen
           </Link>
@@ -270,7 +270,7 @@ export default async function HomePage() {
           </p>
           <Link
             href="/team"
-            className="mt-4 inline-block border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+            className="mt-4 inline-block border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
           >
             Team & Kontakt
           </Link>

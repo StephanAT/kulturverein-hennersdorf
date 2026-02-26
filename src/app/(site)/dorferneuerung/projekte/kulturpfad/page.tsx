@@ -13,7 +13,7 @@ export default function KulturpfadPage() {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <Link
         href="/dorferneuerung/projekte"
-        className="mb-4 inline-block text-sm text-gray-400 hover:text-brand"
+        className="mb-4 inline-block py-1 text-sm text-gray-400 hover:text-brand"
       >
         &larr; Projekte
       </Link>
@@ -132,7 +132,7 @@ export default function KulturpfadPage() {
       <div className="mt-10 border-t border-gray-200 pt-6 text-center">
         <a
           href="#"
-          className="text-sm font-medium text-brand hover:underline"
+          className="py-1 text-sm font-medium text-brand hover:underline"
         >
           Zurück nach oben
         </a>

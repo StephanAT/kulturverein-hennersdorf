@@ -105,7 +105,7 @@ export default function SchulprojektPage() {
       <div className="mt-8">
         <Link
           href="/dorferneuerung"
-          className="border border-brand px-4 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
+          className="border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"
         >
           Alle Dorferneuerungsprojekte
         </Link>

@@ -103,14 +103,14 @@ export default function PanoramenPage() {
         <h2 className="text-sm font-semibold text-gray-800">
           Oder direkt einen Standort wählen
         </h2>
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-2">
           {PANORAMA_LOCATIONS.map((loc) => (
             <a
               key={loc.file}
               href={`${BASE_URL}${loc.file}.html`}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-brand hover:text-white"
+              className="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-brand hover:text-white sm:px-3 sm:py-1.5 sm:text-xs"
             >
               {loc.label}
             </a>

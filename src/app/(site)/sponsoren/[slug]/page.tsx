@@ -105,7 +105,7 @@ export default async function SponsorDetailPage({ params }: Props) {
       {/* Back */}
       <Link
         href="/sponsoren"
-        className="mb-6 inline-block text-sm text-gray-400 hover:text-brand"
+        className="mb-6 inline-block py-1 text-sm text-gray-400 hover:text-brand"
       >
         &larr; Sponsoren & Partner
       </Link>
@@ -178,13 +178,13 @@ export default async function SponsorDetailPage({ params }: Props) {
       <div className="mt-12 flex flex-wrap items-center gap-4 border-t border-gray-200 pt-6">
         <Link
           href="/sponsoren"
-          className="text-sm font-medium text-gray-500 hover:text-brand"
+          className="py-1 text-sm font-medium text-gray-500 hover:text-brand"
         >
           &larr; Alle Sponsoren & Partner
         </Link>
         <a
           href="mailto:office@kulturverein-hennersdorf.at"
-          className="ml-auto text-sm font-medium text-brand hover:underline"
+          className="ml-auto py-1 text-sm font-medium text-brand hover:underline"
         >
           Auch Sponsor werden?
         </a>

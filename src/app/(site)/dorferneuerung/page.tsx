@@ -90,7 +90,7 @@ export default function DorferneuerungPage() {
           <h2 className="text-lg font-semibold text-gray-800">Aktuelles</h2>
           <Link
             href="/dorferneuerung/aktuelles"
-            className="text-sm font-medium text-brand hover:underline"
+            className="py-1 text-sm font-medium text-brand hover:underline"
           >
             Alle Beiträge &rarr;
           </Link>
@@ -112,7 +112,7 @@ export default function DorferneuerungPage() {
                 />
               )}
               <div className="p-3">
-                <p className="text-[11px] text-gray-400">{entry.date}</p>
+                <p className="text-xs text-gray-400">{entry.date}</p>
                 <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
                   {entry.title}
                 </p>
