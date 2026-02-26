@@ -114,7 +114,7 @@ function SponsorForm({ item, onSave, onCancel }: { item?: any; onSave: (data: an
   const [bodyHtml, setBodyHtml] = useState(item?.bodyHtml || "");
 
   const autoSlug = (n: string) =>
-    n.toLowerCase().replace(/[^a-z0-9\u00E4\u00F6\u00FC\u00DF]+/g, "-").replace(/-+$/, "").replace(/^-+/, "");
+    n.toLowerCase().replace(/\u00E4/g, "ae").replace(/\u00F6/g, "oe").replace(/\u00FC/g, "ue").replace(/\u00DF/g, "ss").replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "").replace(/^-+/, "");
 
   return (
     <div className="space-y-3">

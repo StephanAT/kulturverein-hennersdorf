@@ -36,7 +36,11 @@ async function getSponsor(slug: string) {
         (sp.name &&
           sp.name
             .toLowerCase()
-            .replace(/[^a-z0-9\u00E4\u00F6\u00FC\u00DF]+/g, "-")
+            .replace(/\u00E4/g, "ae")
+            .replace(/\u00F6/g, "oe")
+            .replace(/\u00FC/g, "ue")
+            .replace(/\u00DF/g, "ss")
+            .replace(/[^a-z0-9]+/g, "-")
             .replace(/-+$/, "")
             .replace(/^-+/, "") === slug)
     );
