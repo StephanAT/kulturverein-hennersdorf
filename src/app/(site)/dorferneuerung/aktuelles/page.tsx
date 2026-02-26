@@ -15,7 +15,7 @@ function NewsImage({ src, alt }: { src: string; alt: string }) {
       <img
         src={src}
         alt={alt}
-        className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        className="w-full rounded-lg object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         loading="lazy"
       />
     </div>
@@ -65,10 +65,10 @@ export default function AktuellesPage() {
               <div
                 className={`mt-4 ${
                   entry.images.length === 1
-                    ? "max-w-lg"
+                    ? "max-w-md"
                     : entry.images.length === 2
-                      ? "grid grid-cols-2 gap-3"
-                      : "grid grid-cols-2 gap-3 sm:grid-cols-3"
+                      ? "grid grid-cols-2 gap-3 max-w-xl"
+                      : "grid grid-cols-2 gap-3 sm:grid-cols-3 max-w-2xl"
                 }`}
               >
                 {entry.images.map((img, i) => (

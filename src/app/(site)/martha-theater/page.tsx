@@ -28,7 +28,7 @@ export default function MarthaTheaterPage() {
           <img
             src="/images/martha-theater/szene-2.jpg"
             alt="Ensemble des Martha Theaters auf der Bühne"
-            className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             loading="lazy"
           />
         </div>

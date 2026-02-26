@@ -64,15 +64,13 @@ export default async function SponsorenPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <p className="mb-1 text-xs font-medium uppercase tracking-wider text-gray-400">
-        Unterst\u00FCtzung
+        {"Unterst\u00FCtzung"}
       </p>
       <h1 className="text-2xl font-bold text-gray-800 sm:text-3xl">
         Sponsoren & Partner
       </h1>
       <p className="mt-4 max-w-2xl text-gray-600 leading-relaxed">
-        Ohne die Unterst\u00FCtzung unserer Sponsoren und Partner w\u00E4ren viele unserer
-        Projekte nicht m\u00F6glich. Herzlichen Dank an alle, die den Kulturverein
-        Hennersdorf f\u00F6rdern.
+        {"Ohne die Unterst\u00FCtzung unserer Sponsoren und Partner w\u00E4ren viele unserer Projekte nicht m\u00F6glich. Herzlichen Dank an alle, die den Kulturverein Hennersdorf f\u00F6rdern."}
       </p>
 
       {TIER_ORDER.filter((t) => grouped[t]).map((tier) => (
@@ -164,9 +162,7 @@ export default async function SponsorenPage() {
       <section className="mt-16 rounded-xl border border-brand/20 bg-brand/5 p-6 sm:p-8">
         <h2 className="text-lg font-bold text-gray-800">Sponsor werden</h2>
         <p className="mt-3 max-w-2xl text-sm text-gray-600 leading-relaxed">
-          M\u00F6chten Sie die Kultur in Hennersdorf unterst\u00FCtzen? Wir freuen uns \u00FCber
-          jede Form der Unterst\u00FCtzung &mdash; ob als Hauptsponsor, Sponsor,
-          F\u00F6rderer oder Partner. Kontaktieren Sie uns:
+          {"M\u00F6chten Sie die Kultur in Hennersdorf unterst\u00FCtzen? Wir freuen uns \u00FCber jede Form der Unterst\u00FCtzung \u2014 ob als Hauptsponsor, Sponsor, F\u00F6rderer oder Partner. Kontaktieren Sie uns:"}
         </p>
         <a
           href="mailto:office@kulturverein-hennersdorf.at"

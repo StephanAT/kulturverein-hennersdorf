@@ -37,8 +37,8 @@ export const NEWS_ENTRIES: NewsEntry[] = [
     dateSort: "2025-06-12",
     body: `Rund 70 Besucher:innen kamen zur Abschlussveranstaltung des Kinder-Dorfgesprächs in die Volksschule Achau-Hennersdorf. Die Kinder präsentierten ihre Erlebnisse aus dem Unterricht und den Exkursionen durch Hennersdorf — was ihnen gefällt und was verbessert werden sollte. Besonders stolz: Der Trinkbrunnen, ein früherer Kinderwunsch, wurde bereits umgesetzt. Ein Projekt, das zeigt, wie ernst die Meinungen der Jüngsten genommen werden.`,
     images: [
-      "/images/dorferneuerung/kinder-dorfgespraech-1.jpg",
       "/images/dorferneuerung/kinder-dorfgespraech-2.jpg",
+      "/images/dorferneuerung/kinder-dorfgespraech-1.jpg",
     ],
   },
   {
@@ -102,8 +102,8 @@ export const NEWS_ENTRIES: NewsEntry[] = [
     dateSort: "2024-11-01",
     body: `Hennersdorfs ältestes Denkmal erstrahlt in neuem Glanz: Die Mariensäule, 1674 von Mühlenbesitzern errichtet und mit einem stilisierten Mühlrad versehen, wurde aufwändig restauriert. 80% der Kosten übernahm die NÖ Dorf- und Stadterneuerung im Rahmen von „Stolz auf unser Dorf". Bei der feierlichen Einweihung am Allerheiligentag segnete Pfarrer Edward Keska das renovierte Wahrzeichen.`,
     images: [
-      "/images/dorferneuerung/mariensaeule-1.jpg",
       "/images/dorferneuerung/mariensaeule-2.jpg",
+      "/images/dorferneuerung/mariensaeule-1.jpg",
       "/images/dorferneuerung/mariensaeule-3.jpg",
     ],
   },

@@ -85,7 +85,7 @@ function FallbackTeam() {
             <img
               src="/images/team/dorferneuerung-team.jpg"
               alt="Dorferneuerungsteam bei der Pressekonferenz"
-              className="aspect-[16/9] w-full object-cover"
+              className="aspect-[3/2] w-full object-cover"
               loading="lazy"
             />
           </div>

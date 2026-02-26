@@ -20,36 +20,25 @@ export default function SchulprojektPage() {
         Exkursionen für die dritten Klassen.
       </p>
 
-      {/* Featured image + side grid */}
-      <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-5">
-        <div className="sm:col-span-3 group overflow-hidden rounded-lg">
+      {/* Featured image + side images */}
+      <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="group overflow-hidden rounded-lg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/team/holzbach-schulprojekt.jpg"
-            alt="Andrea und Manfred Holzbach mit Volksschulkindern"
+            src="/images/dorferneuerung/workshop-2025-1.jpg"
+            alt="Workshop in der Volksschule 2025"
             className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             loading="lazy"
           />
         </div>
-        <div className="sm:col-span-2 grid grid-cols-2 gap-3 sm:grid-cols-1">
-          <div className="group overflow-hidden rounded-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/dorferneuerung/workshop-2025-1.jpg"
-              alt="Workshop in der Volksschule 2025"
-              className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              loading="lazy"
-            />
-          </div>
-          <div className="group overflow-hidden rounded-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/dorferneuerung/exkursion-2025-1.jpg"
-              alt="Exkursion durch Hennersdorf 2025"
-              className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-              loading="lazy"
-            />
-          </div>
+        <div className="group overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/dorferneuerung/workshop-2025-2.jpg"
+            alt="Kinder beim Workshop 2025"
+            className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
         </div>
       </div>
 
@@ -79,21 +68,39 @@ export default function SchulprojektPage() {
         </div>
       </div>
 
-      {/* Kinder-Dorfgespräch image */}
-      <figure className="mt-8">
-        <div className="overflow-hidden rounded-lg">
+      {/* Exkursion + Kinder-Dorfgespräch images */}
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <figure className="overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/dorferneuerung/exkursion-2025-1.jpg"
+            alt="Exkursion durch Hennersdorf 2025"
+            className="w-full rounded-lg"
+            loading="lazy"
+          />
+        </figure>
+        <figure className="overflow-hidden rounded-lg">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/dorferneuerung/kinder-dorfgespraech-1.jpg"
             alt="Kinder-Dorfgespräch Abschlussveranstaltung"
-            className="aspect-[16/9] w-full object-cover"
+            className="w-full rounded-lg"
             loading="lazy"
           />
-        </div>
-        <figcaption className="mt-2 text-xs text-gray-400">
-          Abschlussveranstaltung des Kinder-Dorfgesprächs in der Volksschule
-        </figcaption>
-      </figure>
+        </figure>
+        <figure className="overflow-hidden rounded-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/team/holzbach-schulprojekt.jpg"
+            alt="Andrea und Manfred Holzbach mit Volksschulkindern"
+            className="w-full rounded-lg"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+      <p className="mt-2 text-xs text-gray-400">
+        Exkursion, Kinder-Dorfgespräch und Schulprojekt-Team
+      </p>
 
       <div className="mt-8">
         <Link

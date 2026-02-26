@@ -129,7 +129,7 @@ export default async function EventsPage() {
                   <img
                     src={imgUrl}
                     alt={event.title}
-                    className="mb-4 w-full rounded object-cover aspect-[16/9]"
+                    className="mb-4 w-full rounded object-cover aspect-[3/2]"
                   />
                 )}
                 <p className="text-xs font-medium text-brand">{formatDate(event.date)}</p>
@@ -169,7 +169,7 @@ export default async function EventsPage() {
                   <img
                     src={imgUrl}
                     alt={event.title}
-                    className="mb-3 w-full rounded object-cover aspect-[16/9]"
+                    className="mb-3 w-full rounded object-cover aspect-[3/2]"
                     loading="lazy"
                   />
                 )}

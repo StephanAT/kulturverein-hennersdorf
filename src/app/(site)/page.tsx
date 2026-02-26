@@ -135,18 +135,18 @@ export default async function HomePage() {
                 </p>
               </div>
             </Link>
-            <Link href="/dorferneuerung/aktuelles#kinder-dorfgespraech-2025" className="group block overflow-hidden rounded-lg border border-gray-100">
+            <Link href="/dorferneuerung/aktuelles#workshop-2025" className="group block overflow-hidden rounded-lg border border-gray-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/dorferneuerung/kinder-dorfgespraech-1.jpg"
-                alt="Kinder-Dorfgespräch 2025"
+                src="/images/dorferneuerung/workshop-2025-1.jpg"
+                alt="Workshop in der Volksschule 2025"
                 className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 loading="lazy"
               />
               <div className="p-3">
-                <p className="text-[11px] text-gray-400">12. Juni 2025</p>
+                <p className="text-[11px] text-gray-400">25. Februar 2025</p>
                 <p className="mt-0.5 text-sm font-semibold text-gray-800 leading-snug group-hover:text-brand transition-colors">
-                  Kinder-Dorfgespräch: Beeindruckender Abschluss
+                  Workshop 2025 in der Volksschule
                 </p>
               </div>
             </Link>
