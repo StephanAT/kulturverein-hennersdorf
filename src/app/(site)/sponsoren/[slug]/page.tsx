@@ -4,40 +4,60 @@ import type { Metadata } from "next";
 import { sanityFetch, sanityImageUrl } from "@/lib/sanity";
 import { FALLBACK_SPONSORS, TIER_LABELS } from "@/data/sponsoren";
 
+const TIER_MAP: Record<string, string> = {
+  main: "hauptsponsor",
+  supporter: "foerderer",
+  hauptsponsor: "hauptsponsor",
+  sponsor: "sponsor",
+  partner: "partner",
+  foerderer: "foerderer",
+};
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 async function getSponsor(slug: string) {
-  // Try Sanity first
+  // Try Sanity first (match by slug or by generated slug from name)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let sponsors: any[] = [];
   try {
     sponsors = await sanityFetch(
-      `*[_type == "sponsor" && slug.current == "${slug}"]{ _id, name, slug, logo, website, tier, description, bodyHtml }`
+      `*[_type == "sponsor"]{ _id, name, slug, logo, website, tier, description, bodyHtml }`
     );
   } catch {
     // Sanity unavailable
   }
 
   if (sponsors.length > 0) {
-    const s = sponsors[0];
-    return {
-      slug: s.slug?.current || slug,
-      name: s.name,
-      tier: s.tier,
-      description: s.description || "",
-      website: s.website,
-      logoUrl:
-        s.logo && typeof s.logo === "object"
-          ? sanityImageUrl(s.logo, 400) || undefined
-          : undefined,
-      bodyHtml: s.bodyHtml || "",
-    };
+    const s = sponsors.find(
+      (sp: any) =>
+        sp.slug?.current === slug ||
+        (sp.name &&
+          sp.name
+            .toLowerCase()
+            .replace(/[^a-z0-9\u00E4\u00F6\u00FC\u00DF]+/g, "-")
+            .replace(/-+$/, "")
+            .replace(/^-+/, "") === slug)
+    );
+    if (s) {
+      return {
+        slug,
+        name: s.name,
+        tier: TIER_MAP[s.tier] || "partner",
+        description: s.description || "",
+        website: s.website,
+        logoUrl:
+          s.logo && typeof s.logo === "object"
+            ? sanityImageUrl(s.logo, 400) || undefined
+            : undefined,
+        bodyHtml: s.bodyHtml || "",
+      };
+    }
   }
 
   // Fallback
-  const fallback = FALLBACK_SPONSORS.find((s) => s.slug === slug);
+  const fallback = FALLBACK_SPONSORS.find((f) => f.slug === slug);
   if (!fallback) return null;
 
   return {

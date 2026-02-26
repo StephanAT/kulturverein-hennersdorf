@@ -17,12 +17,29 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
+const TIER_MAP: Record<string, string> = {
+  main: "hauptsponsor",
+  supporter: "foerderer",
+  hauptsponsor: "hauptsponsor",
+  sponsor: "sponsor",
+  partner: "partner",
+  foerderer: "foerderer",
+};
+
+function toSlug(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\u00E4\u00F6\u00FC\u00DF]+/g, "-")
+    .replace(/-+$/, "")
+    .replace(/^-+/, "");
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function normalizeSponsor(s: any): Sponsor & { logoUrl?: string } {
   return {
-    slug: s.slug?.current || s.slug || "",
+    slug: s.slug?.current || (typeof s.slug === "string" && s.slug) || toSlug(s.name || ""),
     name: s.name,
-    tier: s.tier,
+    tier: (TIER_MAP[s.tier] || "partner") as Sponsor["tier"],
     description: s.description || "",
     website: s.website,
     logo: s.logo && typeof s.logo === "string" ? s.logo : undefined,
