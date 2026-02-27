@@ -53,8 +53,8 @@ export function SiteHeader() {
           <Image
             src="/logo.png"
             alt="Hennersdorfer Kulturverein"
-            width={640}
-            height={126}
+            width={1025}
+            height={207}
             unoptimized
             className="h-8 w-auto sm:h-9"
           />

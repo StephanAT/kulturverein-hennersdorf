@@ -29,8 +29,8 @@ export default function DashboardLayout({
             <Image
               src="/logo.png"
               alt="Kulturverein Hennersdorf"
-              width={640}
-              height={126}
+              width={1025}
+              height={207}
               unoptimized
               className="h-8 w-auto"
             />

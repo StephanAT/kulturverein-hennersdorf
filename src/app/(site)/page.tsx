@@ -79,8 +79,8 @@ export default async function HomePage() {
           <Image
             src="/logo.png"
             alt="Hennersdorfer Kulturverein"
-            width={640}
-            height={126}
+            width={1025}
+            height={207}
             unoptimized
             className="mx-auto mb-6 h-14 w-auto sm:h-16"
           />
