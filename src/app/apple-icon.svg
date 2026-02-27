@@ -5,6 +5,12 @@
       <stop offset="100%" stop-color="#14612A"/>
     </linearGradient>
   </defs>
-  <rect width="180" height="180" rx="36" fill="url(#bg)"/>
-  <text x="90" y="128" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-weight="700" font-size="120" fill="#fff" letter-spacing="-4">K</text>
+  <!-- Shield -->
+  <path d="M17 17 h146 v84 Q163 135 90 163 Q17 135 17 101 Z" fill="url(#bg)"/>
+  <!-- H centered in shield visual mass -->
+  <g fill="#fff">
+    <rect x="53" y="31" width="17" height="84" rx="3"/>
+    <rect x="110" y="31" width="17" height="84" rx="3"/>
+    <rect x="70" y="65" width="40" height="17" rx="3"/>
+  </g>
 </svg>
