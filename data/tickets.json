@@ -1360,7 +1360,7 @@
       "ticket_number": "EVT-003",
       "title": "Events - Veranstaltungsarchiv",
       "description": "Vergangene Events nach Jahr gruppiert. Filterbar nach Kategorie (Theater, Kasperltheater, Kultursommer, Sonstig).",
-      "status": "backlog",
+      "status": "done",
       "priority": "medium",
       "ticket_type": "ticket",
       "parent_id": "d4a001f7-3060-408f-90ca-68fe1e419469",
@@ -1389,21 +1389,21 @@
       "output_type": "code",
       "agent_instructions": null,
       "plan_text": null,
-      "handoff_summary": null,
+      "handoff_summary": "Vergangene Events werden auf der Übersichtsseite als kompakte Link-Cards angezeigt mit Datum und Ort.",
       "token_budget": null,
       "tokens_used": 0,
       "token_budget_exceeded": false,
       "metadata": {},
       "is_archived": false,
       "created_at": "2026-02-24T16:22:30.109Z",
-      "updated_at": "2026-02-24T16:22:30.109Z"
+      "updated_at": "2026-02-27T08:55:52.692Z"
     },
     {
       "id": "1762499f-42d5-4bd0-83c8-10268882ad72",
       "ticket_number": "EVT-004",
       "title": "Events - Einzelveranstaltungs-Detailseite",
       "description": "Detailseite pro Event: Titel, Datum, Beschreibung, Bilder, Ort, Karten-Info.",
-      "status": "backlog",
+      "status": "done",
       "priority": "medium",
       "ticket_type": "ticket",
       "parent_id": "d4a001f7-3060-408f-90ca-68fe1e419469",
@@ -1434,14 +1434,14 @@
       "output_type": "code",
       "agent_instructions": null,
       "plan_text": null,
-      "handoff_summary": null,
+      "handoff_summary": "Event-Detailseiten unter /events/[slug] mit allen Infos, Karte, Galerie, iCal-Download.",
       "token_budget": null,
       "tokens_used": 0,
       "token_budget_exceeded": false,
       "metadata": {},
       "is_archived": false,
       "created_at": "2026-02-24T16:22:30.206Z",
-      "updated_at": "2026-02-24T16:22:30.206Z"
+      "updated_at": "2026-02-27T08:55:52.692Z"
     },
     {
       "id": "60397af9-c766-4c82-aae3-df538f142e16",
@@ -2081,7 +2081,7 @@
       "ticket_number": "EVT-005",
       "title": "Event-Detailseiten mit Bildergalerie, Karte & Status",
       "description": "Jedes Event bekommt eine eigene Detailseite unter /events/[slug] mit allen Informationen (Volltexte, Bilder, Termin, Ort), Bildergalerie, eingebetteter Karte und internem Status (zukünftig/vergangen). Die Übersichtsseite (/events) und die Homepage verlinken direkt auf die Detail-Seiten. Das Dashboard-Formular wird erweitert um die neuen Felder.",
-      "status": "todo",
+      "status": "done",
       "priority": "high",
       "ticket_type": "feature",
       "parent_id": null,
@@ -2159,14 +2159,14 @@
       "output_type": null,
       "agent_instructions": "Orientiere dich an der Sponsoren-Detail-Implementierung (src/app/(site)/sponsoren/[slug]/page.tsx) als Pattern: Sanity-First mit Fallback-Daten, toSlug() mit Umlaut-Konvertierung, generateStaticParams aus Fallback-Array. Karte: OpenStreetMap iframe embed (kein API Key nötig), URL-encode die Adresse für die Embed-URL. Bildergalerie: Einfaches img-Grid, kein externes Lightbox-Package. Status automatisch aus Datum berechnen aber manuellen Override erlauben.",
       "plan_text": null,
-      "handoff_summary": null,
+      "handoff_summary": "Event-Detailseiten /events/[slug] mit Hero-Bild, Status-Badge (Kommend/Vergangen), Info-Block (Datum, Uhrzeit, Ort, Eintritt, Veranstalter, Kontakt), OpenStreetMap-Karte (1/3 Breite), iCal-Download, Rich Text Body, Bildergalerie. Events-Übersicht als Link-Cards. Homepage Next-Event verlinkt auf Detail. Dashboard EventForm erweitert: slug, endDate, address, price, organizer, contact, externalLink, gallery multi-upload, bodyHtml.",
       "token_budget": null,
       "tokens_used": 0,
       "token_budget_exceeded": false,
       "metadata": {},
       "is_archived": false,
       "created_at": "2026-02-27T08:48:34.259Z",
-      "updated_at": "2026-02-27T08:48:34.259Z"
+      "updated_at": "2026-02-27T08:55:52.692Z"
     }
   ],
   "comments": [
@@ -2527,6 +2527,33 @@
       "new_value": "done",
       "changed_by": "claude",
       "changed_at": "2026-02-27T08:43:59.548Z"
+    },
+    {
+      "id": "11a2dffb-518a-4c97-9bee-bc30d026e0d4",
+      "ticket_id": "88aea607-c2d9-4026-807d-61bd28a366a2",
+      "field": "status",
+      "old_value": "todo",
+      "new_value": "done",
+      "changed_by": "claude",
+      "changed_at": "2026-02-27T08:55:52.692Z"
+    },
+    {
+      "id": "ac92eeac-7cca-47b8-9a8e-a8f6c57d9e62",
+      "ticket_id": "daf84fbe-05e7-4a65-983a-6d13aa4f5c1f",
+      "field": "status",
+      "old_value": "backlog",
+      "new_value": "done",
+      "changed_by": "claude",
+      "changed_at": "2026-02-27T08:55:52.692Z"
+    },
+    {
+      "id": "8da88701-ae04-4483-a0ad-3ac747a4773e",
+      "ticket_id": "1762499f-42d5-4bd0-83c8-10268882ad72",
+      "field": "status",
+      "old_value": "backlog",
+      "new_value": "done",
+      "changed_by": "claude",
+      "changed_at": "2026-02-27T08:55:52.692Z"
     }
   ],
   "dependencies": []

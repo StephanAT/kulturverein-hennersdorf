@@ -39,6 +39,7 @@ const SECTIONS = [
 
 const FALLBACK_EVENT = {
   title: "Hennersdorfer Frauenmesse",
+  slug: "frauenmesse-2026",
   date: "2026-04-26T10:00:00Z",
   location: "Feuerwehrhaus Hennersdorf, Florianiplatz 1",
 };
@@ -61,7 +62,7 @@ export default async function HomePage() {
   let nextEvent: any = null;
   try {
     const upcoming = await sanityFetch(
-      `*[_type == "event" && date >= now()] | order(date asc){ _id, title, date, location }[0...1]`
+      `*[_type == "event" && date >= now()] | order(date asc){ _id, title, slug, date, location }[0...1]`
     );
     if (upcoming.length > 0) nextEvent = upcoming[0];
   } catch {
@@ -95,14 +96,17 @@ export default async function HomePage() {
         <section className="border-t border-gray-100 bg-brand/5">
           <div className="mx-auto max-w-4xl px-4 py-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+              <Link
+                href={`/events/${event.slug?.current || event.slug || "frauenmesse-2026"}`}
+                className="flex-1"
+              >
                 <p className="text-xs font-medium uppercase tracking-wider text-brand">Nächster Termin</p>
                 <h2 className="mt-1 text-lg font-bold text-gray-800">{event.title}</h2>
                 <p className="text-sm text-gray-600">{formatEventDate(event.date)}</p>
                 {event.location && (
                   <p className="text-sm text-gray-500">{event.location}</p>
                 )}
-              </div>
+              </Link>
               <Link
                 href="/events"
                 className="self-start border border-brand px-5 py-2.5 text-sm font-medium text-brand transition-colors hover:bg-brand hover:text-white"

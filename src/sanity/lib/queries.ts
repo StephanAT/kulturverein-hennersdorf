@@ -10,21 +10,21 @@ export const PAGE_BY_SLUG_QUERY = defineQuery(
 // Events
 export const ALL_EVENTS_QUERY = defineQuery(
   `*[_type == "event"] | order(date desc){
-    _id, title, slug, date, endDate, location, description, image,
+    _id, title, slug, date, endDate, location, address, description, image, gallery, price, organizer, contact, externalLink, bodyHtml,
     "project": project->{title, slug}
   }`
 );
 
 export const UPCOMING_EVENTS_QUERY = defineQuery(
   `*[_type == "event" && date >= now()] | order(date asc){
-    _id, title, slug, date, endDate, location, description, image,
+    _id, title, slug, date, endDate, location, address, description, image, gallery, price, organizer, contact, externalLink, bodyHtml,
     "project": project->{title, slug}
   }`
 );
 
 export const EVENT_BY_SLUG_QUERY = defineQuery(
   `*[_type == "event" && slug.current == $slug][0]{
-    _id, title, slug, date, endDate, location, body, image,
+    _id, title, slug, date, endDate, location, address, description, body, image, gallery, price, organizer, contact, externalLink, bodyHtml,
     "project": project->{title, slug}
   }`
 );

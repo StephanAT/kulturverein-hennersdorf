@@ -17,35 +17,138 @@ const TABS: { key: Tab; label: string }[] = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function EventForm({ item, onSave, onCancel }: { item?: any; onSave: (data: any) => void; onCancel: () => void }) {
   const [title, setTitle] = useState(item?.title || "");
+  const [slugVal, setSlugVal] = useState(item?.slug?.current || "");
   const [date, setDate] = useState(item?.date?.slice(0, 16) || "");
+  const [endDate, setEndDate] = useState(item?.endDate?.slice(0, 16) || "");
   const [location, setLocation] = useState(item?.location || "");
+  const [address, setAddress] = useState(item?.address || "");
   const [description, setDescription] = useState(item?.description || "");
+  const [price, setPrice] = useState(item?.price || "");
+  const [organizer, setOrganizer] = useState(item?.organizer || "Kulturverein Hennersdorf");
+  const [contact, setContact] = useState(item?.contact || "office@kulturverein-hennersdorf.at");
+  const [externalLink, setExternalLink] = useState(item?.externalLink || "");
   const [image, setImage] = useState(item?.image || null);
+  const [galleryImages, setGalleryImages] = useState<(typeof image)[]>(item?.gallery || []);
   const [bodyHtml, setBodyHtml] = useState(item?.bodyHtml || "");
+
+  const autoSlug = (n: string) =>
+    n.toLowerCase().replace(/\u00E4/g, "ae").replace(/\u00F6/g, "oe").replace(/\u00FC/g, "ue").replace(/\u00DF/g, "ss").replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "").replace(/^-+/, "");
+
+  const addGalleryImage = (ref: typeof image) => {
+    if (ref) setGalleryImages((prev) => [...prev, ref]);
+  };
+
+  const removeGalleryImage = (idx: number) => {
+    setGalleryImages((prev) => prev.filter((_, i) => i !== idx));
+  };
 
   return (
     <div className="space-y-3">
-      <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Titel *" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
-      <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Ort" value={location} onChange={(e) => setLocation(e.target.value)} />
+      <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Titel *" value={title} onChange={(e) => { setTitle(e.target.value); if (!item?._id) setSlugVal(autoSlug(e.target.value)); }} />
+      <div>
+        <label className="mb-1 block text-xs text-gray-500">Slug (URL-Pfad)</label>
+        <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm font-mono" placeholder="z-b-event-name" value={slugVal} onChange={(e) => setSlugVal(e.target.value)} />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Datum & Uhrzeit *</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Enddatum (optional)</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Veranstaltungsort</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="z.B. Kulturzentrum 9er Haus" value={location} onChange={(e) => setLocation(e.target.value)} />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Adresse (f&uuml;r Karte)</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="z.B. Bachgasse 9, 2332 Hennersdorf" value={address} onChange={(e) => setAddress(e.target.value)} />
+        </div>
+      </div>
+
       <textarea className="w-full rounded border border-gray-300 px-3 py-2 text-sm" rows={2} placeholder="Kurzbeschreibung" value={description} onChange={(e) => setDescription(e.target.value)} />
-      <ImageUpload label="Event-Bild" value={image} onChange={setImage} />
+
+      <div className="grid grid-cols-3 gap-3">
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Eintritt / Preis</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="z.B. Freier Eintritt" value={price} onChange={(e) => setPrice(e.target.value)} />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Veranstalter</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="Kulturverein Hennersdorf" value={organizer} onChange={(e) => setOrganizer(e.target.value)} />
+        </div>
+        <div>
+          <label className="mb-1 block text-xs text-gray-500">Kontakt</label>
+          <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="E-Mail oder Telefon" value={contact} onChange={(e) => setContact(e.target.value)} />
+        </div>
+      </div>
+
+      <div>
+        <label className="mb-1 block text-xs text-gray-500">Externer Link (Ticket-Shop, Website, ...)</label>
+        <input className="w-full rounded border border-gray-300 px-3 py-2 text-sm" placeholder="https://..." value={externalLink} onChange={(e) => setExternalLink(e.target.value)} />
+      </div>
+
+      <ImageUpload label="Hauptbild" value={image} onChange={setImage} />
+
+      {/* Gallery */}
+      <div className="space-y-2">
+        <label className="block text-xs font-medium text-gray-600">Bildergalerie</label>
+        {galleryImages.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {galleryImages.map((img, i) => (
+              <div key={i} className="relative">
+                <div className="h-16 w-16 rounded border border-gray-200 bg-gray-50 flex items-center justify-center text-xs text-gray-400">
+                  Bild {i + 1}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeGalleryImage(i)}
+                  className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] text-white hover:bg-red-600"
+                >
+                  x
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <ImageUpload
+          label="Bild zur Galerie hinzuf\u00FCgen"
+          value={null}
+          onChange={addGalleryImage}
+        />
+      </div>
+
       <Suspense fallback={<div className="h-32 rounded border border-gray-200 bg-gray-50 animate-pulse" />}>
-        <RichTextEditor label="Details (Rich Text)" value={bodyHtml} onChange={setBodyHtml} />
+        <RichTextEditor label="Detailbeschreibung (Rich Text)" value={bodyHtml} onChange={setBodyHtml} />
       </Suspense>
+
       <div className="flex gap-2">
         <button
           onClick={() => {
             if (!title || !date) return alert("Titel und Datum sind Pflichtfelder.");
+            const slug = slugVal || autoSlug(title);
             onSave({
               ...(item?._id ? { _id: item._id } : {}),
               _type: "event",
               title,
-              slug: { _type: "slug", current: title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "") },
+              slug: { _type: "slug", current: slug },
               date: new Date(date).toISOString(),
+              endDate: endDate ? new Date(endDate).toISOString() : undefined,
               location: location || undefined,
+              address: address || undefined,
               description: description || undefined,
+              price: price || undefined,
+              organizer: organizer || undefined,
+              contact: contact || undefined,
+              externalLink: externalLink || undefined,
               image: image || undefined,
+              gallery: galleryImages.length > 0 ? galleryImages : undefined,
               bodyHtml: bodyHtml || undefined,
             });
           }}
@@ -305,6 +408,7 @@ export default function ContentPage() {
           <p className="text-xs text-gray-500 truncate">
             {tab === "event" && item.date && formatDate(item.date)}
             {tab === "event" && item.location && ` · ${item.location}`}
+            {tab === "event" && item.price && ` · ${item.price}`}
             {tab === "teamMember" && item.role}
             {tab === "sponsor" && TIER_LABELS[item.tier]}
             {tab === "project" && item.category}
