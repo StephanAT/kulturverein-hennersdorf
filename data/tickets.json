@@ -2007,6 +2007,74 @@
       "is_archived": false,
       "created_at": "2026-02-24T16:22:31.532Z",
       "updated_at": "2026-02-27T08:34:14.328Z"
+    },
+    {
+      "id": "75f9044e-3c00-4e36-b6a4-833d99f53978",
+      "ticket_number": "INF-005",
+      "title": "Cookie Consent Banner & GTM-Vorbereitung",
+      "description": "DSGVO-konformes Cookie Consent Banner implementieren, das nahtlos mit Google Tag Manager (GTM) zusammenarbeitet. Der Banner muss vor dem Laden von Tracking-Scripts die Einwilligung einholen und die Consent-Entscheidung per dataLayer an GTM weitergeben. Kategorien: Notwendig (immer aktiv), Statistik/Analytics, Marketing.",
+      "status": "done",
+      "priority": "high",
+      "ticket_type": "feature",
+      "parent_id": null,
+      "system_category": "Infrastructure",
+      "assignee": "claude",
+      "estimate": null,
+      "due_date": null,
+      "tech_stack": [
+        "TypeScript",
+        "Next.js",
+        "Tailwind CSS"
+      ],
+      "db_tables": [],
+      "depends_on_systems": [],
+      "api_endpoints": [],
+      "ui_components": [
+        "CookieBanner",
+        "CookieSettings"
+      ],
+      "implementation_checklist": [
+        "Cookie-Consent-Komponente erstellen (Banner + Detail-Modal)",
+        "Consent-State in Cookie speichern (z.B. cookie_consent mit JSON)",
+        "Consent-Kategorien: necessary (immer), analytics, marketing",
+        "GTM dataLayer Integration: consent default + update Events",
+        "Google Consent Mode v2 implementieren (ad_storage, analytics_storage, etc.)",
+        "GTM Container Script nur nach Consent laden (oder mit Consent Mode blockieren)",
+        "Einstellungen ändern Button im Footer/Datenschutz",
+        "Banner Styling passend zum Brand (dezent, nicht aufdringlich)",
+        "Mobile-optimiertes Layout des Banners",
+        "Consent-Entscheidung merken (Cookie Laufzeit 12 Monate)",
+        "Datenschutz-Seite verlinken",
+        "SSR-kompatibel (kein Hydration Mismatch)"
+      ],
+      "acceptance_criteria": [
+        "Banner erscheint bei Erstbesuch, blockiert Tracking bis Einwilligung",
+        "Consent-Entscheidung wird als Cookie gespeichert und bei Folgebesuchen respektiert",
+        "GTM dataLayer erhält consent update Events mit korrekten Kategorien",
+        "Google Consent Mode v2 kompatibel (ad_storage, analytics_storage, ad_user_data, ad_personalization)",
+        "Alle Cookies + Einwilligung Button im Footer oder auf Datenschutz-Seite änderbar",
+        "Kein Tracking-Script wird vor expliziter Einwilligung geladen",
+        "Banner ist DSGVO/ePrivacy-konform (Ablehnen gleichwertig wie Akzeptieren)",
+        "Mobile: Banner nimmt nicht zu viel Platz ein, Buttons gut tippbar"
+      ],
+      "context_refs": [],
+      "file_scope": [
+        "src/components/cookie-banner.tsx",
+        "src/app/(site)/layout.tsx",
+        "src/app/(site)/datenschutz/page.tsx"
+      ],
+      "do_not_touch": [],
+      "output_type": null,
+      "agent_instructions": "Implementiere ein Cookie Consent Banner als Client Component. Verwende localStorage oder einen Cookie um den Consent-State zu speichern. Integriere Google Consent Mode v2 über window.dataLayer. Der GTM Container Code (gtag.js) soll erst nach Consent geladen werden ODER über Consent Mode gesteuert werden. Wichtig: Der Banner muss SSR-safe sein (useEffect für Client-only Logic). Ablehnen-Button muss gleichwertig zum Akzeptieren-Button sein (DSGVO). Keine externen Cookie-Consent-Libraries verwenden, eigene leichtgewichtige Lösung bauen.",
+      "plan_text": null,
+      "handoff_summary": "Cookie Consent Banner mit Google Consent Mode v2, 3 Kategorien (Notwendig/Statistik/Marketing), dataLayer Integration, Cookie-Einstellungen im Footer. SSR-safe, DSGVO-konform.",
+      "token_budget": null,
+      "tokens_used": 0,
+      "token_budget_exceeded": false,
+      "metadata": {},
+      "is_archived": false,
+      "created_at": "2026-02-27T08:39:56.283Z",
+      "updated_at": "2026-02-27T08:43:59.548Z"
     }
   ],
   "comments": [
@@ -2358,6 +2426,15 @@
       "new_value": "done",
       "changed_by": "stephan",
       "changed_at": "2026-02-27T08:34:14.328Z"
+    },
+    {
+      "id": "c6704067-6fc7-427b-b56f-2f878c4ee84b",
+      "ticket_id": "75f9044e-3c00-4e36-b6a4-833d99f53978",
+      "field": "status",
+      "old_value": "todo",
+      "new_value": "done",
+      "changed_by": "claude",
+      "changed_at": "2026-02-27T08:43:59.548Z"
     }
   ],
   "dependencies": []

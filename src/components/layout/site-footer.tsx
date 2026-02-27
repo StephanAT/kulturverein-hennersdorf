@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CookieSettingsButton } from "@/components/cookie-banner";
 
 export function SiteFooter() {
   return (
@@ -24,6 +25,7 @@ export function SiteFooter() {
           <div className="flex gap-6 text-xs text-gray-300 sm:gap-4">
             <Link href="/impressum" className="py-1 hover:text-gray-500">Impressum</Link>
             <Link href="/datenschutz" className="py-1 hover:text-gray-500">Datenschutz</Link>
+            <CookieSettingsButton />
           </div>
         </div>
       </div>

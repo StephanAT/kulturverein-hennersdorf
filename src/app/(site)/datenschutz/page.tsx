@@ -56,8 +56,25 @@ export default function DatenschutzPage() {
         <div>
           <h2 className="text-base font-semibold text-gray-800">Cookies</h2>
           <p className="mt-2">
-            Diese Website verwendet keine Cookies zu Tracking- oder Analysezwecken.
-            Technisch notwendige Cookies können vom Hosting-Anbieter gesetzt werden.
+            Diese Website verwendet Cookies. Technisch notwendige Cookies werden
+            immer gesetzt. Analyse- und Marketing-Cookies werden nur mit Ihrer
+            ausdr&uuml;cklichen Einwilligung aktiviert. Sie k&ouml;nnen Ihre
+            Cookie-Einstellungen jederzeit &uuml;ber den Link
+            &bdquo;Cookie-Einstellungen&ldquo; im Footer der Website &auml;ndern
+            oder widerrufen.
+          </p>
+          <p className="mt-2">
+            <strong>Notwendige Cookies:</strong> Speichern Ihre
+            Cookie-Einstellungen (cookie_consent). Laufzeit: 12 Monate.
+          </p>
+          <p className="mt-2">
+            <strong>Statistik-Cookies:</strong> Helfen uns zu verstehen, wie
+            Besucher die Website nutzen (z.B. Google Analytics). Werden nur nach
+            Einwilligung gesetzt.
+          </p>
+          <p className="mt-2">
+            <strong>Marketing-Cookies:</strong> Werden verwendet, um Werbung
+            relevanter zu gestalten. Werden nur nach Einwilligung gesetzt.
           </p>
         </div>
 
